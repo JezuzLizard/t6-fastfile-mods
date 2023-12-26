@@ -1,0 +1,12 @@
+index,name,body_model,view_model,team,class
+0,richtofen,c_zom_tomb_richtofen_fb,c_zom_richtofen_viewhands,axis,
+1,takeo,c_zom_tomb_takeo_fb,c_zom_takeo_viewhands,axis,
+2,nikolai,c_zom_tomb_nikolai_fb,c_zom_nikolai_viewhands,allies,
+3,dempsey,c_zom_tomb_dempsey_fb,c_zom_dempsey_viewhands,allies,
+4,arlington,c_zom_player_arlington_fb,c_zom_arlington_coat_viewhands,allies,
+5,deluca,c_zom_player_deluca_fb,c_zom_deluca_longsleeve_viewhands,allies,
+6,handsome,c_zom_player_handsome_fb,c_zom_handsome_sleeveless_viewhands,axis,
+7,oleary,c_zom_player_oleary_fb,c_zom_oleary_shortsleeve_viewhands,axis,
+8,inmate,c_zom_player_grief_inmate_fb,c_zom_oleary_shortsleeve_viewhands,axis,
+9,guard,c_zom_player_grief_guard_fb,c_zom_grief_guard_viewhands,allies,
+10,ghost,c_zom_hero_ghost_fb,c_zom_ghost_viewhands,axis,

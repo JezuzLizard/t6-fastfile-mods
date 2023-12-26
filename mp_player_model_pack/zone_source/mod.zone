@@ -1,0 +1,30 @@
+>game,T6
+>type,fastfile
+>name,mod
+
+>level.ipak_read,dlczm2
+>level.ipak_read,dlczm4
+
+//Origins
+include,tomb/player_models/dempsey
+include,tomb/player_models/nikolai
+include,tomb/player_models/richtofen
+include,tomb/player_models/takeo
+
+//Mob of The Dead
+include,prison/player_models/arlington
+include,prison/player_models/deluca
+include,prison/player_models/handsome
+include,prison/player_models/oleary
+
+//MoTD Ghost
+include,prison/player_models/ghost
+
+//MoTD Grief
+include,prison/player_models/guard
+include,prison/player_models/inmate
+
+script,scripts/mp/_pmp_precache.gsc
+script,scripts/mp/_pmp_main.gsc
+
+stringtable,mp/pmp_character_table.csv
