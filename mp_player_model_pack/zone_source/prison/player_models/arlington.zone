@@ -1,6 +1,4 @@
 //Model
-material,mc/mtl_c_gen_insidemouth_thermal
-material,mc/mtl_c_gen_insidemouth
 image,~~-gc_zom_arlington_hat_s-rgb~1ae9d89b
 image,c_zom_arlington_hat_n
 image,~-gc_zom_arlington_hat_c
@@ -20,7 +18,6 @@ material,mc/mtl_c_zom_arlington_intro_jacket
 image,c_zom_arlington_intro_head_m
 image,~~-gc_zom_arlington_head_s-rg~8d91aecd
 image,c_zom_arlington_head_n
-image,skin_pore_detail_test
 image,~-gc_zom_arlington_head_c
 material,mc/mtl_c_zom_arlington_head
 image,~-gc_zom_arlington_eye_c

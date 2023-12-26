@@ -32,7 +32,16 @@ set_player_model_override( team, weapon )
 	self setsprintduration( 4 );
 	self setsprintcooldown( 0 );
 
-	possible_models = game[ "characters" ][ team ];
+	possible_models = [];
+
+	if ( !level.teambased || level.multiteam )
+	{
+		possible_models = arrayCombine( game[ "characters" ][ "allies" ], game[ "characters" ][ "axis" ], false, true );
+	}
+	else
+	{
+		possible_models = game[ "characters" ][ team ];
+	}
 
 	if ( isDefined( possible_models ) && possible_models.size > 0 )
 	{

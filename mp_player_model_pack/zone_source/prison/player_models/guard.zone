@@ -1,13 +1,11 @@
 image,c_usa_milcas_mcknight_head_m
 image,~~-gc_usa_milcas_mcknight_hea~adb169c4
 image,c_usa_milcas_mcknight_head_n
-image,skin_pore_detail_test
 image,~-gc_usa_milcas_mcknight_head_c
 material,mc/mtl_c_usa_milcas_mcknight_head
 image,c_usa_milcas_mcknight_head_tns_com
 image,c_usa_milcas_mcknight_head_tns_str
 material,mc/mtl_c_usa_milcas_mcknight_head_tns
-material,mc/mtl_gen_eye_iris_thermal
 image,~~-gc_zom_grief_guard_body_s-~a82f74ad
 image,c_zom_grief_guard_body_n
 image,~-gc_zom_grief_guard_body_c

@@ -6,6 +6,9 @@
 >level.ipak_read,dlczm2
 >level.ipak_read,dlczm4
 
+//Shared assets
+include,shared
+
 //Origins
 include,tomb/player_models/dempsey
 include,tomb/player_models/nikolai

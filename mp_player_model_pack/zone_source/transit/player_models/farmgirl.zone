@@ -30,8 +30,6 @@ image,~-gc_zom_player_farmgirl_hair_c
 material,mc/mtl_c_zom_player_farmgirl_hair
 image,~~-gc_zom_player_farmgirl_s-r~4fdced88
 material,mc/mtl_c_zom_player_farmgirl_skin
-image,~~-gc_gen_eye_s-rgb&~-rc_gen_~1d123e2c
-image,~-gc_gen_eye_brown_c
 material,mc/mtl_gen_eye_iris_thermal
 material,mc/mtl_gen_eye_iris_brown
 xmodel,c_zom_player_farmgirl_fb
