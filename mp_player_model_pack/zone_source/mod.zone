@@ -2,6 +2,7 @@
 >type,fastfile
 >name,mod
 
+>level.ipak_read,zm
 >level.ipak_read,dlczm2
 >level.ipak_read,dlczm4
 
@@ -23,6 +24,16 @@ include,prison/player_models/ghost
 //MoTD Grief
 include,prison/player_models/guard
 include,prison/player_models/inmate
+
+//Tranzit
+include,transit/player_models/engineer
+include,transit/player_models/farmgirl
+include,transit/player_models/oldman
+include,transit/player_models/reporter
+
+//Tranzit Survival
+include,transit/player_models/cdc
+include,transit/player_models/cia
 
 script,scripts/mp/_pmp_precache.gsc
 script,scripts/mp/_pmp_main.gsc
