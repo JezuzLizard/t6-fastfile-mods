@@ -17,3 +17,14 @@ image,c_gen_target_edgeeffect3_h
 image,viewarm_n
 material,mc/mtl_viewarm_zom_ghost
 xmodel,c_zom_ghost_viewhands
+
+//FX
+fx,maps/zombie_alcatraz/fx_alcatraz_ghost_body
+fx,maps/zombie_alcatraz/fx_alcatraz_ghost_head
+fx,maps/zombie_alcatraz/fx_alcatraz_ghost_arm
+fx,maps/zombie_alcatraz/fx_alcatraz_ghost_hand
+fx,maps/zombie_alcatraz/fx_alcatraz_ghost_hand_r
+fx,maps/zombie_alcatraz/fx_alcatraz_ghost_vm_wrist
+fx,maps/zombie_alcatraz/fx_alcatraz_ghost_vm_wrist_r
+fx,maps/zombie_alcatraz/fx_alcatraz_ghost_spec
+fx,maps/zombie_alcatraz/fx_alcatraz_afterlife_pixies

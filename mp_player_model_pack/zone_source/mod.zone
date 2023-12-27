@@ -38,6 +38,8 @@ include,transit/player_models/reporter
 include,transit/player_models/cdc
 include,transit/player_models/cia
 
+script,scripts/mp/_afterlife_model_fix.csc
+script,scripts/mp/_afterlife_model_fix.gsc
 script,scripts/mp/_pmp_precache.gsc
 script,scripts/mp/_pmp_main.gsc
 

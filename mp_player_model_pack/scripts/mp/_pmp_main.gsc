@@ -45,9 +45,11 @@ set_player_model_override( team, weapon )
 
 	if ( isDefined( possible_models ) && possible_models.size > 0 )
 	{
-		model = random( possible_models );
+		random_alias = random( getArrayKeys( possible_models ) );
+		model = possible_models[ random_alias ];
 		self setModel( model[ "body_model" ] );
 		self setViewModel( model[ "view_model" ] );
+		self notify( "player_model_set", team, random_alias, model );
 	} 
 	else 
 	{
