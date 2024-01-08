@@ -18,7 +18,7 @@ main()
     self._aitype = "zm_nuked_basic_02_beyes";
 }
 
-#using_animtree("zm_nuked_basic");
+#using_animtree("zm_all_basic");
 
 precache( ai_index )
 {
