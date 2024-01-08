@@ -346,8 +346,6 @@ reference_anims_from_animtree()
 	dummy_anim_ref = %ai_zombie_thundergun_hit_jackiespin_left;
 	dummy_anim_ref = %ai_zombie_thundergun_hit_jackiespin_right;
 	dummy_anim_ref = %ai_zombie_thundergun_hit_legsout_right;
-	dummy_anim_ref = %ai_zombie_thundergun_getup_a;
-	dummy_anim_ref = %ai_zombie_thundergun_getup_quick_a;
 	dummy_anim_ref = %ai_zombie_thundergun_sprinter_getup_a;
 	dummy_anim_ref = %ai_zombie_thundergun_sprinter_getup_b;
 	dummy_anim_ref = %ai_zombie_thundergun_sprinter_getup_c;
@@ -454,8 +452,6 @@ reference_anims_from_animtree()
 	dummy_anim_ref = %ai_zombie_jump_up_startrailing;
 	dummy_anim_ref = %ai_zombie_crawl_jump_down_startrailing;
 	dummy_anim_ref = %ai_zombie_jump_down_startrailing;
-	dummy_anim_ref = %ai_zombie_jump_up_grabbed_48 ;
-	dummy_anim_ref = %ai_zombie_crawl_jump_up_grabbed_48;
 	dummy_anim_ref = %ai_zombie_jump_up_grabbed_190;
 	dummy_anim_ref = %ai_zombie_crawl_jump_up_grabbed_190;
 	dummy_anim_ref = %ai_zombie_crawl_traverse_48;
@@ -469,17 +465,12 @@ reference_anims_from_animtree()
 	dummy_anim_ref = %ai_zombie_crawl_sprint_jump_up_cellblock;
 	dummy_anim_ref = %ai_zombie_crawl_sprint_jump_down_cellblock;
 	dummy_anim_ref = %ai_zombie_jump_down_dock_tommygun ;
-	dummy_anim_ref = %ai_zombie_crawl_jump_across_120;
-	dummy_anim_ref = %ai_zombie_jump_across_120	;
 	dummy_anim_ref = %ai_zombie_diner_roof_hatch_jump_up;
 	dummy_anim_ref = %ai_zombie_crawl_diner_roof_hatch_jump_up;
 	dummy_anim_ref = %ai_zombie_traverse_diner_roof;
 	dummy_anim_ref = %ai_zombie_crawl_traverse_diner_roof;
-	dummy_anim_ref = %ai_zombie_traverse_garage_roll;
 	dummy_anim_ref = %ai_zombie_crawl_jump_up_diner_roof;
 	dummy_anim_ref = %ai_zombie_jump_up_diner_roof;
-	dummy_anim_ref = %ai_zombie_jump_up_2_climb;
-	dummy_anim_ref = %ai_zombie_crawl_jump_up_2_climb;
 	dummy_anim_ref = %ai_zombie_crawl_traverse_diner_counter_from_stools;
 	dummy_anim_ref = %ai_zombie_crawl_traverse_diner_counter_to_stools;
 	dummy_anim_ref = %ai_zombie_traverse_diner_counter_from_stools;
@@ -505,26 +496,6 @@ reference_anims_from_animtree()
 	dummy_anim_ref = %ai_zombie_traverse_lower_gondola;
 	dummy_anim_ref = %ai_zombie_crawl_jump_up_dock_middle;
 	dummy_anim_ref = %ai_zombie_jump_up_dock_middle;
-	dummy_anim_ref = %ai_zombie_barricade_enter_l;
-	dummy_anim_ref = %ai_zombie_barricade_enter_r;
-	dummy_anim_ref = %ai_zombie_barricade_enter_m_nolegs;
-	dummy_anim_ref = %ai_zombie_barricade_enter_m_v1;
-	dummy_anim_ref = %ai_zombie_barricade_enter_m_v2;
-	dummy_anim_ref = %ai_zombie_barricade_enter_m_v3;
-	dummy_anim_ref = %ai_zombie_barricade_enter_m_v4;
-	dummy_anim_ref = %ai_zombie_barricade_enter_m_v5;
-	dummy_anim_ref = %ai_zombie_barricade_enter_m_v6;
-	dummy_anim_ref = %ai_zombie_barricade_enter_m_v7;
-	dummy_anim_ref = %ai_zombie_barricade_enter_run_l;
-	dummy_anim_ref = %ai_zombie_barricade_enter_run_r;
-	dummy_anim_ref = %ai_zombie_barricade_enter_sprint_l;
-	dummy_anim_ref = %ai_zombie_barricade_enter_sprint_r;
-	dummy_anim_ref = %ai_zombie_crawl_barricade_enter_l;
-	dummy_anim_ref = %ai_zombie_crawl_barricade_enter_r;
-	dummy_anim_ref = %ai_zombie_crawl_barricade_enter_run_l;
-	dummy_anim_ref = %ai_zombie_crawl_barricade_enter_run_r;
-	dummy_anim_ref = %ai_zombie_crawl_barricade_enter_sprint_l;
-	dummy_anim_ref = %ai_zombie_crawl_barricade_enter_sprint_r;
 	dummy_anim_ref = %ai_zombie_walk_bus_v1;
 	dummy_anim_ref = %ai_zombie_walk_bus_v2;
 	dummy_anim_ref = %ai_zombie_walk_bus_v3;
@@ -649,13 +620,6 @@ reference_anims_from_animtree()
 	dummy_anim_ref = %ai_zombie_jetgun_crawl_death_v1;
 	dummy_anim_ref = %ai_zombie_jetgun_crawl_death_v2;
 	dummy_anim_ref = %ai_zombie_jetgun_crawl_death_v3;
-	dummy_anim_ref = %ai_zombie_sprint_v6;
-	dummy_anim_ref = %ai_zombie_sprint_v7;
-	dummy_anim_ref = %ai_zombie_sprint_v8;
-	dummy_anim_ref = %ai_zombie_sprint_v9 ;
-	dummy_anim_ref = %ai_zombie_sprint_v10;
-	dummy_anim_ref = %ai_zombie_sprint_v11;
-	dummy_anim_ref = %ai_zombie_sprint_v12;
 	dummy_anim_ref = %ai_zombie_traverse_dierise_escape_corridor;
 	dummy_anim_ref = %ai_zombie_traverse_round_counter_to_stools;
 	dummy_anim_ref = %ai_zombie_traverse_round_counter_from_stools;
@@ -849,7 +813,7 @@ spawner()
 precache( ai_index )
 {
     level thread reference_anims_from_animtree();
-    precacheanimstatedef( ai_index, #animtree, "zm_nuked_basic" );
+    precacheanimstatedef( ai_index, #animtree, "zm_all_basic" );
     character\c_zom_dlc0_zombie_soldier_1_beyes::precache();
     character\c_zom_dlc0_zombie_soldier_civ_1_beyes::precache();
 }

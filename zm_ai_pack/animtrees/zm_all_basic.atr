@@ -393,9 +393,6 @@ body
 	ai_zombie_thundergun_hit_jackiespin_left
 	ai_zombie_thundergun_hit_jackiespin_right
 	ai_zombie_thundergun_hit_legsout_right
-	
-	ai_zombie_thundergun_getup_a
-	ai_zombie_thundergun_getup_quick_a
 
 	ai_zombie_thundergun_sprinter_getup_a
 	ai_zombie_thundergun_sprinter_getup_b
@@ -528,9 +525,7 @@ body
 	ai_zombie_jump_up_startrailing
 	ai_zombie_crawl_jump_down_startrailing
 	ai_zombie_jump_down_startrailing
-	
-	ai_zombie_jump_up_grabbed_48 
-	ai_zombie_crawl_jump_up_grabbed_48
+
 	ai_zombie_jump_up_grabbed_190
 	ai_zombie_crawl_jump_up_grabbed_190
 	ai_zombie_crawl_traverse_48
@@ -546,19 +541,13 @@ body
 	ai_zombie_crawl_sprint_jump_down_cellblock
 	ai_zombie_jump_down_dock_tommygun 
 	
-	ai_zombie_crawl_jump_across_120
-	ai_zombie_jump_across_120	
 	ai_zombie_diner_roof_hatch_jump_up
 	ai_zombie_crawl_diner_roof_hatch_jump_up
 	ai_zombie_traverse_diner_roof
 	ai_zombie_crawl_traverse_diner_roof
-	ai_zombie_traverse_garage_roll
 
 	ai_zombie_crawl_jump_up_diner_roof
 	ai_zombie_jump_up_diner_roof
-
-	ai_zombie_jump_up_2_climb
-	ai_zombie_crawl_jump_up_2_climb
 
 	ai_zombie_crawl_traverse_diner_counter_from_stools
 	ai_zombie_crawl_traverse_diner_counter_to_stools
@@ -588,29 +577,6 @@ body
 	ai_zombie_traverse_lower_gondola
 	ai_zombie_crawl_jump_up_dock_middle
 	ai_zombie_jump_up_dock_middle
-	ai_zombie_barricade_enter_l
-	ai_zombie_barricade_enter_r
-
-	ai_zombie_barricade_enter_m_nolegs
-	ai_zombie_barricade_enter_m_v1
-	ai_zombie_barricade_enter_m_v2
-	ai_zombie_barricade_enter_m_v3
-	ai_zombie_barricade_enter_m_v4
-	ai_zombie_barricade_enter_m_v5
-	ai_zombie_barricade_enter_m_v6
-	ai_zombie_barricade_enter_m_v7
-
-	ai_zombie_barricade_enter_run_l
-	ai_zombie_barricade_enter_run_r
-	ai_zombie_barricade_enter_sprint_l
-	ai_zombie_barricade_enter_sprint_r
-
-	ai_zombie_crawl_barricade_enter_l
-	ai_zombie_crawl_barricade_enter_r
-	ai_zombie_crawl_barricade_enter_run_l
-	ai_zombie_crawl_barricade_enter_run_r
-	ai_zombie_crawl_barricade_enter_sprint_l
-	ai_zombie_crawl_barricade_enter_sprint_r
 
 	ai_zombie_walk_bus_v1
 	ai_zombie_walk_bus_v2
@@ -766,14 +732,6 @@ body
 	ai_zombie_jetgun_crawl_death_v1
 	ai_zombie_jetgun_crawl_death_v2
 	ai_zombie_jetgun_crawl_death_v3
-
-	ai_zombie_sprint_v6
-	ai_zombie_sprint_v7
-	ai_zombie_sprint_v8
-	ai_zombie_sprint_v9 
-	ai_zombie_sprint_v10
-	ai_zombie_sprint_v11
-	ai_zombie_sprint_v12
 
 	ai_zombie_traverse_dierise_escape_corridor
 

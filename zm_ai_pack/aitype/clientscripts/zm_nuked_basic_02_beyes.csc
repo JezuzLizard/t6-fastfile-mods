@@ -25,6 +25,6 @@ precache( ai_index )
     character\clientscripts\c_zom_dlc0_zombie_soldier_1_beyes::precache();
     character\clientscripts\c_zom_dlc0_zombie_soldier_civ_1_beyes::precache();
     usefootsteptable( ai_index, "default_ai" );
-    precacheanimstatedef( ai_index, #animtree, "zm_nuked_basic" );
+    precacheanimstatedef( ai_index, #animtree, "zm_all_basic" );
     setdemolockonvalues( ai_index, 100, 60, -15, 60, 30, -5, 60 );
 }
