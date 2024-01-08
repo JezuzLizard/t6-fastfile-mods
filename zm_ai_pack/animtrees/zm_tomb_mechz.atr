@@ -1,0 +1,100 @@
+body
+{
+	// Deaths
+	ai_zombie_mech_death
+	ai_zombie_mech_death_explode
+	
+	// Ranged attacks/aiming (ft = flamethrower)
+	ai_zombie_mech_ft_aim_1
+	ai_zombie_mech_ft_aim_2
+	ai_zombie_mech_ft_aim_3
+	ai_zombie_mech_ft_aim_4
+	ai_zombie_mech_ft_aim_5
+	ai_zombie_mech_ft_aim_6
+	ai_zombie_mech_ft_aim_7
+	ai_zombie_mech_ft_aim_8
+	ai_zombie_mech_ft_aim_9
+	ai_zombie_mech_ft_intro_sprint_to_aim_5
+	//ai_zombie_mech_ft_intro_to_aim_5 -- OLD ANIM
+	ai_zombie_mech_ft_aim_idle
+	ai_zombie_mech_ft_fire_end
+	ai_zombie_mech_ft_fire_loop
+	ai_zombie_mech_ft_fire_start
+	ai_zombie_mech_ft_sweep
+	ai_zombie_mech_ft_sweep_up
+	ai_zombie_mech_ft_burn_player
+
+	// Claw Grapple
+	ai_zombie_mech_grapple_aim_1
+	ai_zombie_mech_grapple_aim_2
+	ai_zombie_mech_grapple_aim_3
+	ai_zombie_mech_grapple_aim_4
+	ai_zombie_mech_grapple_aim_5
+	ai_zombie_mech_grapple_aim_6
+	ai_zombie_mech_grapple_aim_7
+	ai_zombie_mech_grapple_aim_8
+	ai_zombie_mech_grapple_aim_9
+	//ai_zombie_mech_grapple_intro_to_aim_5
+	//ai_zombie_mech_grapple_outtro_from_aim_5
+	ai_zombie_mech_grapple_intro_sprint_to_aim_5
+	
+	// Flying Arm anims:
+	ai_zombie_mech_grapple_arm_closed_idle
+	ai_zombie_mech_grapple_arm_open_idle
+	
+	// Idle
+	ai_zombie_mech_idle
+	
+	// Melee
+	ai_zombie_mech_melee_a
+	ai_zombie_mech_melee_b
+	ai_zombie_mech_run_melee
+	ai_zombie_mech_sprint_melee
+	
+	// Pain
+	ai_zombie_mech_pain
+	ai_zombie_mech_injury_hit_by_tank
+	ai_zombie_mech_injury_down_by_tank_loop
+	ai_zombie_mech_injury_recover_from_tank
+	ai_zombie_mech_injury_hit_by_footstep
+	ai_zombie_mech_injury_down_by_footstep_loop
+	ai_zombie_mech_injury_recover_from_footstep
+	ai_zombie_mech_stunned
+	ai_zombie_mech_powercore_pain
+	ai_zombie_mech_faceplate_pain
+	ai_zombie_mech_head_pain
+	
+	// Locomotion
+	ai_zombie_mech_run
+	ai_zombie_mech_walk_basic
+	ai_zombie_mech_walk_patrol
+	ai_zombie_mech_sprint
+	ai_zombie_mech_sprint_booster_liftoff
+	ai_zombie_mech_sprint_booster_loop
+	ai_zombie_mech_sprint_booster_touchdown
+
+
+	// Traversalish
+	ai_zombie_mech_intro_jump_in
+	ai_zombie_mech_exit
+	ai_zombie_mech_exit_hover
+	ai_zombie_mech_arrive
+	ai_zombie_mech_jump_down_48
+	ai_zombie_mech_jump_down_72
+	ai_zombie_mech_jump_down_96
+	ai_zombie_mech_jump_down_127
+	ai_zombie_mech_jump_up_48
+//	ai_zombie_mech_jump_up_72
+	ai_zombie_mech_jump_up_96
+	ai_zombie_mech_jump_up_127
+	ai_zombie_mech_traverse_hurdle_40
+	ai_zombie_mech_jump_across_120
+	ai_zombie_mech_jump_down_church
+	ai_zombie_mech_jump_down_dlc4_trench_wall_96
+	ai_zombie_mech_jump_down_dlc4_trench_wall_112
+	ai_zombie_mech_jump_down_dlc4_trench_wall_120
+//	ai_zombie_mech_jump_up_dlc4_trench_wall_96
+//	ai_zombie_mech_jump_up_dlc4_trench_wall_112
+//	ai_zombie_mech_jump_up_dlc4_trench_wall_120
+	ai_zombie_mech_jump_up_dlc4_trench_wall_140
+} // end body

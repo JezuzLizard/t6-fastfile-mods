@@ -1,0 +1,37 @@
+body
+{
+	ai_zombie_screecher_burrow_into_ground
+
+	ai_zombie_screecher_climb_down_pothole
+	ai_zombie_screecher_climb_up_pothole
+
+	ai_zombie_screecher_cower_v1
+
+	ai_zombie_screecher_death_v1
+
+	ai_zombie_screecher_headpull
+	ai_zombie_screecher_headpull_fail
+	ai_zombie_screecher_headpull_success
+
+	ai_zombie_screecher_jump_land_fail
+	ai_zombie_screecher_jump_land_success_fromback
+	ai_zombie_screecher_jump_land_success_fromfront
+	ai_zombie_screecher_jump_loop
+	ai_zombie_screecher_jump_up
+
+	ai_zombie_screecher_run
+	ai_zombie_screecher_run_bounce
+	ai_zombie_screecher_run_hop
+	ai_zombie_screecher_run_zigzag
+
+	ai_zombie_screecher_tunnel_traversal
+
+	ai_zombie_screecher_diner_roof_hatch_jump_up
+	ai_zombie_screecher_traverse_car
+	ai_zombie_screecher_traverse_car_pass_to_driver_side
+	ai_zombie_screecher_traverse_ground_v1
+	ai_zombie_screecher_jump_down_96
+	ai_zombie_screecher_jump_down_127
+	ai_zombie_screecher_jump_up_127
+
+} // end body

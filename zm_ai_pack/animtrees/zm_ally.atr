@@ -1,0 +1,18 @@
+main
+{
+	legs
+	{
+		pb_laststand_idle	
+
+		pb_stand_alert
+		pb_crouch_alert
+	
+	}
+
+	body
+	{
+		pb_afterlife_laststand_idle
+		ai_actor_elec_chair_idle
+	}
+}
+

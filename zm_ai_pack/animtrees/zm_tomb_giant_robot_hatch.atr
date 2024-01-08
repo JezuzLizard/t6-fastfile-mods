@@ -1,0 +1,7 @@
+body
+{
+	ai_zombie_giant_robot_hatch_open
+	ai_zombie_giant_robot_hatch_open_idle
+	ai_zombie_giant_robot_hatch_close
+} // end body
+

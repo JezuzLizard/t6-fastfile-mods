@@ -1,0 +1,30 @@
+
+
+bg_shock_viewKickPeriod "0.001"
+bg_shock_viewKickRadius "0.016"
+bg_shock_viewKickFadeTime "1"
+
+bg_shock_sound "1"
+bg_shock_soundLoop "wpn_micro_damage"
+bg_shock_soundLoopSilent ""
+bg_shock_soundEnd ""
+bg_shock_soundEndAbort ""
+bg_shock_soundFadeInTime "0.2"
+bg_shock_soundFadeOutTime "0.2"
+bg_shock_soundLoopFadeTime "0.2"
+bg_shock_soundLoopEndDelay "1.0"
+bg_shock_soundRoomType "shock_flashbang"
+bg_shock_soundDryLevel "1.0"
+bg_shock_soundWetLevel "0.0"
+bg_shock_soundModEndDelay "0.1"
+bg_shock_soundSnapshot "default"
+
+bg_shock_lookControl "1"
+bg_shock_lookControl_maxpitchspeed "90"
+bg_shock_lookControl_maxyawspeed "90"
+bg_shock_lookControl_mousesensitivityscale "0.5"
+bg_shock_lookControl_fadeTime "1"
+
+bg_shock_animation "1"
+
+bg_shock_movement ".5"

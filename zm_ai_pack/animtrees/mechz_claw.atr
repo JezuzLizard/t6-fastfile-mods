@@ -1,0 +1,6 @@
+body
+{
+	// Flying Arm anims:
+	ai_zombie_mech_grapple_arm_closed_idle
+	ai_zombie_mech_grapple_arm_open_idle
+} // end body

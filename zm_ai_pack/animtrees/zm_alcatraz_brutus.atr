@@ -1,0 +1,57 @@
+body
+{
+	// Attacks
+	ai_zombie_cellbreaker_attack_swingleft
+	ai_zombie_cellbreaker_attack_swingright_a
+	ai_zombie_cellbreaker_attack_swingright_b
+
+	// Deaths:
+	ai_zombie_cellbreaker_death
+	ai_zombie_cellbreaker_death_a
+	ai_zombie_cellbreaker_death_explode
+	ai_zombie_cellbreaker_death_mg
+	ai_zombie_cellbreaker_tesla_death_a
+
+	// Misc:
+	ai_zombie_cellbreaker_enrage_start
+
+	// Idles:
+	ai_zombie_cellbreaker_idle_a
+	ai_zombie_cellbreaker_idle_b
+
+	// Locomotion:
+	ai_zombie_cellbreaker_run_a
+	ai_zombie_cellbreaker_run_b
+	ai_zombie_cellbreaker_run_c
+	ai_zombie_cellbreaker_run_d
+	ai_zombie_cellbreaker_sprint_a
+	ai_zombie_cellbreaker_sprint_b
+	ai_zombie_cellbreaker_walk_a
+	
+	// Board teardown
+	ai_zombie_cellbreaker_boardsmash_a
+	ai_zombie_cellbreaker_boardsmash_b
+	ai_zombie_cellbreaker_boardsmash_c
+	
+	// Lockdown
+	ai_zombie_cellbreaker_lock_magicbox
+	ai_zombie_cellbreaker_lock_perkmachine
+	ai_zombie_cellbreaker_lock_planeramp
+
+	// Charge
+	ai_zombie_cellbreaker_bullcharge_tell
+	
+	// Teargas
+	ai_zombie_cellbreaker_gasattack
+
+	// Pain
+	ai_zombie_cellbreaker_headpain
+
+	// Spawn
+	ai_zombie_cellbreaker_spawn
+	ai_zombie_cellbreaker_stumble_running
+
+	// Summon Dogs
+	ai_zombie_cellbreaker_summondogs
+	
+} // end body

@@ -1,0 +1,44 @@
+body
+{
+	ai_zombie_ghost_idle
+	ai_zombie_ghost_supersprint
+	ai_zombie_ghost_walk
+
+	ai_zombie_ghost_melee
+	ai_zombie_ghost_pointdrain
+
+	ai_zombie_ghost_float_death
+	ai_zombie_ghost_float_death_b
+
+
+	ai_zombie_ghost_spawn
+	ai_zombie_ghost_ground_pain
+
+	ai_zombie_traverse_v1
+	ai_zombie_traverse_v5
+
+	ai_zombie_ghost_jump_across_120
+	ai_zombie_ghost_jump_down_48
+	ai_zombie_ghost_jump_down_72
+	ai_zombie_ghost_jump_down_96
+	ai_zombie_ghost_jump_down_127
+	ai_zombie_ghost_jump_down_154
+	ai_zombie_ghost_jump_down_176
+	ai_zombie_ghost_jump_down_190
+	ai_zombie_ghost_jump_down_222
+	ai_zombie_ghost_jump_down_240
+	ai_zombie_ghost_jump_up_72
+	ai_zombie_ghost_jump_up_96
+	ai_zombie_ghost_jump_up_127
+	ai_zombie_ghost_jump_up_154
+	ai_zombie_ghost_jump_up_176
+	ai_zombie_ghost_jump_up_190
+	ai_zombie_ghost_jump_up_222
+	ai_zombie_ghost_jump_up_240
+	ai_zombie_ghost_jump_up_startrailing
+	ai_zombie_ghost_jump_down_startrailing
+	ai_zombie_ghost_jump_up_48 
+
+	ai_zombie_ghost_playing_piano
+	 	
+} // end body
