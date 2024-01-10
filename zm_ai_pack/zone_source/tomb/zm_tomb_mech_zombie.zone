@@ -107,6 +107,13 @@ xmodel,c_zom_mech_body
 script,character/clientscripts/c_zom_dlc_mech.csc
 script,aitype/clientscripts/zm_tomb_mech_zombie.csc
 script,scripts/zm/_zm_ai_mechz.csc
+script,maps/mp/zombies/_zm_ai_mechz.gsc
+script,maps/mp/zombies/_zm_ai_mechz_ft.gsc
+script,maps/mp/zombies/_zm_ai_mechz_ffotd.gsc
+script,maps/mp/zombies/_zm_ai_mechz_dev.gsc
+script,maps/mp/zombies/_zm_ai_mechz_claw.gsc
+script,maps/mp/zombies/_zm_ai_mechz_booster.gsc
+script,scripts/zm/mechz.gsc
 
 fx,maps/zombie_tomb/fx_tomb_mech_death
 material,gfx_fxt_smk_light_old_z10
@@ -159,3 +166,4 @@ xmodel,c_zom_mech_armor_shoulder_right
 rawfile,rumble/mechz_footsteps
 rawfile,animtrees/mechz_claw.atr
 footsteptable,fly_step_mechz
+

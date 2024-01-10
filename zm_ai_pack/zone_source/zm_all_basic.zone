@@ -213,7 +213,7 @@ xanim,ai_zombie_crawl_inert_2_sprint_v2
 xanim,ai_zombie_window_attack_arm_l_out
 xanim,ai_zombie_window_attack_arm_r_out
 xanim,ai_zombie_traverse_ground_v1_walk
-xanim,ai_zombie_traverse_ground_v2_walk_altA
+//xanim,ai_zombie_traverse_ground_v2_walk_altA
 xanim,ai_zombie_traverse_ground_v1_run
 xanim,ai_zombie_traverse_ground_climbout_fast
 xanim,ai_zombie_traverse_ground_v1_deathinside
@@ -753,4 +753,4 @@ xanim,ai_zombie_acid_stun_d
 xanim,ai_zombie_acid_stun_e
 
 rawfile,animtrees/zm_all_basic.atr
-//rawfile,animstatedefs/zm_all_basic.asd
+rawfile,animstatedefs/zm_all_basic.asd

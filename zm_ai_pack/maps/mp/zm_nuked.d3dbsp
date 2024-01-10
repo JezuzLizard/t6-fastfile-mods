@@ -11372,3 +11372,15 @@
 "origin" "367 454 -60"
 "guid" "76357ECA"
 }
+{
+"script_forcespawn" "1"
+"spawnflags" "3"
+"export" "9"
+"model" "c_zom_zombie_buried_ghost_woman_fb"
+"classname" "actor_zm_buried_ghost_female"
+"targetname" "female_ghost"
+"script_noteworthy" "ghost_zombie_spawner"
+"count" "9999"
+"origin" "-168 473 16"
+"guid" "B6A85D0D"
+}

@@ -764,6 +764,7 @@ zm_traverse : aliased restart notify traverse_anim
 	jump_up_to_climb				ai_zombie_jump_up_2_climb
 //	jump_up_to_climb_coast			ai_zombie_jump_up_2_climb_coast
 	mantle_over_40_hurdle			ai_zombie_traverse_v6
+/*
 	traverse_diner_roof	ai_zombie_traverse_diner_roof
 	traverse_diner_roof_up	ai_zombie_jump_up_diner_roof
 	traverse_diner_roof_hatch_up	ai_zombie_diner_roof_hatch_jump_up
@@ -773,14 +774,15 @@ zm_traverse : aliased restart notify traverse_anim
 	traverse_car_reverse	ai_zombie_traverse_car_pass_to_driver_side
 	traverse_diner_counter_reverse	ai_zombie_traverse_diner_counter_from_stools
 	traverse_diner_counter	ai_zombie_traverse_diner_counter_to_stools
+*/
 	traverse_garage_door	ai_zombie_traverse_garage_roll	
 	jump_up_startrailing						ai_zombie_jump_up_startrailing
 	jump_down_startrailing						ai_zombie_jump_down_startrailing
 
 	jump_up_grabbed_48				ai_zombie_jump_up_grabbed_48
 	traverse_48						ai_zombie_traverse_48
-	traverse_garage_door			ai_zombie_traverse_garage_roll	
 	
+/*
 	jump_down_cellblock			ai_zombie_sprint_jump_down_cellblock
 	jump_up_cellblock			ai_zombie_sprint_jump_up_cellblock
 	climb_over_dock_fence			ai_zombie_climb_over_dock_fence
@@ -793,6 +795,7 @@ zm_traverse : aliased restart notify traverse_anim
 	cellblock_jump_up_climb			ai_zombie_jump_up_2_climb
 	dock_mid_way_jump_up_climb		ai_zombie_jump_up_dock_middle
 	dock_tommygun_dropdown			ai_zombie_jump_down_dock_tommygun
+*/
 
 	// zm_highrise specific traversals
 	dierise_traverse_1_high_to_low	ai_zombie_traverse_dierise_1_high_to_low
@@ -979,7 +982,7 @@ zm_traverse_crawl : aliased restart missing_legs notify traverse_anim
 	jump_up_grabbed_48_crawl					ai_zombie_crawl_jump_up_grabbed_48
 	traverse_48_crawl				ai_zombie_crawl_traverse_48
 	traverse_garage_door_crawl		ai_zombie_crawl
-
+/*
 	// zm_highrise specific traversals
 	dierise_traverse_1_high_to_low_crawl	ai_zombie_crawl_traverse_dierise_1_high_to_low
 //	dierise_traverse_1_low_to_high_crawl	ai_zombie_crawl_traverse_dierise_1_low_to_high
@@ -1068,6 +1071,7 @@ zm_traverse_crawl : aliased restart missing_legs notify traverse_anim
 	vault_barbedwire_48_crawl		ai_zombie_crawl_vaultover_barbedwire
 	vault_barbedwire_24_crawl		ai_zombie_crawl_vaultover_barbedwire_24
 	jump_down_church_crawl			ai_zombie_crawl_jump_down_church
+*/
 }
 
 //traverse anims, not all necessarily used on every level

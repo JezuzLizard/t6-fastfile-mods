@@ -10,7 +10,7 @@
 include,zm_all_basic
 
 include,buried/zm_buried_basic_no_anims
-//include,buried/zm_buried_ghost
+include,buried/zm_buried_ghost
 //include,buried/zm_buried_sloth
 
 include,highrise/zm_highrise_basic_no_anims
