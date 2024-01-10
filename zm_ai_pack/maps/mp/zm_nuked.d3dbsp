@@ -11393,3 +11393,15 @@
 "script_noteworthy" "zombie_dog_spawner"
 "guid" "10894F27"
 }
+{
+"classname" "actor_zm_transit_avogadro"
+"model" "c_zom_electrician_fb"
+"export" "138"
+"origin" "120 1 39"
+"count" "9999"
+"spawnflags" "3"
+"script_disable_bleeder" "1"
+"script_forcespawn" "1"
+"script_noteworthy" "avogadro_zombie_spawner"
+"guid" "EB278249"
+}

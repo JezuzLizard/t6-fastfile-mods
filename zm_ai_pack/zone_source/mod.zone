@@ -26,7 +26,7 @@ include,tomb/zm_tomb_basic_no_anims
 //include,tomb/zm_tomb_giant_robot
 include,tomb/zm_tomb_mech_zombie
 
-//include,transit/zm_transit_avogadro
+include,transit/zm_transit_avogadro
 include,transit/zm_transit_basic_no_anims
 include,transit/zm_transit_screecher
 include,transit/zombie_dog
