@@ -11384,3 +11384,12 @@
 "origin" "-168 473 16"
 "guid" "B6A85D0D"
 }
+{
+"classname" "actor_zombie_dog"
+"model" "zombie_wolf"
+"export" "1"
+"spawnflags" "17"
+"origin" "0 0 0"
+"script_noteworthy" "zombie_dog_spawner"
+"guid" "10894F27"
+}

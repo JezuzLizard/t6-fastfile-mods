@@ -12,4 +12,4 @@ include,tomb/zm_tomb_mech_zombie
 //include,transit/zm_transit_avogadro
 include,transit/zm_transit_basic
 include,transit/zm_transit_screecher
-//include,transit/zombie_dog
+include,transit/zombie_dog

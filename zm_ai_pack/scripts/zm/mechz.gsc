@@ -36,6 +36,10 @@ command_thread()
 		{
 			player iPrintLn( player maps\mp\zombies\_zm_zonemgr::get_player_zone() );
 		}
+		else if (  message == "points" )
+		{
+			player.score = 1000000;
+		}
 	}
 }
 
