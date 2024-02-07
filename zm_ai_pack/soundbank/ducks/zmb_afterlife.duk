@@ -1,0 +1,174 @@
+{
+    "distance": 0.0,
+    "fadeIn": 3.0,
+    "fadeInCurve": "defaultmin",
+    "fadeInCurveId": 1298231670,
+    "fadeOut": 2.0,
+    "fadeOutCurve": "default",
+    "fadeOutCurveId": 4135636924,
+    "length": 0.0,
+    "startDelay": 0.0,
+    "updateWhilePaused": 0,
+    "values": [
+        {
+            "attenuation": 1.0,
+            "duckGroup": "snp_alerts_gameplay",
+            "filter": 1.0
+        },
+        {
+            "attenuation": 0.5,
+            "duckGroup": "snp_ambience",
+            "filter": 0.75
+        },
+        {
+            "attenuation": 1.0,
+            "duckGroup": "snp_claw",
+            "filter": 1.0
+        },
+        {
+            "attenuation": 1.0,
+            "duckGroup": "snp_destructible",
+            "filter": 0.75
+        },
+        {
+            "attenuation": 1.0,
+            "duckGroup": "snp_dying",
+            "filter": 1.0
+        },
+        {
+            "attenuation": 1.0,
+            "duckGroup": "snp_dying_ice",
+            "filter": 1.0
+        },
+        {
+            "attenuation": 1.0,
+            "duckGroup": "snp_evt_2d",
+            "filter": 0.75
+        },
+        {
+            "attenuation": 1.0,
+            "duckGroup": "snp_explosion",
+            "filter": 0.75
+        },
+        {
+            "attenuation": 1.0,
+            "duckGroup": "snp_foley",
+            "filter": 0.75
+        },
+        {
+            "attenuation": 1.0,
+            "duckGroup": "snp_grenade",
+            "filter": 0.75
+        },
+        {
+            "attenuation": 1.0,
+            "duckGroup": "snp_hdrfx",
+            "filter": 0.75
+        },
+        {
+            "attenuation": 1.0,
+            "duckGroup": "snp_igc",
+            "filter": 0.75
+        },
+        {
+            "attenuation": 1.0,
+            "duckGroup": "snp_impacts",
+            "filter": 0.75
+        },
+        {
+            "attenuation": 1.0,
+            "duckGroup": "snp_menu",
+            "filter": 1.0
+        },
+        {
+            "attenuation": 1.0,
+            "duckGroup": "snp_movie",
+            "filter": 1.0
+        },
+        {
+            "attenuation": 1.0,
+            "duckGroup": "snp_music",
+            "filter": 1.0
+        },
+        {
+            "attenuation": 1.0,
+            "duckGroup": "snp_never_duck",
+            "filter": 1.0
+        },
+        {
+            "attenuation": 1.0,
+            "duckGroup": "snp_player_dead",
+            "filter": 1.0
+        },
+        {
+            "attenuation": 1.0,
+            "duckGroup": "snp_player_impacts",
+            "filter": 1.0
+        },
+        {
+            "attenuation": 1.0,
+            "duckGroup": "snp_scripted_moment",
+            "filter": 1.0
+        },
+        {
+            "attenuation": 1.0,
+            "duckGroup": "snp_set_piece",
+            "filter": 1.0
+        },
+        {
+            "attenuation": 1.0,
+            "duckGroup": "snp_special",
+            "filter": 1.0
+        },
+        {
+            "attenuation": 1.0,
+            "duckGroup": "snp_vehicle",
+            "filter": 0.75
+        },
+        {
+            "attenuation": 1.0,
+            "duckGroup": "snp_vehicle_interior",
+            "filter": 0.75
+        },
+        {
+            "attenuation": 1.0,
+            "duckGroup": "snp_voice",
+            "filter": 1.0
+        },
+        {
+            "attenuation": 1.0,
+            "duckGroup": "snp_weapon_decay_1p",
+            "filter": 0.75
+        },
+        {
+            "attenuation": 1.0,
+            "duckGroup": "snp_whizby",
+            "filter": 0.75
+        },
+        {
+            "attenuation": 1.0,
+            "duckGroup": "snp_wpn_1p",
+            "filter": 0.800000011920929
+        },
+        {
+            "attenuation": 1.0,
+            "duckGroup": "snp_wpn_3p",
+            "filter": 0.800000011920929
+        },
+        {
+            "attenuation": 1.0,
+            "duckGroup": "snp_wpn_turret",
+            "filter": 0.75
+        },
+        {
+            "attenuation": 1.0,
+            "duckGroup": "snp_x2",
+            "filter": 1.0
+        },
+        {
+            "attenuation": 1.0,
+            "duckGroup": "snp_x3",
+            "filter": 1.0
+        }
+    ]
+}
