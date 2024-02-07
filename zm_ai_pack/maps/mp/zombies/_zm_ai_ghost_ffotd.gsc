@@ -77,14 +77,12 @@ ghost_bad_path_init()
 	level.bad_zones[0].adjacent = [];
 	level.bad_zones[0].adjacent[0] = "zone_underground_courthouse2";
 	level.bad_zones[0].adjacent[1] = "zone_tunnels_north2";
-	//level.bad_zones[0].ignore_func = maps\mp\zm_buried::is_courthouse_open;
 	level.bad_zones[0].ignore_func = getFunction( "maps/mp/zm_buried", "is_courthouse_open" );
 	level.bad_zones[1] = spawnstruct();
 	level.bad_zones[1].name = "zone_underground_courthouse2";
 	level.bad_zones[1].adjacent = [];
 	level.bad_zones[1].adjacent[0] = "zone_underground_courthouse";
 	level.bad_zones[1].adjacent[1] = "zone_tunnels_north2";
-	//level.bad_zones[1].ignore_func = maps\mp\zm_buried::is_courthouse_open;
 	level.bad_zones[1].ignore_func = getFunction( "maps/mp/zm_buried", "is_courthouse_open" );
 	level.bad_zones[2] = spawnstruct();
 	level.bad_zones[2].name = "zone_tunnels_north2";
@@ -93,7 +91,6 @@ ghost_bad_path_init()
 	level.bad_zones[2].adjacent[1] = "zone_underground_courthouse";
 	level.bad_zones[2].flag = "tunnels2courthouse";
 	level.bad_zones[2].flag_adjacent = "zone_tunnels_north";
-	//level.bad_zones[2].ignore_func = maps\mp\zm_buried::is_courthouse_open;
 	level.bad_zones[2].ignore_func = getFunction( "maps/mp/zm_buried", "is_courthouse_open" );
 	level.bad_zones[3] = spawnstruct();
 	level.bad_zones[3].name = "zone_tunnels_north";
@@ -101,20 +98,17 @@ ghost_bad_path_init()
 	level.bad_zones[3].adjacent[0] = "zone_tunnels_center";
 	level.bad_zones[3].flag = "tunnels2courthouse";
 	level.bad_zones[3].flag_adjacent = "zone_tunnels_north2";
-	//level.bad_zones[3].ignore_func = maps\mp\zm_buried::is_tunnel_open;
 	level.bad_zones[3].ignore_func = getFunction( "maps/mp/zm_buried", "is_tunnel_open" );
 	level.bad_zones[4] = spawnstruct();
 	level.bad_zones[4].name = "zone_tunnels_center";
 	level.bad_zones[4].adjacent = [];
 	level.bad_zones[4].adjacent[0] = "zone_tunnels_north";
 	level.bad_zones[4].adjacent[1] = "zone_tunnels_south";
-	//level.bad_zones[4].ignore_func = maps\mp\zm_buried::is_tunnel_open;
 	level.bad_zones[4].ignore_func = getFunction( "maps/mp/zm_buried", "is_tunnel_open" );
 	level.bad_zones[5] = spawnstruct();
 	level.bad_zones[5].name = "zone_tunnels_south";
 	level.bad_zones[5].adjacent = [];
 	level.bad_zones[5].adjacent[0] = "zone_tunnels_center";
-	//level.bad_zones[5].ignore_func = maps\mp\zm_buried::is_tunnel_open;
 	level.bad_zones[5].ignore_func = getFunction( "maps/mp/zm_buried", "is_tunnel_open" );
 }
 

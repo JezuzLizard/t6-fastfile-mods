@@ -6,12 +6,20 @@ main()
 {
 	level thread on_player_connect();
 	level thread command_thread();
+	if ( getDvar( "mapname" ) == "zm_tomb" )
+	{
+		return;
+	}
 	maps\mp\zombies\_zm_ai_mechz::precache();
 	maps\mp\_utility::onfinalizeinitialization_callback( ::register_clientfields );
 }
 
 init()
 {
+	if ( getDvar( "mapname" ) == "zm_tomb" )
+	{
+		return;
+	}
 	maps\mp\zombies\_zm_ai_mechz::init();
 }
 

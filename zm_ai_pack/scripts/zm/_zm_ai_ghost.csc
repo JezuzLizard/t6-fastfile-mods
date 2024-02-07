@@ -31,6 +31,10 @@ precache_fx()
 
 main()
 {
+	if ( getDvar( "mapname" ) == "zm_buried" && getDvar( "g_gametype" ) == "zclassic" )
+	{
+		return;
+	}
 	precache_fx();
 	register_client_fields();
 }

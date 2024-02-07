@@ -151,50 +151,53 @@ setup_interaction_matrix()
 	level.interaction_types["perk_machine"].spawn_bias = 800;
 	level.interaction_types["perk_machine"].num_times_to_scale = 3;
 	level.interaction_types["perk_machine"].unlock_cost = 2000;
-	// level.interaction_types["craftable_table"] = spawnstruct();
-	// level.interaction_types["craftable_table"].priority = 2;
-	// level.interaction_types["craftable_table"].animstate = "zm_smash_craftable_table";
-	// level.interaction_types["craftable_table"].notify_name = "table_smash_anim";
-	// level.interaction_types["craftable_table"].action_notetrack = "fire";
-	// level.interaction_types["craftable_table"].validity_func = ::is_craftable_table_valid;
-	// level.interaction_types["craftable_table"].get_func = ::get_craftable_tables;
-	// level.interaction_types["craftable_table"].value_func = ::get_dist_score;
-	// level.interaction_types["craftable_table"].interact_func = ::craftable_table_lock;
-	// level.interaction_types["craftable_table"].spawn_bias = 600;
-	// level.interaction_types["craftable_table"].num_times_to_scale = 1;
-	// level.interaction_types["craftable_table"].unlock_cost = 2000;
-	// level.interaction_types["craftable_table"].interaction_z_offset = -15;
-	// level.interaction_types["craftable_table"].interaction_yaw_offset = 270;
-	// level.interaction_types["craftable_table"].fx_z_offset = -44;
-	// level.interaction_types["craftable_table"].fx_yaw_offset = 270;
-	// level.interaction_types["trap"] = spawnstruct();
-	// level.interaction_types["trap"].priority = 3;
-	// level.interaction_types["trap"].animstate = "zm_smash_trap";
-	// level.interaction_types["trap"].notify_name = "trap_smash_anim";
-	// level.interaction_types["trap"].action_notetrack = "fire";
-	// level.interaction_types["trap"].validity_func = ::is_trap_valid;
-	// level.interaction_types["trap"].get_func = ::get_traps;
-	// level.interaction_types["trap"].value_func = ::get_dist_score;
-	// level.interaction_types["trap"].interact_func = ::trap_smash;
-	// level.interaction_types["trap"].spawn_bias = 400;
-	// level.interaction_types["trap"].interaction_z_offset = -15;
-	// level.interaction_types["plane_ramp"] = spawnstruct();
-	// level.interaction_types["plane_ramp"].priority = 4;
-	// level.interaction_types["plane_ramp"].animstate = "zm_lock_plane_ramp";
-	// level.interaction_types["plane_ramp"].notify_name = "plane_lock_anim";
-	// level.interaction_types["plane_ramp"].action_notetrack = "locked";
-	// level.interaction_types["plane_ramp"].end_notetrack = "lock_done";
-	// level.interaction_types["plane_ramp"].validity_func = ::is_plane_ramp_valid;
-	// level.interaction_types["plane_ramp"].get_func = ::get_plane_ramps;
-	// level.interaction_types["plane_ramp"].value_func = ::get_dist_score;
-	// level.interaction_types["plane_ramp"].interact_func = ::plane_ramp_lock;
-	// level.interaction_types["plane_ramp"].spawn_bias = 500;
-	// level.interaction_types["plane_ramp"].num_times_to_scale = 3;
-	// level.interaction_types["plane_ramp"].unlock_cost = 2000;
-	// level.interaction_types["plane_ramp"].interaction_z_offset = -60;
-	// level.interaction_types["plane_ramp"].fx_z_offset = -60;
-	// level.interaction_types["plane_ramp"].fx_x_offset = 70;
-	// level.interaction_types["plane_ramp"].fx_yaw_offset = 90;
+	if ( getDvar( "mapname" ) == "zm_prison" )
+	{
+		level.interaction_types["craftable_table"] = spawnstruct();
+		level.interaction_types["craftable_table"].priority = 2;
+		level.interaction_types["craftable_table"].animstate = "zm_smash_craftable_table";
+		level.interaction_types["craftable_table"].notify_name = "table_smash_anim";
+		level.interaction_types["craftable_table"].action_notetrack = "fire";
+		level.interaction_types["craftable_table"].validity_func = ::is_craftable_table_valid;
+		level.interaction_types["craftable_table"].get_func = ::get_craftable_tables;
+		level.interaction_types["craftable_table"].value_func = ::get_dist_score;
+		level.interaction_types["craftable_table"].interact_func = ::craftable_table_lock;
+		level.interaction_types["craftable_table"].spawn_bias = 600;
+		level.interaction_types["craftable_table"].num_times_to_scale = 1;
+		level.interaction_types["craftable_table"].unlock_cost = 2000;
+		level.interaction_types["craftable_table"].interaction_z_offset = -15;
+		level.interaction_types["craftable_table"].interaction_yaw_offset = 270;
+		level.interaction_types["craftable_table"].fx_z_offset = -44;
+		level.interaction_types["craftable_table"].fx_yaw_offset = 270;
+		level.interaction_types["trap"] = spawnstruct();
+		level.interaction_types["trap"].priority = 3;
+		level.interaction_types["trap"].animstate = "zm_smash_trap";
+		level.interaction_types["trap"].notify_name = "trap_smash_anim";
+		level.interaction_types["trap"].action_notetrack = "fire";
+		level.interaction_types["trap"].validity_func = ::is_trap_valid;
+		level.interaction_types["trap"].get_func = ::get_traps;
+		level.interaction_types["trap"].value_func = ::get_dist_score;
+		level.interaction_types["trap"].interact_func = ::trap_smash;
+		level.interaction_types["trap"].spawn_bias = 400;
+		level.interaction_types["trap"].interaction_z_offset = -15;
+		level.interaction_types["plane_ramp"] = spawnstruct();
+		level.interaction_types["plane_ramp"].priority = 4;
+		level.interaction_types["plane_ramp"].animstate = "zm_lock_plane_ramp";
+		level.interaction_types["plane_ramp"].notify_name = "plane_lock_anim";
+		level.interaction_types["plane_ramp"].action_notetrack = "locked";
+		level.interaction_types["plane_ramp"].end_notetrack = "lock_done";
+		level.interaction_types["plane_ramp"].validity_func = ::is_plane_ramp_valid;
+		level.interaction_types["plane_ramp"].get_func = ::get_plane_ramps;
+		level.interaction_types["plane_ramp"].value_func = ::get_dist_score;
+		level.interaction_types["plane_ramp"].interact_func = ::plane_ramp_lock;
+		level.interaction_types["plane_ramp"].spawn_bias = 500;
+		level.interaction_types["plane_ramp"].num_times_to_scale = 3;
+		level.interaction_types["plane_ramp"].unlock_cost = 2000;
+		level.interaction_types["plane_ramp"].interaction_z_offset = -60;
+		level.interaction_types["plane_ramp"].fx_z_offset = -60;
+		level.interaction_types["plane_ramp"].fx_x_offset = 70;
+		level.interaction_types["plane_ramp"].fx_yaw_offset = 90;
+	}
 	level.interaction_types["blocker"] = spawnstruct();
 	level.interaction_types["blocker"].priority = 5;
 	level.interaction_types["blocker"].animstate = "zm_smash_blocker";
@@ -2360,12 +2363,19 @@ get_brutus_interest_points()
 	for ( i = 0; i < zone_names.size; i++ )
 	{
 		self thread get_zone_perk_machines( zone_names[i] );
-		//self thread get_zone_craftable_tables( zone_names[i] );
-		//self thread get_zone_traps( zone_names[i] );
-		//self thread get_zone_plane_ramp( zone_names[i] );
+		if ( getDvar( "mapname" ) == "zm_prison" )
+		{
+			self thread get_zone_craftable_tables( zone_names[i] );
+			self thread get_zone_traps( zone_names[i] );
+			self thread get_zone_plane_ramp( zone_names[i] );
+		}
 	}
 
-	//build_trap_array();
+	if ( getDvar( "mapname" ) == "zm_prison" )
+	{
+		build_trap_array();
+	}
+	
 	flag_set( "brutus_setup_complete" );
 }
 
@@ -2631,7 +2641,8 @@ check_plane_valid( player )
 			plane_struct.is_locked = 0;
 			plane_struct.locked_cost = undefined;
 			plane_struct.lock_fx delete();
-			//plane_struct maps\mp\zm_alcatraz_sq::reset_plane_hint_string( player );
+			func = getFunction( "maps/mp/zm_alcatraz_sq", "reset_plane_hint_string" );
+			plane_struct [[ func ]]( player );
 		}
 
 		return false;

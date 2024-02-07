@@ -1,12 +1,20 @@
 
 main()
 {
+	if ( getDvar( "mapname" ) == "zm_transit" && getDvar( "g_gametype" ) == "zclassic" )
+	{
+		return;
+	}
 	maps\mp\zombies\_zm_ai_screecher::precache();
 	maps\mp\_utility::onfinalizeinitialization_callback( ::register_clientfields );
 }
 
 init()
 {
+	if ( getDvar( "mapname" ) == "zm_transit" && getDvar( "g_gametype" ) == "zclassic" )
+	{
+		return;
+	}
 	maps\mp\zombies\_zm_ai_screecher::init();
 }
 

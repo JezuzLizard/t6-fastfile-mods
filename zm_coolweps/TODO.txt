@@ -1,0 +1,9 @@
+add every perk to every map
+add every bo2 powerup to every map
+	death machine
+	firesale
+implement waw-reimagined changes
+crossbow and paped variant
+spas shotgun from SP
+every wonder weapon on every map
+faster sprint anims for zombies (supersprint and chase_bus)

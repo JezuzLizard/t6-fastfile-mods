@@ -489,7 +489,11 @@ bus_attack()
 	}
 	else
 	{
-		//level.the_bus thread maps\mp\zm_transit_bus::bus_disabled_by_emp( 30 );
+		func = getFunction( "maps/mp/zm_transit_bus", "bus_disabled_by_emp" );
+		if ( isDefined( func ) )
+		{
+			level.the_bus thread [[ func ]]( 30 );
+		}
 		self attach_to_bus();
 	}
 }
@@ -587,7 +591,11 @@ bus_disable( bus_attack_struct )
 	success = 0;
 	self.mod_melee = 0;
 	self.bus_shock_time = 0;
-	//level thread maps\mp\zm_transit_bus::do_player_bus_zombie_vox( "avogadro_onbus", 45 );
+	func = getFunction( "maps/mp/zm_transit_bus", "do_player_bus_zombie_vox" );
+	if ( isDefined( func ) )
+	{
+		level thread [[ func ]]( "avogadro_onbus", 45 );
+	}
 
 	while ( true )
 	{
@@ -597,7 +605,8 @@ bus_disable( bus_attack_struct )
 		if ( self.bus_attack_time >= 20 )
 		{
 			self.bus_disabled = 1;
-			//level thread maps\mp\zm_transit_bus::do_player_bus_zombie_vox( "avogadro_stopbus", 45 );
+			func = getFunction( "maps/mp/zm_transit_bus", "do_player_bus_zombie_vox" );
+			level thread [[ func ]]( "avogadro_stopbus", 45 );
 			break;
 		}
 
@@ -1396,7 +1405,11 @@ avogadro_damage_func( einflictor, eattacker, idamage, idflags, smeansofdeath, sw
 			if ( sweapon == "riotshield_zm" )
 			{
 				shield_damage = level.zombie_vars["riotshield_fling_damage_shield"];
-				//einflictor maps\mp\zombies\_zm_weap_riotshield::player_damage_shield( shield_damage, 0 );
+				func = getFunction( "maps/mp/zombies/_zm_weap_riotshield", "player_damage_shield" );
+				if ( isDefined( func ) )
+				{
+					einflictor [[ func ]]( shield_damage, 0 );
+				}
 			}
 		}
 

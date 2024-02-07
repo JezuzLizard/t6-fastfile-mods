@@ -478,7 +478,6 @@ xmodel,c_zom_zombie_civ_shorts_body6_g_llegoff
 xmodel,c_zom_zombie_civ_shorts_body6_g_legsoff
 script,character/clientscripts/c_zom_zombie_civ_shorts6.csc
 script,aitype/clientscripts/zm_highrise_basic_01.csc
-zbarrier,zmcore_basicwoodbarrier_hide_pieces
 script,aitype/zm_highrise_basic_02.gsc
 script,character/c_zom_zombie_scientist.gsc
 image,~~-gc_zom_scientist_body_s-rg~d537386d

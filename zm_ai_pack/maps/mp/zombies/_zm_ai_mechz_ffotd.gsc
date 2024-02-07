@@ -16,12 +16,12 @@ mechz_init_end()
 
 spawn_start()
 {
-    self.not_interruptable = 1;
+	self.not_interruptable = 1;
 }
 
 spawn_end()
 {
-    self.not_interruptable = 0;
+	self.not_interruptable = 0;
 }
 
 mechz_round_tracker_start()

@@ -72,8 +72,8 @@ xanim,ai_zombie_mech_jump_down_dlc4_trench_wall_96
 xanim,ai_zombie_mech_jump_down_dlc4_trench_wall_112
 xanim,ai_zombie_mech_jump_down_dlc4_trench_wall_120
 xanim,ai_zombie_mech_jump_up_dlc4_trench_wall_140
-//rawfile,animtrees/zm_tomb_mechz.atr
-//rawfile,animstatedefs/zm_tomb_mechz.asd
+rawfile,animtrees/zm_tomb_mechz.atr
+rawfile,animstatedefs/zm_tomb_mechz.asd
 script,character/c_zom_dlc_mech.gsc
 techniqueset,mc_sw4_3d_char_skin_emissive_189j7w84
 techniqueset,mc_sw4_3d_char_cloth_emissive_5ef7226z

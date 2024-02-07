@@ -5,17 +5,21 @@
 
 main()
 {
-	if ( getDvar( "mapname" ) == "zm_buried" )
+	if ( getDvar( "mapname" ) == "zm_buried" && getDvar( "g_gametype" ) == "zclassic" )
 	{
 		return;
 	}
-	maps\mp\zombies\_zm_ai_ghost::precache_fx();
-	maps\mp\zombies\_zm_ai_ghost::init();
+	//maps\mp\zombies\_zm_ai_ghost::precache_fx();
+	//maps\mp\zombies\_zm_ai_ghost::init();
 }
 
 init()
 {
-	level thread ghost_zone_spawning_think();
+	if ( getDvar( "mapname" ) == "zm_buried" && getDvar( "g_gametype" ) == "zclassic" )
+	{
+		return;
+	}
+	//level thread ghost_zone_spawning_think();
 }
 
 ghost_zone_spawning_think()

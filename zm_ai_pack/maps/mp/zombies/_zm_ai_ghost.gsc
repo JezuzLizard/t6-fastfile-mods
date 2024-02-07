@@ -809,7 +809,10 @@ ghost_think()
 	{
 		self [[ level.slowgun_set_anim_rate_func ]]( 1.0 );
 	}
-	//self setclientfield( "slowgun_fx", 0 );
+	if ( level.script == "zm_buried" )
+	{
+		self setclientfield( "slowgun_fx", 0 );
+	}
 	self setclientfield( "sndGhostAudio", 1 );
 	self init_thinking();
 
@@ -1592,11 +1595,13 @@ paralyzer_callback( player, upgraded )
 	if ( isdefined( self.ignore_slowgun_anim_rates ) && self.ignore_slowgun_anim_rates )
 		return;
 
-	// if ( upgraded )
-	// 	self setclientfield( "slowgun_fx", 5 );
-	// else
-	// 	self setclientfield( "slowgun_fx", 1 );
-
+	if ( level.script == "zm_buried" )
+	{
+		if ( upgraded )
+			self setclientfield( "slowgun_fx", 5 );
+		else
+			self setclientfield( "slowgun_fx", 1 );
+	}
 	self [[ level.slowgun_zombie_slow_for_time ]]( 0.3, 0 );
 }
 

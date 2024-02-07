@@ -22,7 +22,7 @@ main()
     self._aitype = "zm_alcatraz_basic";
 }
 
-#using_animtree("zm_prison_basic");
+#using_animtree("zm_all_basic");
 
 precache( ai_index )
 {
@@ -30,6 +30,6 @@ precache( ai_index )
     character\clientscripts\c_zom_inmate1::precache();
     character\clientscripts\c_zom_inmate2::precache();
     usefootsteptable( ai_index, "default_ai" );
-    precacheanimstatedef( ai_index, #animtree, "zm_prison_basic" );
+    precacheanimstatedef( ai_index, #animtree, "zm_all_basic" );
     setdemolockonvalues( ai_index, 100, 60, -15, 60, 30, -5, 60 );
 }

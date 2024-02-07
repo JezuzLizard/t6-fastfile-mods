@@ -179,7 +179,7 @@ mechz_do_manual_looping_fx( localclientnum, script_id, tag_name, fx_element, min
 			return;
 
 		playfxontag( localclientnum, fx_element, self, tag_name );
-		//waitrealtime( randomfloatrange( min_wait, max_wait ) );
+		waitrealtime( randomfloatrange( min_wait, max_wait ) );
 		wait randomfloatrange( min_wait, max_wait );
 	}
 }
@@ -199,7 +199,7 @@ mechz_screen_shake_loop( localclientnum )
 	while ( true )
 	{
 		self playrumbleonentity( localclientnum, "mechz_footsteps" );
-		//waitrealtime( 0.1 );
+		waitrealtime( 0.1 );
 		wait 0.1;
 	}
 }
