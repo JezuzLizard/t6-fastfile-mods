@@ -32,3 +32,27 @@ include,transit/zm_transit_screecher
 include,transit/zombie_dog
 
 soundbank,mod.all
+
+script,maps/mp/zombies/_zm_ai_ghost.gsc
+script,maps/mp/zombies/_zm_ai_ghost_ffotd.gsc
+script,clientscripts/mp/zombies/_zm_ai_ghost.csc
+
+script,maps/mp/zombies/_zm_ai_brutus.gsc
+script,clientscripts/mp/zombies/_zm_ai_brutus.csc
+
+script,maps/mp/zombies/_zm_ai_mechz.gsc
+script,maps/mp/zombies/_zm_ai_mechz_ft.gsc
+script,maps/mp/zombies/_zm_ai_mechz_ffotd.gsc
+script,maps/mp/zombies/_zm_ai_mechz_dev.gsc
+script,maps/mp/zombies/_zm_ai_mechz_claw.gsc
+script,maps/mp/zombies/_zm_ai_mechz_booster.gsc
+script,clientscripts/mp/zombies/_zm_ai_mechz.csc
+
+script,maps/mp/zombies/_zm_ai_avogadro.gsc
+script,clientscripts/mp/zombies/_zm_ai_avogadro.csc
+
+script,maps/mp/zombies/_zm_ai_screecher.gsc
+script,clientscripts/mp/zombies/_zm_ai_screecher.csc
+
+script,scripts/zm/zm_ai_pack_mod_main.csc
+script,scripts/zm/zm_ai_pack_mod_main.gsc

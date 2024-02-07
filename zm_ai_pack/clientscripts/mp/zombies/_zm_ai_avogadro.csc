@@ -9,11 +9,12 @@ precache()
 
 }
 
+init()
+{
+	clientscripts\mp\_visionset_mgr::vsmgr_register_overlay_info_style_electrified( "zm_ai_avogadro_electrified", 1, 15, 1 );
+}
+
 main()
 {
-	if ( getDvar( "mapname" ) == "zm_transit" && getDvar( "g_gametype" ) == "zclassic" )
-	{
-		return;
-	}
 	clientscripts\mp\_visionset_mgr::vsmgr_register_overlay_info_style_electrified( "zm_ai_avogadro_electrified", 1, 15, 1 );
 }

@@ -45,6 +45,19 @@ precache()
 	precacheshellshock( "lava_small" );
 }
 
+register_clientfields()
+{
+	registerclientfield( "actor", "mechz_fx", 14000, 12, "int" );
+	registerclientfield( "toplayer", "mechz_grab", 14000, 1, "int" );
+	registerclientfield( "actor", "anim_rate", 14000, 2, "float" );
+}
+
+main()
+{
+	register_clientfields();
+	precache();
+}
+
 #using_animtree("mechz_claw");
 
 init()
@@ -1295,8 +1308,13 @@ mechz_find_flesh()
 				self.ai_state = "tracking_tank";
 				self.goalradius = level.mechz_custom_goalradius;
 				self.custom_goalradius_override = level.mechz_custom_goalradius;
-				closest_tank_tag = level.vh_tank get_closest_mechz_tag_on_tank( self, self.origin );
-
+				func = getFunction( "maps/mp/zm_tomb_tank", "get_closest_mechz_tag_on_tank" );
+				closest_tank_tag = undefined;
+				if ( isDefined( func ) )
+				{
+					closest_tank_tag = level.vh_tank [[ func ]]( self, self.origin );
+				}
+			
 				if ( !isdefined( closest_tank_tag ) )
 				{
 /#
@@ -1319,7 +1337,7 @@ mechz_find_flesh()
 					self setgoalpos( self.goal_pos );
 					self waittill_any_or_timeout( 0.5, "goal", "bad_path" );
 
-					if ( !player entity_on_tank() )
+					if ( isDefined( entity_on_tank_func ) && !player [[ entity_on_tank_func ]]() )
 					{
 /#
 						if ( getdvarint( #"_id_E7121222" ) > 1 )
@@ -1666,14 +1684,15 @@ mechz_set_locomotion_speed()
 	self endon( "death" );
 	self.prev_move_speed = self.zombie_move_speed;
 
+	entity_on_tank_func = getFunction( "maps/mp/zm_tomb_tank", "entity_on_tank" );
 	if ( !isdefined( self.favoriteenemy ) )
 		self.zombie_move_speed = "walk";
 	else if ( isdefined( self.force_run ) && self.force_run )
 		self.zombie_move_speed = "run";
 	else if ( isdefined( self.force_sprint ) && self.force_sprint )
 		self.zombie_move_speed = "sprint";
-	// else if ( isdefined( self.favoriteenemy ) && self.favoriteenemy entity_on_tank() && isdefined( level.vh_tank ) && level.vh_tank ent_flag( "tank_activated" ) )
-	//     self.zombie_move_speed = "run";
+	else if ( isDefined( entity_on_tank_func ) && isdefined( self.favoriteenemy ) && self.favoriteenemy [[ entity_on_tank_func ]]() && isdefined( level.vh_tank ) && level.vh_tank ent_flag( "tank_activated" ) )
+	    self.zombie_move_speed = "run";
 	else if ( isdefined( self.favoriteenemy ) && distancesquared( self.origin, self.favoriteenemy.origin ) > level.mechz_dist_for_sprint )
 		self.zombie_move_speed = "run";
 	else if ( !( isdefined( self.has_powerplant ) && self.has_powerplant ) )

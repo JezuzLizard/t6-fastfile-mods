@@ -35,6 +35,11 @@ precache_fx()
 	level._effect["avogadro_health_low"] = loadfx( "maps/zombie/fx_zmb_avog_health_low" );
 }
 
+main()
+{
+	precache();
+}
+
 init()
 {
 	init_phase_anims();

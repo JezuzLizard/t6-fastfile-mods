@@ -78,10 +78,6 @@ material,mc/mtl_c_zom_buried_ghost_woman_hair
 xmodel,c_zom_zombie_buried_ghost_woman_fb
 script,character/clientscripts/c_zom_zombie_buried_ghost_woman.csc
 script,aitype/clientscripts/zm_buried_ghost_female.csc
-script,maps/mp/zombies/_zm_ai_ghost.gsc
-script,maps/mp/zombies/_zm_ai_ghost_ffotd.gsc
-script,scripts/zm/_zm_ai_ghost.csc
-script,scripts/zm/ghost.gsc
 
 fx,maps/zombie_buried/fx_buried_ghost_impact
 material,gfx_fxt_bio_bloodtrail

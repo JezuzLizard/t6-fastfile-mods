@@ -117,7 +117,3 @@ material,gfx_fxt_light_flare_halogen_vm
 fx,maps/zombie/fx_zmb_avog_ascend_aerial
 fx,maps/zombie/fx_zmb_avog_descend
 fx,maps/zombie/fx_zmb_avog_phase_trail
-
-script,scripts/zm/avogadro.gsc
-script,scripts/zm/_zm_ai_avogadro.csc
-script,maps/mp/zombies/_zm_ai_avogadro.gsc

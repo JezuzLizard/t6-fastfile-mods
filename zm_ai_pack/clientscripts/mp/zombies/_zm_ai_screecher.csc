@@ -9,12 +9,13 @@ precache()
 
 }
 
+init()
+{
+	clientscripts\mp\zombies\_callbacks::onfinalizeinitialization_callback( ::screecher_clientfields );
+}
+
 main()
 {
-	if ( getDvar( "mapname" ) == "zm_transit" )
-	{
-		return;
-	}
 	clientscripts\mp\zombies\_callbacks::onfinalizeinitialization_callback( ::screecher_clientfields );
 }
 

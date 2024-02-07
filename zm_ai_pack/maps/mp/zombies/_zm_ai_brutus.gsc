@@ -19,6 +19,29 @@
 #include maps\mp\animscripts\zm_death;
 #include maps\mp\zombies\_zm_perks;
 
+precache()
+{
+	level._effect["brutus_flashlight"] = loadfx( "maps/zombie_alcatraz/fx_alcatraz_brut_light" );
+	level._effect["brutus_spawn"] = loadfx( "maps/zombie_alcatraz/fx_alcatraz_brut_spawn" );
+	level._effect["brutus_death"] = loadfx( "maps/zombie_alcatraz/fx_alcatraz_brut_spawn" );
+	level._effect["brutus_teargas"] = loadfx( "maps/zombie_alcatraz/fx_alcatraz_brut_gas" );
+	level._effect["brutus_lockdown"] = loadfx( "maps/zombie_alcatraz/fx_alcatraz_perk_lock" );
+	level._effect["brutus_lockdown_sm"] = loadfx( "maps/zombie_alcatraz/fx_alcatraz_perk_s_lock" );
+	level._effect["brutus_lockdown_lg"] = loadfx( "maps/zombie_alcatraz/fx_alcatraz_w_bench_lock" );
+	precachemodel( "c_zom_cellbreaker_helmet" );
+	precacheshellshock( "mp_radiation_high" );
+	precacheshellshock( "mp_radiation_med" );
+	precacheshellshock( "mp_radiation_low" );
+	precachestring( &"ZOMBIE_LOCKED_COST" );
+	precachestring( &"ZOMBIE_LOCKED_COST_2000" );
+	precachestring( &"ZOMBIE_LOCKED_COST_4000" );
+	precachestring( &"ZOMBIE_LOCKED_COST_6000" );
+	flag_init( "brutus_setup_complete" );
+	setdvar( "zombie_double_wide_checks", 1 );
+	registerclientfield( "actor", "helmet_off", 9000, 1, "int" );
+	registerclientfield( "actor", "brutus_lock_down", 9000, 1, "int" );
+}
+
 main()
 {
 	level._effect["brutus_flashlight"] = loadfx( "maps/zombie_alcatraz/fx_alcatraz_brut_light" );
@@ -118,8 +141,84 @@ main()
 		setup_devgui();
 #/
 		level.custom_perk_validation = ::check_perk_machine_valid;
-		//level.custom_craftable_validation = ::check_craftable_table_valid;
-		//level.custom_plane_validation = ::check_plane_valid;
+		level.custom_craftable_validation = ::check_craftable_table_valid;
+		level.custom_plane_validation = ::check_plane_valid;
+	}
+}
+
+init()
+{
+	level.brutus_spawners = getentarray( "brutus_zombie_spawner", "script_noteworthy" );
+
+	if ( level.brutus_spawners.size == 0 )
+		return;
+
+	array_thread( level.brutus_spawners, ::add_spawn_function, ::brutus_prespawn );
+
+	for ( i = 0; i < level.brutus_spawners.size; i++ )
+	{
+		level.brutus_spawners[i].is_enabled = 1;
+		level.brutus_spawners[i].script_forcespawn = 1;
+	}
+
+	level.brutus_spawn_positions = getstructarray( "brutus_location", "script_noteworthy" );
+	level thread setup_interaction_matrix();
+	level.sndbrutusistalking = 0;
+	level.brutus_health = 500;
+	level.brutus_health_increase = 1000;
+	level.brutus_round_count = 0;
+	level.brutus_last_spawn_round = 0;
+	level.brutus_count = 0;
+	level.brutus_max_count = 1;
+	level.brutus_damage_percent = 0.1;
+	level.brutus_helmet_shots = 5;
+	level.brutus_team_points_for_death = 500;
+	level.brutus_player_points_for_death = 250;
+	level.brutus_points_for_helmet = 250;
+	level.brutus_alarm_chance = 100;
+	level.brutus_min_alarm_chance = 100;
+	level.brutus_alarm_chance_increment = 10;
+	level.brutus_max_alarm_chance = 200;
+	level.brutus_min_round_fq = 4;
+	level.brutus_max_round_fq = 7;
+	level.brutus_reset_dist_sq = 262144;
+	level.brutus_aggro_dist_sq = 16384;
+	level.brutus_aggro_earlyout = 12;
+	level.brutus_blocker_pieces_req = 1;
+	level.brutus_zombie_per_round = 1;
+	level.brutus_players_in_zone_spawn_point_cap = 120;
+	level.brutus_teargas_duration = 7;
+	level.player_teargas_duration = 2;
+	level.brutus_teargas_radius = 64;
+	level.num_pulls_since_brutus_spawn = 0;
+	level.brutus_min_pulls_between_box_spawns = 4;
+	level.brutus_explosive_damage_for_helmet_pop = 1500;
+	level.brutus_explosive_damage_increase = 600;
+	level.brutus_failed_paths_to_teleport = 4;
+	level.brutus_do_prologue = 1;
+	level.brutus_min_spawn_delay = 10.0;
+	level.brutus_max_spawn_delay = 60.0;
+	level.brutus_respawn_after_despawn = 1;
+	level.brutus_in_grief = 0;
+
+	if ( getdvar( #"ui_gametype" ) == "zgrief" )
+		level.brutus_in_grief = 1;
+
+	level.brutus_shotgun_damage_mod = 1.5;
+	level.brutus_custom_goalradius = 48;
+	registerclientfield( "actor", "helmet_off", 9000, 1, "int" );
+	registerclientfield( "actor", "brutus_lock_down", 9000, 1, "int" );
+	level thread maps\mp\zombies\_zm_ai_brutus::brutus_spawning_logic();
+
+	if ( !level.brutus_in_grief )
+	{
+		level thread maps\mp\zombies\_zm_ai_brutus::get_brutus_interest_points();
+/#
+		setup_devgui();
+#/
+		level.custom_perk_validation = maps\mp\zombies\_zm_ai_brutus::check_perk_machine_valid;
+		level.custom_craftable_validation = maps\mp\zombies\_zm_ai_brutus::check_craftable_table_valid;
+		level.custom_plane_validation = maps\mp\zombies\_zm_ai_brutus::check_plane_valid;
 	}
 }
 

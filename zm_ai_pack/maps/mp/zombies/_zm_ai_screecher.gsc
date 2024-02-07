@@ -28,6 +28,18 @@ precache()
 	level._effect["screecher_death"] = loadfx( "maps/zombie/fx_zmb_screech_death_ash" );
 }
 
+register_clientfields()
+{
+	maps\mp\_visionset_mgr::vsmgr_register_info( "overlay", "zm_ai_screecher_blur", 1, level.vsmgr_prio_overlay_zm_ai_screecher_blur, 1, 1, maps\mp\_visionset_mgr::vsmgr_timeout_lerp_thread_per_player, 0 );
+	registerclientfield( "actor", "render_third_person", 1, 1, "int" );
+}
+
+main()
+{
+	register_clientfields();
+	precache();
+}
+
 init()
 {
 	level.screecher_spawners = getentarray( "screecher_zombie_spawner", "script_noteworthy" );

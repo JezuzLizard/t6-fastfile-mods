@@ -40,23 +40,10 @@ add_fx_element( index, fx_element, tag_name, min_freq, max_freq )
 
 main()
 {
-	if ( getDvar( "mapname" ) == "zm_tomb" )
-	{
-		return;
-	}
-	clientscripts\mp\zombies\_callbacks::onfinalizeinitialization_callback( ::mechz_clientfields );
-}
-
-mechz_clientfields()
-{
 	registerclientfield( "actor", "mechz_fx", 14000, 12, "int", ::mechz_handle_fx );
 	registerclientfield( "toplayer", "mechz_grab", 14000, 1, "int", ::mechz_claw_callback );
 	registerclientfield( "actor", "anim_rate", 14000, 2, "float", undefined, 0 );
 	setupclientfieldanimspeedcallbacks( "actor", 1, "anim_rate" );
-}
-
-init()
-{
 	add_fx_element( 0, "maps/zombie_tomb/fx_tomb_mech_dmg_armor", "J_Knee_Attach_LE" );
 	add_fx_element( 0, "maps/zombie_tomb/fx_tomb_mech_dmg_sparks", "J_Knee_Attach_LE", 0.25, 0.75 );
 	add_fx_element( 0, "maps/zombie_tomb/fx_tomb_mech_dmg_steam", "J_Knee_Attach_LE", 0.1, 0.3 );
@@ -82,6 +69,41 @@ init()
 	add_fx_element( 9, "maps/zombie_tomb/fx_tomb_mech_jump_landing", "tag_origin" );
 	add_fx_element( 10, "maps/zombie_tomb/fx_tomb_mech_dmg_armor_face", "J_Helmet" );
 	add_fx_element( 11, "maps/zombie_tomb/fx_tomb_mech_head_light", "tag_headlamp_FX" );
+	registermechzfootstepcb( "zm_tomb_mech_zombie", ::mechzfootstepcbfunc );
+	level._effect["mech_footstep_steam"] = loadfx( "maps/zombie_tomb/fx_tomb_mech_foot_step_steam" );
+	level._effect["mech_exhaust_smoke"] = loadfx( "maps/zombie_tomb/fx_tomb_mech_exhaust_smoke" );
+	init_animtree();
+}
+
+init()
+{
+	registerclientfield( "actor", "mechz_fx", 14000, 12, "int", ::mechz_handle_fx );
+	add_fx_element( 0, "maps/zombie_tomb/fx_tomb_mech_dmg_armor", "J_Knee_Attach_LE" );
+	add_fx_element( 0, "maps/zombie_tomb/fx_tomb_mech_dmg_sparks", "J_Knee_Attach_LE", 0.25, 0.75 );
+	add_fx_element( 0, "maps/zombie_tomb/fx_tomb_mech_dmg_steam", "J_Knee_Attach_LE", 0.1, 0.3 );
+	add_fx_element( 1, "maps/zombie_tomb/fx_tomb_mech_dmg_armor", "J_Knee_Attach_RI" );
+	add_fx_element( 1, "maps/zombie_tomb/fx_tomb_mech_dmg_sparks", "J_Knee_Attach_RI", 0.25, 0.75 );
+	add_fx_element( 1, "maps/zombie_tomb/fx_tomb_mech_dmg_steam", "J_Knee_Attach_RI", 0.1, 0.3 );
+	add_fx_element( 2, "maps/zombie_tomb/fx_tomb_mech_dmg_armor", "J_ShoulderArmor_LE" );
+	add_fx_element( 2, "maps/zombie_tomb/fx_tomb_mech_dmg_sparks", "J_ShoulderArmor_LE", 0.25, 0.75 );
+	add_fx_element( 2, "maps/zombie_tomb/fx_tomb_mech_dmg_steam", "J_ShoulderArmor_LE", 0.1, 0.3 );
+	add_fx_element( 3, "maps/zombie_tomb/fx_tomb_mech_dmg_armor", "J_ShoulderArmor_RI" );
+	add_fx_element( 3, "maps/zombie_tomb/fx_tomb_mech_dmg_sparks", "J_ShoulderArmor_RI", 0.25, 0.75 );
+	add_fx_element( 3, "maps/zombie_tomb/fx_tomb_mech_dmg_steam", "J_ShoulderArmor_RI", 0.1, 0.3 );
+	add_fx_element( 4, "maps/zombie_tomb/fx_tomb_mech_dmg_sparks", "J_Root_Attach_RI", 0.25, 0.75 );
+	add_fx_element( 4, "maps/zombie_tomb/fx_tomb_mech_dmg_steam", "J_Root_Attach_RI", 0.1, 0.3 );
+	add_fx_element( 5, "maps/zombie_tomb/fx_tomb_mech_dmg_sparks", "J_Root_Attach_LE", 0.25, 0.75 );
+	add_fx_element( 5, "maps/zombie_tomb/fx_tomb_mech_dmg_steam", "J_Root_Attach_LE", 0.1, 0.3 );
+	add_fx_element( 6, "maps/zombie_tomb/fx_tomb_mech_wpn_flamethrower", "tag_flamethrower_FX", 0.25 );
+	add_fx_element( 7, "maps/zombie_tomb/fx_tomb_mech_jump_booster", "tag_booster_LE_FX", 0.25 );
+	add_fx_element( 7, "maps/zombie_tomb/fx_tomb_mech_jump_booster", "tag_booster_RI_FX", 0.25 );
+	add_fx_element( 7, "maps/zombie_tomb/fx_tomb_mech_jump_booster_sm", "tag_leg_booster_LE_FX", 0.25 );
+	add_fx_element( 7, "maps/zombie_tomb/fx_tomb_mech_jump_booster_sm", "tag_leg_booster_RI_FX", 0.25 );
+	add_fx_element( 8, "maps/zombie_tomb/fx_tomb_mech_wpn_source", "tag_claw", 0.5 );
+	add_fx_element( 9, "maps/zombie_tomb/fx_tomb_mech_jump_landing", "tag_origin" );
+	add_fx_element( 10, "maps/zombie_tomb/fx_tomb_mech_dmg_armor_face", "J_Helmet" );
+	add_fx_element( 11, "maps/zombie_tomb/fx_tomb_mech_head_light", "tag_headlamp_FX" );
+	registerclientfield( "toplayer", "mechz_grab", 14000, 1, "int", ::mechz_claw_callback );
 	registermechzfootstepcb( "zm_tomb_mech_zombie", ::mechzfootstepcbfunc );
 	level._effect["mech_footstep_steam"] = loadfx( "maps/zombie_tomb/fx_tomb_mech_foot_step_steam" );
 	level._effect["mech_exhaust_smoke"] = loadfx( "maps/zombie_tomb/fx_tomb_mech_exhaust_smoke" );

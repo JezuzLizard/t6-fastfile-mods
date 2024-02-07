@@ -72,5 +72,3 @@ image,fxt_exp_ember_omni3
 material,gfx_fxt_exp_ember_omni3
 fx,maps/zombie/fx_zombie_dog_ash_trail
 rawfile,shock/dog_bite.shock
-
-script,scripts/zm/zombie_dog.gsc

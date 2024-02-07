@@ -117,7 +117,3 @@ image,~-gp6_zm_screecher_hole_p2_c
 image,~-gp6_zm_screecher_hole_p3_c
 material,mc/mtl_p6_zm_screecher_hole_p
 xmodel,p6_zm_screecher_hole
-
-script,scripts/zm/_zm_ai_screecher.csc
-script,maps/mp/zombies/_zm_ai_screecher.gsc
-script,scripts/zm/screecher.gsc

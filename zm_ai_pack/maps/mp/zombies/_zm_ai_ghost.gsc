@@ -40,6 +40,69 @@ precache_fx()
 	}
 }
 
+main()
+{
+	precache_fx();
+	maps\mp\zombies\_zm_ai_ghost_ffotd::ghost_init_start();
+	register_client_fields();
+	flag_init( "spawn_ghosts" );
+
+	if ( !init_ghost_spawners() )
+		return;
+
+	level.slowgun_reset_anim_func = getFunction( "maps/mp/zombies/_zm_weap_slowgun", "reset_anim" );
+	level.slowgun_set_anim_rate_func = getFunction( "maps/mp/zombies/_zm_weap_slowgun", "set_anim_rate" );
+	level.slowgun_zombie_slow_for_time = getFunction( "maps/mp/zombies/_zm_weap_slowgun", "zombie_slow_for_time" );
+	level.time_bomb_get_time_bomb_saved_round_type = getFunction( "maps/mp/zombies/_zm_weap_time_bomb", "get_time_bomb_saved_round_type" );
+	level.time_bomb_time_bomb_add_custom_func_global_save = getFunction( "maps/mp/zombies/_zm_weap_time_bomb", "time_bomb_add_custom_func_global_save" );
+	level.time_bomb_time_bomb_add_custom_func_global_restore = getFunction( "maps/mp/zombies/_zm_weap_time_bomb", "time_bomb_add_custom_func_global_restore" );
+	level.time_bomb_register_time_bomb_enemy_save_filter = getFunction( "maps/mp/zombies/_zm_weap_time_bomb", "register_time_bomb_enemy_save_filter" );
+	level.time_bomb_register_time_bomb_enemy = getFunction( "maps/mp/zombies/_zm_weap_time_bomb", "register_time_bomb_enemy" );
+
+	init_ghost_zone();
+	init_ghost_sounds();
+	init_ghost_script_move_path_data();
+	level.zombie_ai_limit_ghost = 4;
+	level.zombie_ai_limit_ghost_per_player = 1;
+	level.zombie_ghost_count = 0;
+	level.ghost_health = 100;
+	level.zombie_ghost_round_states = spawnstruct();
+	level.zombie_ghost_round_states.any_player_in_ghost_zone = 0;
+	level.zombie_ghost_round_states.active_zombie_locations = [];
+	level.is_ghost_round_started = ::is_ghost_round_started;
+	level.zombie_ghost_round_states.is_started = 0;
+	level.zombie_ghost_round_states.is_first_ghost_round_finished = 0;
+	level.zombie_ghost_round_states.current_ghost_round_number = 0;
+	level.zombie_ghost_round_states.next_ghost_round_number = 0;
+	level.zombie_ghost_round_states.presentation_stage_1_started = 0;
+	level.zombie_ghost_round_states.presentation_stage_2_started = 0;
+	level.zombie_ghost_round_states.presentation_stage_3_started = 0;
+	level.zombie_ghost_round_states.is_teleporting = 0;
+	level.zombie_ghost_round_states.round_count = 0;
+	level thread ghost_round_presentation_think();
+
+	if ( isdefined( level.ghost_round_think_override_func ) )
+		level thread [[ level.ghost_round_think_override_func ]]();
+	else
+		level thread ghost_round_think();
+
+	level thread player_in_ghost_zone_monitor();
+
+	if ( isdefined( level.ghost_zone_spawning_think_override_func ) )
+		level thread [[ level.ghost_zone_spawning_think_override_func ]]();
+	else
+		level thread ghost_zone_spawning_think();
+
+	level thread ghost_vox_think();
+	init_time_bomb_ghost_rounds();
+/#
+	level.force_no_ghost = 0;
+	level.ghost_devgui_toggle_no_ghost = ::devgui_toggle_no_ghost;
+	level.ghost_devgui_warp_to_mansion = ::devgui_warp_to_mansion;
+#/
+	maps\mp\zombies\_zm_ai_ghost_ffotd::ghost_init_end();
+}
+
 init()
 {
 	maps\mp\zombies\_zm_ai_ghost_ffotd::ghost_init_start();
