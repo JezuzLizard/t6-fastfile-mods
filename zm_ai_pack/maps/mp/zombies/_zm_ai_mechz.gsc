@@ -52,10 +52,31 @@ register_clientfields()
 	registerclientfield( "actor", "anim_rate", 14000, 2, "float" );
 }
 
+register_burn_overlay()
+{
+	if ( getDvar( "mapname" ) == "zm_tomb" || getDvar( "mapname" ) == "zm_transit" )
+	{
+		return;
+	}
+	level.zm_transit_burn_max_duration = 2;
+
+	if ( !isdefined( level.vsmgr_prio_overlay_zm_transit_burn ) )
+		level.vsmgr_prio_overlay_zm_transit_burn = 20;
+
+	maps\mp\_visionset_mgr::vsmgr_register_info( "overlay", "zm_transit_burn", 14000, level.vsmgr_prio_overlay_zm_transit_burn, 15, 1, maps\mp\_visionset_mgr::vsmgr_duration_lerp_thread_per_player, 0 );
+}
+
 main()
 {
 	register_clientfields();
+	level._effect["mechz_death"] = loadfx( "maps/zombie_tomb/fx_tomb_mech_death" );
+	level._effect["mechz_sparks"] = loadfx( "maps/zombie_tomb/fx_tomb_mech_dmg_sparks" );
+	level._effect["mechz_steam"] = loadfx( "maps/zombie_tomb/fx_tomb_mech_dmg_steam" );
+	level._effect["mechz_claw"] = loadfx( "maps/zombie_tomb/fx_tomb_mech_wpn_claw" );
+	level._effect["mechz_claw_arm"] = loadfx( "maps/zombie_tomb/fx_tomb_mech_wpn_source" );
+	level._effect["mech_booster_landing"] = loadfx( "maps/zombie_tomb/fx_tomb_mech_jump_landing" );
 	precache();
+	scripts\zm\zm_ai_pack_mod_main::add_visionset_callback( ::register_burn_overlay );
 }
 
 #using_animtree("mechz_claw");
@@ -335,7 +356,7 @@ mechz_round_tracker()
 	while ( !isdefined( level.zombie_mechz_locations ) )
 		wait 0.05;
 
-	if ( getDvar( "mapname" == "zm_tomb" ) )
+	if ( getDvar( "mapname" ) == "zm_tomb" )
 	{
 		flag_wait( "activate_zone_nml" );
 	}

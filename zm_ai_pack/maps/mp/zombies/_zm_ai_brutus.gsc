@@ -44,6 +44,7 @@ precache()
 
 main()
 {
+	precacherumble( "brutus_footsteps" );
 	level._effect["brutus_flashlight"] = loadfx( "maps/zombie_alcatraz/fx_alcatraz_brut_light" );
 	level._effect["brutus_spawn"] = loadfx( "maps/zombie_alcatraz/fx_alcatraz_brut_spawn" );
 	level._effect["brutus_death"] = loadfx( "maps/zombie_alcatraz/fx_alcatraz_brut_spawn" );
@@ -899,7 +900,6 @@ wait_on_box_alarm()
 	while ( true )
 	{
 		self.zbarrier waittill( "randomization_done" );
-		level notify( "spawn_brutus", 1 );
 		level.num_pulls_since_brutus_spawn++;
 
 		if ( level.brutus_in_grief )

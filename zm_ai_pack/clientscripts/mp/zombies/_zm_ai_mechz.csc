@@ -73,6 +73,16 @@ main()
 	level._effect["mech_footstep_steam"] = loadfx( "maps/zombie_tomb/fx_tomb_mech_foot_step_steam" );
 	level._effect["mech_exhaust_smoke"] = loadfx( "maps/zombie_tomb/fx_tomb_mech_exhaust_smoke" );
 	init_animtree();
+	scripts\zm\zm_ai_pack_mod_main::add_visionset_callback( ::register_burn_overlay );
+}
+
+register_burn_overlay()
+{
+	if ( getDvar( "mapname" ) == "zm_transit" || getDvar( "mapname" ) == "zm_tomb" )
+	{
+		return;
+	}
+	clientscripts\mp\_visionset_mgr::vsmgr_register_overlay_info_style_burn( "zm_transit_burn", 14000, 15, 2 );
 }
 
 init()

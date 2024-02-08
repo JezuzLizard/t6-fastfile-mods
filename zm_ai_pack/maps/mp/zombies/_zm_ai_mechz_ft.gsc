@@ -31,7 +31,7 @@ mechz_flamethrower_initial_setup()
 
 	self.flamethrower_trigger = get_flamethrower_trigger();
 
-	if ( !isdefined( self.flamethrower_trigger ) )
+	if ( !isdefined( self.flamethrower_trigger ) && getDvar( "mapname" ) == "zm_tomb" )
 	{
 /#
 		println( "Error: No free flamethrower triggers! Make sure you haven't spawned more than 4 mech zombies" );
@@ -39,9 +39,13 @@ mechz_flamethrower_initial_setup()
 		return;
 	}
 
-	self.flamethrower_trigger.origin = self gettagorigin( "tag_flamethrower_FX" );
-	self.flamethrower_trigger.angles = self gettagangles( "tag_flamethrower_FX" );
-	self.flamethrower_trigger linkto( self, "tag_flamethrower_FX" );
+	if ( getDvar( "mapname" ) == "zm_tomb" )
+	{
+		self.flamethrower_trigger.origin = self gettagorigin( "tag_flamethrower_FX" );
+		self.flamethrower_trigger.angles = self gettagangles( "tag_flamethrower_FX" );
+		self.flamethrower_trigger linkto( self, "tag_flamethrower_FX" );
+	}
+
 	self thread mechz_watch_for_flamethrower_damage();
 }
 
@@ -188,9 +192,55 @@ mechz_stop_firing_watcher()
 	self.firing = 0;
 }
 
+// credit to shippuden1592 for the original code
+hit_by_flamethrower( mechz )
+{
+	dist = distance(self.origin, mechz.origin);
+	dirTo = self.origin - mechz.flamethrower_fx.origin;
+	dirTo = vectornormalize(dirTo);
+	mechDir = anglestoforward(mechz.flamethrower_fx.angles + (180,0,0));
+	dot = vectordot(dirTo, mechDir);
+
+	if ( isDefined( self.is_zombie ) && self.is_zombie )
+	{
+		if ( dot < -0.85 && dist < 300 )
+		{
+			return true;
+		}
+	}
+	else if ( dot < -0.85 && is_player_valid( self ) && BulletTracePassed( mechz GetEye(), self GetEye(), false, undefined) && dist < 300 )
+	{
+		return true;
+	}
+
+	return false;
+}
+
+mech_flamethrower_fx()
+{
+	self.flamethrower_fx = spawn("script_model", self GetTagOrigin("tag_flamethrower_FX"));
+	self.flamethrower_fx setmodel("tag_origin");
+	self.flamethrower_fx.angles = self GetTagAngles("tag_flamethrower_FX");
+	self.flamethrower_fx linkto(self, "tag_flamethrower_FX");
+	ft = self.flamethrower_fx;
+
+	self waittill( "death" );
+	
+	if ( isDefined( ft ) )
+	{
+		ft unlink();
+		ft delete();
+	}
+}
+
 mechz_watch_for_flamethrower_damage()
 {
 	self endon( "death" );
+
+	if ( level.script != "zm_tomb" )
+	{
+		self thread mech_flamethrower_fx();
+	}
 
 	entity_on_tank_func = getFunction( "maps/mp/zm_tomb_tank",  "entity_on_tank" );
 
@@ -209,8 +259,11 @@ mechz_watch_for_flamethrower_damage()
 			{
 				if ( !( isdefined( players[i].is_burning ) && players[i].is_burning ) )
 				{
-					if ( isDefined( entity_on_tank_func ) && do_tank_sweep_auto_damage && players[i] [[ entity_on_tank_func ]]() || players[i] istouching( self.flamethrower_trigger ) )
+					if ( isDefined( entity_on_tank_func ) && do_tank_sweep_auto_damage && players[i] [[ entity_on_tank_func ]]() 
+						|| isDefined( self.flamethrower_trigger ) && players[i] istouching( self.flamethrower_trigger ) || level.script != "zm_tomb" && players[ i ] hit_by_flamethrower( self ) )
+					{
 						players[i] thread player_flame_damage();
+					}
 				}
 			}
 
@@ -224,7 +277,8 @@ mechz_watch_for_flamethrower_damage()
 				if ( isdefined( zombies[i].on_fire ) && zombies[i].on_fire )
 					continue;
 
-				if ( isDefined( entity_on_tank_func ) && do_tank_sweep_auto_damage && zombies[i] [[ entity_on_tank_func ]]() || zombies[i] istouching( self.flamethrower_trigger ) )
+				if ( isDefined( entity_on_tank_func ) && do_tank_sweep_auto_damage && zombies[i] [[ entity_on_tank_func ]]() 
+					|| isDefined( self.flamethrower_trigger ) &&  zombies[i] istouching( self.flamethrower_trigger ) || level.script != "zm_tomb" && zombies[ i ] hit_by_flamethrower( self ) )
 				{
 					zombies[i].on_fire = 1;
 					zombies[i] promote_to_explosive();
@@ -492,7 +546,7 @@ mechz_do_flamethrower_attack( tank_sweep )
 	self.last_flamethrower_time = gettime();
 	self thread mechz_kill_flamethrower_watcher();
 
-	if ( !isdefined( self.flamethrower_trigger ) )
+	if ( !isdefined( self.flamethrower_trigger ) && !isDefined( self.flamethrower_fx ) )
 		self mechz_flamethrower_initial_setup();
 
 	n_nearby_enemies = 0;
