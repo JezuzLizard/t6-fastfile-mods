@@ -14,6 +14,10 @@
 
 init_flamethrower_triggers()
 {
+	if ( level.script != "zm_tomb" )
+	{
+		return;
+	}
 	flag_wait( "initial_players_connected" );
 	level.flamethrower_trigger_array = getentarray( "flamethrower_trigger", "script_noteworthy" );
 	assert( isdefined( level.flamethrower_trigger_array ) && level.flamethrower_trigger_array.size >= 4 );

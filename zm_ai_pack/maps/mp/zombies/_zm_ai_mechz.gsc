@@ -669,10 +669,10 @@ get_best_mechz_spawn_pos( ignore_used_positions )
 
 	for ( i = 0; i < level.zombie_mechz_locations.size; i++ )
 	{
-		if ( !ignore_used_positions && ( isdefined( level.zombie_mechz_locations[i].has_been_used ) && level.zombie_mechz_locations[i].has_been_used ) )
+		if ( level.script == "zm_tomb" && !ignore_used_positions && ( isdefined( level.zombie_mechz_locations[i].has_been_used ) && level.zombie_mechz_locations[i].has_been_used ) )
 			continue;
 
-		if ( ignore_used_positions == 1 && ( isdefined( level.zombie_mechz_locations[i].used_cooldown ) && level.zombie_mechz_locations[i].used_cooldown ) )
+		if ( level.script == "zm_tomb" && ignore_used_positions == 1 && ( isdefined( level.zombie_mechz_locations[i].used_cooldown ) && level.zombie_mechz_locations[i].used_cooldown ) )
 			continue;
 
 		for ( j = 0; j < players.size; j++ )

@@ -224,10 +224,8 @@ mechz_force_behavior( behavior )
 
 get_behavior_orient()
 {
-/#
 	behavior_orient = getdvarint( #"_id_2F660A7B" );
 	return level.players[0].angles + vectorscale( ( 0, 1, 0 ), 180.0 ) + ( 0, behavior_orient, 0 );
-#/
 }
 
 setup_force_behavior()

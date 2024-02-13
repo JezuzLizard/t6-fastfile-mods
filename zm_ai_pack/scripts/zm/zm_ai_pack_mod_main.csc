@@ -74,12 +74,12 @@ visionset_mgr_init_override()
 	level.vsmgr = [];
 	level.vsmgr_states_inited = [];
 	level.vsmgr_filter_custom_enable = [];
-	level thread register_type( "visionset", ::visionset_slot_cb, ::visionset_lerp_cb, ::visionset_update_cb );
-	vsmgr_register_visionset_info( level.vsmgr_default_info_name, 1, 1, "undefined", "undefined" );
-	level thread register_type( "overlay", ::overlay_slot_cb, ::overlay_lerp_cb, ::overlay_update_cb );
-	vsmgr_register_overlay_info_style_none( level.vsmgr_default_info_name, 1, 1 );
-	level.vsmgr_is_type_currently_default_func = ::vsmgr_is_type_currently_default;
-	[[ level.on_finalize_initialization_callback ]]( ::finalize_clientfields );
-	level thread monitor();
+	level thread clientscripts\mp\_visionset_mgr::register_type( "visionset", clientscripts\mp\_visionset_mgr::visionset_slot_cb, clientscripts\mp\_visionset_mgr::visionset_lerp_cb, clientscripts\mp\_visionset_mgr::visionset_update_cb );
+	clientscripts\mp\_visionset_mgr::vsmgr_register_visionset_info( level.vsmgr_default_info_name, 1, 1, "undefined", "undefined" );
+	level thread clientscripts\mp\_visionset_mgr::register_type( "overlay", clientscripts\mp\_visionset_mgr::overlay_slot_cb, clientscripts\mp\_visionset_mgr::overlay_lerp_cb, clientscripts\mp\_visionset_mgr::overlay_update_cb );
+	clientscripts\mp\_visionset_mgr::vsmgr_register_overlay_info_style_none( level.vsmgr_default_info_name, 1, 1 );
+	level.vsmgr_is_type_currently_default_func = clientscripts\mp\_visionset_mgr::vsmgr_is_type_currently_default;
+	[[ level.on_finalize_initialization_callback ]]( clientscripts\mp\_visionset_mgr::finalize_clientfields );
+	level thread clientscripts\mp\_visionset_mgr::monitor();
 	run_visionset_callbacks();
 }

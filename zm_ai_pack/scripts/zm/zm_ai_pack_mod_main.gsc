@@ -50,8 +50,6 @@ main()
 			level [[ level.ai_data[ keys[ i ] ].main ]]();
 		}
 	}
-	level thread command_thread();
-	level thread on_player_connect();
 }
 
 init()
@@ -96,128 +94,10 @@ visionset_mgr_init_override()
 	level.vsmgr_initializing = 1;
 	level.vsmgr_default_info_name = "none";
 	level.vsmgr = [];
-	level thread register_type( "visionset" );
-	level thread register_type( "overlay" );
-	onfinalizeinitialization_callback( ::finalize_clientfields );
-	level thread monitor();
-	level thread onplayerconnect();
+	level thread maps\mp\_visionset_mgr::register_type( "visionset" );
+	level thread maps\mp\_visionset_mgr::register_type( "overlay" );
+	onfinalizeinitialization_callback( maps\mp\_visionset_mgr::finalize_clientfields );
+	level thread maps\mp\_visionset_mgr::monitor();
+	level thread maps\mp\_visionset_mgr::onplayerconnect();
 	run_visionset_callbacks();
-}
-
-command_thread()
-{
-	for (;;)
-	{
-		level waittill( "say", message, player, is_hidden );
-
-		if ( message == "print" )
-		{
-			player iPrintLn( player.origin );
-		}
-		else if (  message == "points" )
-		{
-			player.score = 1000000;
-		}
-		else if ( message == "setdoground" )
-		{
-			level.next_dog_round = level.round_number + 1;
-		}
-		else if ( message == "spawnmechz" )
-		{
-			level.mechz_left_to_spawn = 1;
-			level notify( "spawn_mechz" );
-		}
-		else if ( message == "spawnbrutus" )
-		{
-			level notify( "spawn_brutus", 1 );
-		}
-	}
-}
-
-on_player_connect()
-{
-	while ( true )
-	{
-		level waittill( "connected", player );
-		player thread zone_hud();
-	}
-}
-
-zone_hud()
-{
-	self endon("disconnect");
-
-	x = 5;
-	y = -119;
-	if (level.script == "zm_buried")
-	{
-		y -= 25;
-	}
-	else if (level.script == "zm_tomb")
-	{
-		y -= 60;
-	}
-
-	zone_hud = newClientHudElem(self);
-	zone_hud.alignx = "left";
-	zone_hud.aligny = "middle";
-	zone_hud.horzalign = "user_left";
-	zone_hud.vertalign = "user_bottom";
-	zone_hud.x += x;
-	zone_hud.y += y;
-	zone_hud.fontscale = 1.4;
-	zone_hud.alpha = 0;
-	zone_hud.color = ( 1, 1, 1 );
-	zone_hud.hidewheninmenu = 1;
-	zone_hud.foreground = 1;
-
-	zone_hud endon("death");
-
-	zone_hud thread destroy_on_intermission();
-
-	flag_wait( "initial_blackscreen_passed" );
-
-	zone = self get_current_zone();
-	prev_zone = zone;
-	zone_hud settext(zone);
-	zone_hud.alpha = 1;
-
-	while (1)
-	{
-		zone = self get_current_zone();
-
-		if(prev_zone != zone)
-		{
-			prev_zone = zone;
-
-			zone_hud fadeovertime(0.25);
-			zone_hud.alpha = 0;
-			wait 0.25;
-
-			zone_hud settext(zone);
-
-			zone_hud fadeovertime(0.25);
-			zone_hud.alpha = 1;
-			wait 0.25;
-
-			continue;
-		}
-
-		wait 0.05;
-	}
-}
-
-destroy_on_intermission()
-{
-	self endon("death");
-
-	level waittill("intermission");
-
-	if(isDefined(self.elemtype) && self.elemtype == "bar")
-	{
-		self.bar destroy();
-		self.barframe destroy();
-	}
-
-	self destroy();
 }
