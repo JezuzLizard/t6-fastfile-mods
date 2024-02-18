@@ -151,6 +151,12 @@ init()
 	level.mechz_powerplant_stun_time = 4;
 	flag_init( "mechz_launching_claw" );
 	flag_init( "mechz_claw_move_complete" );
+	if ( level.script == "zm_tomb" )
+	{
+		registerclientfield( "actor", "mechz_fx", 14000, 12, "int" );
+		registerclientfield( "toplayer", "mechz_grab", 14000, 1, "int" );
+	}
+
 	level thread init_flamethrower_triggers();
 
 	if ( isdefined( level.mechz_spawning_logic_override_func ) )
@@ -571,7 +577,12 @@ mechz_spawn()
 	self.meleedamage = 75;
 	self.custom_item_dmg = 2000;
 	recalc_zombie_array();
-	self setphysparams( 20, 0, 80 );
+	width = 15;
+	if ( level.script == "zm_tomb" )
+	{
+		width = 20;
+	}
+	self setphysparams( width, 0, 80 );
 	self setcandamage( 0 );
 	self.zombie_init_done = 1;
 	self notify( "zombie_init_done" );
@@ -1681,7 +1692,7 @@ mechz_damage_override( inflictor, attacker, damage, flags, meansofdeath, weapon,
 
 mechz_non_attacker_damage_override( damage, weapon, attacker )
 {
-	if ( attacker == level.vh_tank )
+	if ( isDefined( level.vh_tank ) && attacker == level.vh_tank )
 		self thread mechz_tank_hit_callback();
 
 	return false;

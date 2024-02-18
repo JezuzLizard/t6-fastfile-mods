@@ -385,7 +385,12 @@ brutus_spawn( starting_health, has_helmet, helmet_hits, explosive_dmg_taken, zon
 	self.custom_item_dmg = 1000;
 	self.brutus_lockdown_state = 0;
 	recalc_zombie_array();
-	self setphysparams( 20, 0, 60 );
+	width = 15;
+	if ( level.script == "zm_prison" )
+	{
+		width = 20;
+	}
+	self setphysparams( width, 0, 60 );
 	self.zombie_init_done = 1;
 	self notify( "zombie_init_done" );
 	self.allowpain = 0;

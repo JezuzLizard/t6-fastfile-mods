@@ -112,7 +112,11 @@ zone_hud()
 		}
 
 		zone = self get_current_zone();
-
+		if ( !isDefined( zone ) )
+		{
+			wait 1;
+			continue;
+		}
 		if ( prev_zone != zone )
 		{
 			prev_zone = zone;
@@ -203,7 +207,7 @@ draw_zome_spawn_location_info_text( origin, color, zone_name, location_type_name
 draw_specific_zombie_spawn_locations( loc_array, zone_name, color, type )
 {
 	draw_type = getDvar( "zm_ai_pack_debug_spawn_loc_draw_type" );
-	if ( draw_type == "" || draw_type != type )
+	if ( draw_type == "" || ( draw_type != "all" && draw_type != type ) )
 	{
 		return;
 	}
@@ -221,6 +225,8 @@ draw_zombie_spawn_locations()
 	{
 		wait 1;
 	}
+
+	flag_wait( "initial_blackscreen_passed" );
 
 	for (;;)
 	{
@@ -272,6 +278,10 @@ draw_node( origin, color, type )
 
 draw_node_info( node, type )
 {
+	if ( !level.players[ 0 ] is_player_looking_at( node.origin, 0.9, false ) )
+	{
+		return;
+	}
 	offset = ( 0, 0, 0 );
 	origin = node.origin;
 	print3d( origin + ( 0, 0, 49 ), "ORIGIN:" + origin );
@@ -328,6 +338,8 @@ draw_node_data( node, color, type )
 
 draw_nodes()
 {
+	flag_wait( "initial_blackscreen_passed" );
+
 	for (;;)
 	{
 		while ( getDvarInt( "zm_ai_pack_debug" ) <= 0 )

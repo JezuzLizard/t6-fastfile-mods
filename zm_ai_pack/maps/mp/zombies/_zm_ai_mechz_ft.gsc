@@ -55,6 +55,10 @@ mechz_flamethrower_initial_setup()
 
 get_flamethrower_trigger()
 {
+	if ( getDvar( "mapname" ) != "zm_tomb" )
+	{
+		return undefined;
+	}
 	for ( i = 0; i < level.flamethrower_trigger_array.size; i++ )
 	{
 		if ( !( isdefined( level.flamethrower_trigger_array[i].in_use ) && level.flamethrower_trigger_array[i].in_use ) )
