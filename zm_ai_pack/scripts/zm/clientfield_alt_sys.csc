@@ -1,20 +1,8 @@
 execute_clientfield_alt_callback_internal( data, last_data, field_type, field_name )
 {
-	entnum = data.entnum;
-	last_entnum = last_data.entnum;
 	ent = undefined;
 	field_data = level.clientfield_alts[ field_type ][ field_name ];
-	switch ( field_type )
-	{
-		case "actor":
-			assert( entnum >= 22 && entnum < 54, "Entnum " + entnum + " out of range for actor" );
-			ent = getEntByNum( 0, entnum );
-			break;
-		// case "toplayer":
-		// default:
-		// 	assertMsg( "Unhandled field type " + field_type );
-		// 	break;
-	}
+	ent = getEntByNum( 0, entnum );
 
 	assert( isDefined( ent ) );
 
@@ -74,7 +62,7 @@ register_clientfield_alt( field_type, field_name, field_value_type, field_callba
 	struct.callback = field_callback;
 	level.clientfield_alts[ field_type ][ field_name ] = struct;
 
-	dvar_name = field_type + "." + field_name;
+	dvar_name = field_name;
 	setDvar( dvar_name, "" );
 
 	level thread handle_clientfield_alt_callbacks( dvar_name, field_type, field_name );

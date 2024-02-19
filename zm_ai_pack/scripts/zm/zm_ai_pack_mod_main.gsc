@@ -13,12 +13,10 @@ main()
 {
 	replaceFunc( maps\mp\_visionset_mgr::init, ::visionset_mgr_init_override );
 	replaceFunc( maps\mp\animscripts\traverse\zm_shared::dotraverse, ::dotraverse_override );
-	perk_machine_knockdown_zombie_func = getFunction( "maps/mp/zm_nuked_perks", "perk_machine_knockdown_zombie" );
 
-	if ( isDefined( perk_machine_knockdown_zombie_func ) )
-	{
-		replaceFunc( perk_machine_knockdown_zombie_func, ::perk_machine_knockdown_zombie_override );
-	}
+	replace_single_function( "maps/mp/zm_nuked_perks", "perk_machine_knockdown_zombie", ::perk_machine_knockdown_zombie_override );
+	replace_single_function( "maps/mp/zombies/_zm_weap_slowgun", "can_be_paralyzed", ::can_be_paralyzed_override );
+	replace_single_function( "maps/mp/zombies/_zm_ai_sloth", "watch_crash_trigger", ::watch_crash_trigger_override );
 
 	level.script = toLower( getDvar( "mapname" ) );
 	level.gametype = toLower( getDvar( "g_gametype" ) );
@@ -263,4 +261,53 @@ get_idle_anim()
 	}
 
 	return idle_anim;
+}
+
+replace_single_function( path, func_name, func_override )
+{
+	func = getFunction( path, func_name );
+
+	if ( isDefined( func ) )
+	{
+		replaceFunc( func, func_override );
+	}	
+}
+
+can_be_paralyzed_override( zombie )
+{
+	if ( is_true( zombie.immune_to_slowgun ) )
+	{
+		return false;
+	}
+
+	if ( is_true( zombie.is_ghost ) )
+	{
+		return false;
+	}
+
+	if ( is_true( zombie.guts_explosion ) )
+	{
+		return false;
+	}
+
+	if ( isdefined( zombie ) && zombie.health > 0 )
+	{
+		return true;
+	}
+
+	return false;
+}
+
+watch_crash_trigger_override()
+{
+	while ( true )
+	{
+		self waittill( "trigger", who );
+
+		if ( isDefined( who ) && isDefined( level.sloth ) && who == level.sloth && who.state == "berserk" )
+		{
+			who setclientfield( "sloth_berserk", 0 );
+			who sloth_set_state( "crash", 0 );
+		}
+	}
 }

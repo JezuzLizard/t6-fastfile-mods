@@ -393,6 +393,7 @@ brutus_spawn( starting_health, has_helmet, helmet_hits, explosive_dmg_taken, zon
 		width = 20;
 	}
 	self setphysparams( width, 0, 60 );
+	self.immune_to_slowgun = true;
 	self.zombie_init_done = 1;
 	self notify( "zombie_init_done" );
 	self.allowpain = 0;
@@ -2452,7 +2453,7 @@ brutus_lockdown_client_effects( delay )
 
 	self.brutus_lockdown_state = !self.brutus_lockdown_state;
 
-	if ( level.script == "zm_tomb" )
+	if ( level.script == "zm_prison" )
 	{
 		self setclientfield( "brutus_lock_down", self.brutus_lockdown_state );
 	}

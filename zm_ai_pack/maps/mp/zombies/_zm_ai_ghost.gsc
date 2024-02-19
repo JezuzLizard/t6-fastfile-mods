@@ -616,6 +616,7 @@ prespawn()
 {
 	self endon( "death" );
 	level endon( "intermission" );
+	self.immune_to_slowgun = true;
 	self maps\mp\zombies\_zm_ai_ghost_ffotd::prespawn_start();
 	self.startinglocation = self.origin;
 	self.animname = "ghost_zombie";

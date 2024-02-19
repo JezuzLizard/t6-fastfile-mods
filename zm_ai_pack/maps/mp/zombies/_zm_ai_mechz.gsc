@@ -221,7 +221,7 @@ clear_one_off_fx( fx_id )
 	}
 	else
 	{
-		set_clientfield_alt_allplayers( "actor", "mechz_fx", self, self.fx_field );
+		set_clientfield_alt_allplayers( "mechz_fx", self, self.fx_field );
 	}
 }
 
@@ -251,7 +251,7 @@ traversal_booster_fx_watcher()
 		}
 		else
 		{
-			set_clientfield_alt_allplayers( "actor", "mechz_fx", self, self.fx_field );
+			set_clientfield_alt_allplayers( "mechz_fx", self, self.fx_field );
 		}
 	}
 }
@@ -295,7 +295,7 @@ booster_fx_watcher()
 		}
 		else
 		{
-			set_clientfield_alt_allplayers( "actor", "mechz_fx", self, self.fx_field );
+			set_clientfield_alt_allplayers( "mechz_fx", self, self.fx_field );
 		}
 	}
 }
@@ -319,7 +319,7 @@ flamethrower_fx_watcher()
 		}
 		else
 		{
-			set_clientfield_alt_allplayers( "actor", "mechz_fx", self, self.fx_field );
+			set_clientfield_alt_allplayers( "mechz_fx", self, self.fx_field );
 		}
 	}
 }
@@ -333,7 +333,7 @@ fx_cleanup()
 	}
 	else
 	{
-		set_clientfield_alt_allplayers( "actor", "mechz_fx", self, self.fx_field );
+		set_clientfield_alt_allplayers( "mechz_fx", self, self.fx_field );
 	}
 	wait_network_frame();
 }
@@ -604,6 +604,7 @@ mechz_spawn()
 	self mechz_setup_snd();
 	level notify( "sam_clue_mechz", self );
 	self.closest_player_override = maps\mp\zombies\_zm_ai_mechz::get_favorite_enemy;
+	self.immune_to_slowgun = true;
 	self.animname = "mechz_zombie";
 	self.has_legs = 1;
 	self.no_gib = 1;
@@ -802,7 +803,7 @@ mechz_death()
 	}
 	else
 	{
-		set_clientfield_alt_allplayers( "actor", "mechz_fx", self, self.fx_field );
+		set_clientfield_alt_allplayers( "mechz_fx", self, self.fx_field );
 	}
 	self thread maps\mp\zombies\_zm_spawner::zombie_eye_glow_stop();
 	self mechz_interrupt();
@@ -1559,7 +1560,7 @@ mechz_launch_armor_piece()
 	}
 	else
 	{
-		set_clientfield_alt_allplayers( "actor", "mechz_fx", self, self.fx_field );
+		set_clientfield_alt_allplayers( "mechz_fx", self, self.fx_field );
 	}
 
 	if ( sndmechzisnetworksafe( "destruction" ) )
@@ -1696,7 +1697,7 @@ mechz_damage_override( inflictor, attacker, damage, flags, meansofdeath, weapon,
 		}
 		else
 		{
-			set_clientfield_alt_allplayers( "actor", "mechz_fx", self, self.fx_field );
+			set_clientfield_alt_allplayers( "mechz_fx", self, self.fx_field );
 		}
 
 		if ( !( isdefined( self.not_interruptable ) && self.not_interruptable ) && !( isdefined( self.is_traversing ) && self.is_traversing ) )

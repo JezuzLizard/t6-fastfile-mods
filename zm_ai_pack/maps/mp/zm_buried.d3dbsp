@@ -33004,3 +33004,165 @@
 "origin" "887 -1281 74"
 "guid" "BB6ECC38"
 }
+{
+"origin" "0 0 -500"
+"export" "1"
+"model" "veh_t6_dlc_zm_mech"
+"classname" "actor_zm_tomb_mech_zombie"
+"script_noteworthy" "mechz_spawner"
+"spawnflags" "1"
+}
+{
+"targetname" "zone_maze_spawners"
+"script_noteworthy" "mechz_location"
+"origin" "5028 455 4"
+"classname" "script_struct"
+"angles" "0 0 0"
+}
+{
+"targetname" "zone_mansion_backyard_spawners"
+"script_noteworthy" "mechz_location"
+"origin" "3992 583 4"
+"classname" "script_struct"
+"angles" "0 0 0"
+}
+{
+"targetname" "zone_start_lower_spawners"
+"script_noteworthy" "mechz_location"
+"origin" "-2586 -187 1224"
+"classname" "script_struct"
+"angles" "0 0 0"
+}
+{
+"targetname" "zone_start_spawners"
+"script_noteworthy" "mechz_location"
+"origin" "-2747 29 1344"
+"classname" "script_struct"
+"angles" "0 0 0"
+}
+{
+"targetname" "zone_tunnels_center_spawners"
+"script_noteworthy" "mechz_location"
+"origin" "-961 -225 288"
+"classname" "script_struct"
+"angles" "0 0 0"
+}
+{
+"targetname" "zone_stables_spawners"
+"script_noteworthy" "mechz_location"
+"origin" "-797 -115 101"
+"classname" "script_struct"
+"angles" "0 0 0"
+}
+{
+"targetname" "zone_street_lightwest_spawners"
+"script_noteworthy" "mechz_location"
+"origin" "-613 296 -27"
+"classname" "script_struct"
+"angles" "0 0 0"
+}
+{
+"targetname" "zone_street_darkeast_spawners"
+"script_noteworthy" "mechz_location"
+"origin" "168 -938 -21"
+"classname" "script_struct"
+"angles" "0 0 0"
+}
+{
+"targetname" "zone_street_fountain_spawners"
+"script_noteworthy" "mechz_location"
+"origin" "1007 541 -18"
+"classname" "script_struct"
+"angles" "0 0 0"
+}
+{
+"targetname" "zone_church_main_spawners"
+"script_noteworthy" "mechz_location"
+"origin" "1673 2299 40"
+"classname" "script_struct"
+"angles" "0 0 0"
+}
+{
+"targetname" "zone_mansion_lawn_spawners"
+"script_noteworthy" "mechz_location"
+"origin" "1772 553 0"
+"classname" "script_struct"
+"angles" "0 0 0"
+}
+{
+"targetname" "zone_underground_bar_spawners"
+"script_noteworthy" "mechz_location"
+"origin" "826 -1458 56"
+"classname" "script_struct"
+"angles" "0 0 0"
+}
+{
+"targetname" "zone_street_darkeast_nook_spawners"
+"script_noteworthy" "mechz_location"
+"origin" "309 -1686 160"
+"classname" "script_struct"
+"angles" "0 0 0"
+}
+{
+"targetname" "zone_gun_store_spawners"
+"script_noteworthy" "mechz_location"
+"origin" "-451 -1389 152"
+"classname" "script_struct"
+"angles" "0 0 0"
+}
+{
+"targetname" "zone_bank_spawners"
+"script_noteworthy" "mechz_location"
+"origin" "-407 -268 8"
+"classname" "script_struct"
+"angles" "0 0 0"
+}
+{
+"targetname" "zone_underground_courthouse2_spawners"
+"script_noteworthy" "mechz_location"
+"origin" "-1 721 176"
+"classname" "script_struct"
+"angles" "0 0 0"
+}
+{
+"targetname" "zone_underground_courthouse_spawners"
+"script_noteworthy" "mechz_location"
+"origin" "486 823 8"
+"classname" "script_struct"
+"angles" "0 0 0"
+}
+{
+"targetname" "zone_toy_store_floor2_spawners"
+"script_noteworthy" "mechz_location"
+"origin" "719 -602 142"
+"classname" "script_struct"
+"angles" "0 0 0"
+}
+{
+"targetname" "zone_candy_store_floor2_spawners"
+"script_noteworthy" "mechz_location"
+"origin" "574 -240 148"
+"classname" "script_struct"
+"angles" "0 0 0"
+}
+{
+"targetname" "zone_candy_store_spawners"
+"script_noteworthy" "mechz_location"
+"origin" "581 -132 8"
+"classname" "script_struct"
+"angles" "0 0 0"
+}
+{
+"targetname" "zone_toy_store_spawners"
+"script_noteworthy" "mechz_location"
+"origin" "660 -559 10"
+"classname" "script_struct"
+"angles" "0 0 0"
+}
+{
+"targetname" "zone_tunnels_north2_spawners"
+"script_noteworthy" "mechz_location"
+"origin" "-435 267 424"
+"classname" "script_struct"
+"angles" "0 0 0"
+}

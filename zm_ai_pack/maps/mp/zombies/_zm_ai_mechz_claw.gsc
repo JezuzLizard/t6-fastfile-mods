@@ -56,9 +56,8 @@ mechz_claw_release( bopenclaw )
 			}
 			else
 			{
-				self.e_grabbed set_clientfield_alt_toplayer( "toplayer", "mechz_grab", self.e_grabbed, 0 );
+				self.e_grabbed set_clientfield_alt_toplayer( "mechz_grab", self.e_grabbed, 0 );
 			}
-			self.e_grabbed setclientfieldtoplayer( "mechz_grab", 0 );
 			self.e_grabbed allowcrouch( 1 );
 			self.e_grabbed allowprone( 1 );
 		}
@@ -179,7 +178,7 @@ claw_grapple()
 	}
 	else
 	{
-		set_clientfield_alt_allplayers( "actor", "mechz_fx", self, self.fx_field );
+		set_clientfield_alt_allplayers( "mechz_fx", self, self.fx_field );
 	}
 	self.m_claw setanim( %ai_zombie_mech_grapple_arm_open_idle, 1, 0, 1 );
 	self.m_claw unlink();
@@ -234,7 +233,7 @@ claw_grapple()
 					}
 					else
 					{
-						self.e_grabbed set_clientfield_alt_toplayer( "toplayer", "mechz_grab", self.e_grabbed, 1 );
+						self.e_grabbed set_clientfield_alt_toplayer( "mechz_grab", self.e_grabbed, 1 );
 					}
 					self.e_grabbed playerlinktodelta( self.m_claw, "tag_attach_player" );
 					self.e_grabbed setplayerangles( vectortoangles( self.origin - self.e_grabbed.origin ) );
@@ -315,7 +314,7 @@ claw_grapple()
 	}
 	else
 	{
-		set_clientfield_alt_allplayers( "actor", "mechz_fx", self, self.fx_field );
+		set_clientfield_alt_allplayers( "mechz_fx", self, self.fx_field );
 	}
 	flag_clear( "mechz_launching_claw" );
 
@@ -595,7 +594,7 @@ mechz_claw_cleanup()
 	}
 	else
 	{
-		set_clientfield_alt_allplayers( "actor", "mechz_fx", self, self.fx_field );
+		set_clientfield_alt_allplayers( "mechz_fx", self, self.fx_field );
 	}
 	self mechz_claw_release();
 

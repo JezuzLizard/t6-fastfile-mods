@@ -745,7 +745,7 @@ zm_traverse : aliased restart notify traverse_anim
 	jump_across_120					ai_zombie_jump_across_120
 	jump_down_40					ai_zombie_jump_down_40
 	jump_down_fast_40				ai_zombie_jump_down_fast_40
-//	jump_down_48					ai_zombie_jump_down_48
+	jump_down_48					ai_zombie_jump_down_48
 	jump_down_72					ai_zombie_jump_down_72
 	jump_down_96					ai_zombie_jump_down_96
 	jump_down_120					ai_zombie_jump_down_120

@@ -40,6 +40,8 @@ script,clientscripts/mp/zombies/_zm_ai_ghost.csc
 script,maps/mp/zombies/_zm_ai_brutus.gsc
 script,clientscripts/mp/zombies/_zm_ai_brutus.csc
 
+script,maps/mp/zombies/_zm_ai_dogs.gsc
+
 script,maps/mp/zombies/_zm_ai_mechz.gsc
 script,maps/mp/zombies/_zm_ai_mechz_ft.gsc
 script,maps/mp/zombies/_zm_ai_mechz_ffotd.gsc

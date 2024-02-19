@@ -164,7 +164,7 @@ location_hud()
 	for ( i = 0; i < 3; i++ )
 	{
 		loc_hud[ i ] = self new_debug_hud( x, y );
-		x += 45;
+		x += 55;
 	}
 
 	loc_hud[ 0 ].label = &"x:";
@@ -240,6 +240,10 @@ draw_zombie_spawn_locations()
 		{
 			zone = level.zones[ zkeys[ z ] ];
 
+			if ( getDvarInt( "zm_ai_pack_debug_show_only_active_spawns" ) && ( !zone.is_enabled || !zone.is_active || !zone.is_spawning_allowed ) )
+			{
+				continue;
+			}
 			draw_specific_zombie_spawn_locations( zone.spawn_locations, zkeys[ z ], ( 0.8, 0.8, 0.8 ), "zombie" );
 
 			draw_specific_zombie_spawn_locations( zone.inert_locations, zkeys[ z ], ( 0.8, 0, 0.8 ), "inert" );
