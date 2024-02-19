@@ -12,6 +12,8 @@
 #include maps\mp\animscripts\zm_shared;
 #include maps\mp\zombies\_zm_spawner;
 
+#include scripts\zm\clientfield_alt_sys;
+
 mechz_in_range_for_jump()
 {
 	if ( !isdefined( self.jump_pos ) )
@@ -272,7 +274,14 @@ mechz_do_jump( wait_for_stationary_tank )
 	self show();
 	self.fx_field = self.fx_field_old;
 	self.fx_field_old = undefined;
-	self setclientfield( "mechz_fx", self.fx_field );
+	if ( level.script == "zm_tomb" )
+	{
+		self setclientfield( "mechz_fx", self.fx_field );
+	}
+	else
+	{
+		set_clientfield_alt_allplayers( "actor", "mechz_fx", self, self.fx_field );
+	}
 	self thread maps\mp\zombies\_zm_spawner::zombie_eye_glow();
 
 	if ( isdefined( self.m_claw ) )
@@ -298,7 +307,14 @@ mechz_kill_jump_watcher()
 mechz_jump_cleanup()
 {
 	self.fx_field = self.fx_field & ~128;
-	self setclientfield( "mechz_fx", self.fx_field );
+	if ( level.script == "zm_tomb" )
+	{
+		self setclientfield( "mechz_fx", self.fx_field );
+	}
+	else
+	{
+		set_clientfield_alt_allplayers( "actor", "mechz_fx", self, self.fx_field );
+	}
 	self stopanimscripted();
 	self notify( "jump_complete" );
 }

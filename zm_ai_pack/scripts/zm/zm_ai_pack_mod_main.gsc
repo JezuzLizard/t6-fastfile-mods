@@ -47,8 +47,6 @@ main()
 	// level.ai_data[ "zombie_dog" ].init = maps\mp\zombies\_zm_ai_dogs::enable_dog_rounds;
 	// level.ai_data[ "zombie_dog" ].should_execute = !( level.gametype == "zstandard" && getGametypeSetting( "allowDogs" ) == 1 );	
 
-	
-
 	keys = getArrayKeys( level.ai_data );
 	for ( i = 0; i < keys.size; i++ )
 	{

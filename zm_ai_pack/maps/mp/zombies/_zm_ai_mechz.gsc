@@ -22,6 +22,8 @@
 //#include maps\mp\zm_tomb_chamber;
 #include maps\mp\zombies\_zm_ai_basic;
 
+#include scripts\zm\clientfield_alt_sys;
+
 precache()
 {
 	level thread mechz_setup_armor_pieces();
@@ -47,9 +49,12 @@ precache()
 
 register_clientfields()
 {
-	registerclientfield( "actor", "mechz_fx", 14000, 12, "int" );
-	registerclientfield( "toplayer", "mechz_grab", 14000, 1, "int" );
-	registerclientfield( "actor", "anim_rate", 14000, 2, "float" );
+	//registerclientfield( "actor", "mechz_fx", 14000, 12, "int" );
+	//registerclientfield( "toplayer", "mechz_grab", 14000, 1, "int" );
+	if ( getDvar( "mapname" ) != "zm_buried" )
+	{
+		registerclientfield( "actor", "anim_rate", 14000, 2, "float" );
+	}
 }
 
 register_burn_overlay()
@@ -210,7 +215,14 @@ clear_one_off_fx( fx_id )
 	self endon( "death" );
 	wait 10;
 	self.fx_field = self.fx_field & ~fx_id;
-	self setclientfield( "mechz_fx", self.fx_field );
+	if ( level.script == "zm_tomb" )
+	{
+		self setclientfield( "mechz_fx", self.fx_field );
+	}
+	else
+	{
+		set_clientfield_alt_allplayers( "actor", "mechz_fx", self, self.fx_field );
+	}
 }
 
 traversal_booster_fx_watcher()
@@ -233,8 +245,14 @@ traversal_booster_fx_watcher()
 			self.sndloopent playsound( "zmb_ai_mechz_rocket_stop" );
 			self.sndloopent stoploopsound( 1 );
 		}
-
-		self setclientfield( "mechz_fx", self.fx_field );
+		if ( level.script == "zm_tomb" )
+		{
+			self setclientfield( "mechz_fx", self.fx_field );
+		}
+		else
+		{
+			set_clientfield_alt_allplayers( "actor", "mechz_fx", self, self.fx_field );
+		}
 	}
 }
 
@@ -271,8 +289,14 @@ booster_fx_watcher()
 
 			self thread clear_one_off_fx( 512 );
 		}
-
-		self setclientfield( "mechz_fx", self.fx_field );
+		if ( level.script == "zm_tomb" )
+		{
+			self setclientfield( "mechz_fx", self.fx_field );
+		}
+		else
+		{
+			set_clientfield_alt_allplayers( "actor", "mechz_fx", self, self.fx_field );
+		}
 	}
 }
 
@@ -289,14 +313,28 @@ flamethrower_fx_watcher()
 		else if ( notetrack == "stop_ft" )
 			self.fx_field = self.fx_field & ~64;
 
-		self setclientfield( "mechz_fx", self.fx_field );
+		if ( level.script == "zm_tomb" )
+		{
+			self setclientfield( "mechz_fx", self.fx_field );
+		}
+		else
+		{
+			set_clientfield_alt_allplayers( "actor", "mechz_fx", self, self.fx_field );
+		}
 	}
 }
 
 fx_cleanup()
 {
 	self.fx_field = 0;
-	self setclientfield( "mechz_fx", self.fx_field );
+	if ( level.script == "zm_tomb" )
+	{
+		self setclientfield( "mechz_fx", self.fx_field );
+	}
+	else
+	{
+		set_clientfield_alt_allplayers( "actor", "mechz_fx", self, self.fx_field );
+	}
 	wait_network_frame();
 }
 
@@ -576,6 +614,7 @@ mechz_spawn()
 	self.melee_anim_func = ::melee_anim_func;
 	self.meleedamage = 75;
 	self.custom_item_dmg = 2000;
+	self.ignore_distance_tracking = true;
 	recalc_zombie_array();
 	width = 15;
 	if ( level.script == "zm_tomb" )
@@ -757,7 +796,14 @@ mechz_death()
 	self mechz_claw_detach();
 	self release_flamethrower_trigger();
 	self.fx_field = 0;
-	self setclientfield( "mechz_fx", self.fx_field );
+	if ( level.script == "zm_tomb" )
+	{
+		self setclientfield( "mechz_fx", self.fx_field );
+	}
+	else
+	{
+		set_clientfield_alt_allplayers( "actor", "mechz_fx", self, self.fx_field );
+	}
 	self thread maps\mp\zombies\_zm_spawner::zombie_eye_glow_stop();
 	self mechz_interrupt();
 
@@ -1507,7 +1553,14 @@ mechz_launch_armor_piece()
 		self detach( self.armor_state[self.next_armor_piece].model, self.armor_state[self.next_armor_piece].tag );
 
 	self.fx_field = self.fx_field | 1 << self.armor_state[self.next_armor_piece].index;
-	self setclientfield( "mechz_fx", self.fx_field );
+	if ( level.script == "zm_tomb" )
+	{
+		self setclientfield( "mechz_fx", self.fx_field );
+	}
+	else
+	{
+		set_clientfield_alt_allplayers( "actor", "mechz_fx", self, self.fx_field );
+	}
 
 	if ( sndmechzisnetworksafe( "destruction" ) )
 		self playsound( "zmb_ai_mechz_destruction" );
@@ -1637,7 +1690,14 @@ mechz_damage_override( inflictor, attacker, damage, flags, meansofdeath, weapon,
 
 		self.fx_field = self.fx_field | 1024;
 		self.fx_field = self.fx_field & ~2048;
-		self setclientfield( "mechz_fx", self.fx_field );
+		if ( level.script == "zm_tomb" )
+		{
+			self setclientfield( "mechz_fx", self.fx_field );
+		}
+		else
+		{
+			set_clientfield_alt_allplayers( "actor", "mechz_fx", self, self.fx_field );
+		}
 
 		if ( !( isdefined( self.not_interruptable ) && self.not_interruptable ) && !( isdefined( self.is_traversing ) && self.is_traversing ) )
 		{

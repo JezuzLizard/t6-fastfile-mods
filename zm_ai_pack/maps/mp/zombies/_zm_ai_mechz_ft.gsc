@@ -12,6 +12,8 @@
 #include maps\mp\animscripts\zm_shared;
 #include maps\mp\_visionset_mgr;
 
+#include scripts\zm\clientfield_alt_sys;
+
 init_flamethrower_triggers()
 {
 	if ( level.script != "zm_tomb" )
@@ -611,7 +613,14 @@ mechz_kill_flamethrower_watcher()
 mechz_flamethrower_cleanup()
 {
 	self.fx_field = self.fx_field & ~64;
-	self setclientfield( "mechz_fx", self.fx_field );
+	if ( level.script == "zm_tomb" )
+	{
+		self setclientfield( "mechz_fx", self.fx_field );
+	}
+	else
+	{
+		set_clientfield_alt_allplayers( "actor", "mechz_fx", self, self.fx_field );
+	}
 	self.firing = 0;
 	self.doing_tank_sweep = 0;
 	self.cant_melee = 0;

@@ -15,6 +15,8 @@
 #include maps\mp\zombies\_zm_laststand;
 //#include maps\mp\zombies\_zm_weap_riotshield_tomb;
 
+#include scripts\zm\clientfield_alt_sys;
+
 #using_animtree("mechz_claw");
 
 mechz_claw_detach()
@@ -48,6 +50,14 @@ mechz_claw_release( bopenclaw )
 	{
 		if ( isplayer( self.e_grabbed ) )
 		{
+			if ( level.script == "zm_tomb" )
+			{
+				self.e_grabbed setclientfieldtoplayer( "mechz_grab", 0 );
+			}
+			else
+			{
+				self.e_grabbed set_clientfield_alt_toplayer( "toplayer", "mechz_grab", self.e_grabbed, 0 );
+			}
 			self.e_grabbed setclientfieldtoplayer( "mechz_grab", 0 );
 			self.e_grabbed allowcrouch( 1 );
 			self.e_grabbed allowprone( 1 );
@@ -163,7 +173,14 @@ claw_grapple()
 	v_claw_origin = self gettagorigin( "tag_claw" );
 	v_claw_angles = vectortoangles( self.origin - self.favoriteenemy.origin );
 	self.fx_field = self.fx_field | 256;
-	self setclientfield( "mechz_fx", self.fx_field );
+	if ( level.script == "zm_tomb" )
+	{
+		self setclientfield( "mechz_fx", self.fx_field );
+	}
+	else
+	{
+		set_clientfield_alt_allplayers( "actor", "mechz_fx", self, self.fx_field );
+	}
 	self.m_claw setanim( %ai_zombie_mech_grapple_arm_open_idle, 1, 0, 1 );
 	self.m_claw unlink();
 	self.m_claw.fx_ent = spawn( "script_model", self.m_claw gettagorigin( "tag_claw" ) );
@@ -211,7 +228,14 @@ claw_grapple()
 				else
 				{
 					self.e_grabbed = player;
-					self.e_grabbed setclientfieldtoplayer( "mechz_grab", 1 );
+					if ( level.script == "zm_tomb" )
+					{
+						self.e_grabbed setclientfieldtoplayer( "mechz_grab", 1 );
+					}
+					else
+					{
+						self.e_grabbed set_clientfield_alt_toplayer( "toplayer", "mechz_grab", self.e_grabbed, 1 );
+					}
 					self.e_grabbed playerlinktodelta( self.m_claw, "tag_attach_player" );
 					self.e_grabbed setplayerangles( vectortoangles( self.origin - self.e_grabbed.origin ) );
 					self.e_grabbed playsound( "zmb_ai_mechz_claw_grab" );
@@ -285,7 +309,14 @@ claw_grapple()
 	self.m_claw.fx_ent delete();
 	self.m_claw.fx_ent = undefined;
 	self.fx_field = self.fx_field & ~256;
-	self setclientfield( "mechz_fx", self.fx_field );
+	if ( level.script == "zm_tomb" )
+	{
+		self setclientfield( "mechz_fx", self.fx_field );
+	}
+	else
+	{
+		set_clientfield_alt_allplayers( "actor", "mechz_fx", self, self.fx_field );
+	}
 	flag_clear( "mechz_launching_claw" );
 
 	if ( isdefined( self.e_grabbed ) )
@@ -558,7 +589,14 @@ mechz_claw_cleanup()
 {
 	self.fx_field = self.fx_field & ~256;
 	self.fx_field = self.fx_field & ~64;
-	self setclientfield( "mechz_fx", self.fx_field );
+	if ( level.script == "zm_tomb" )
+	{
+		self setclientfield( "mechz_fx", self.fx_field );
+	}
+	else
+	{
+		set_clientfield_alt_allplayers( "actor", "mechz_fx", self, self.fx_field );
+	}
 	self mechz_claw_release();
 
 	if ( isdefined( self.m_claw ) )

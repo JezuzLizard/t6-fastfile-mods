@@ -3,6 +3,9 @@
 #include clientscripts\mp\_utility;
 #include clientscripts\mp\zombies\_zm_utility;
 
+#include scripts\zm\zm_ai_pack_mod_main;
+#include scripts\zm\clientfield_alt_sys;
+
 precache()
 {
 
@@ -40,10 +43,15 @@ add_fx_element( index, fx_element, tag_name, min_freq, max_freq )
 
 main()
 {
-	registerclientfield( "actor", "mechz_fx", 14000, 12, "int", ::mechz_handle_fx );
-	registerclientfield( "toplayer", "mechz_grab", 14000, 1, "int", ::mechz_claw_callback );
-	registerclientfield( "actor", "anim_rate", 14000, 2, "float", undefined, 0 );
-	setupclientfieldanimspeedcallbacks( "actor", 1, "anim_rate" );
+	register_clientfield_alt( "toplayer", "mechz_grab", "int", ::mechz_claw_callback_alt );
+	register_clientfield_alt( "actor", "mechz_fx", "int", ::mechz_handle_fx_alt );
+	//registerclientfield( "actor", "mechz_fx", 14000, 12, "int", ::mechz_handle_fx );
+	//registerclientfield( "toplayer", "mechz_grab", 14000, 1, "int", ::mechz_claw_callback );
+	if ( getDvar( "mapname" ) != "zm_buried" && getDvar( "g_gametype" != "zclassic" ) )
+	{
+		registerclientfield( "actor", "anim_rate", 14000, 2, "float", undefined, 0 );
+		setupclientfieldanimspeedcallbacks( "actor", 1, "anim_rate" );
+	}
 	add_fx_element( 0, "maps/zombie_tomb/fx_tomb_mech_dmg_armor", "J_Knee_Attach_LE" );
 	add_fx_element( 0, "maps/zombie_tomb/fx_tomb_mech_dmg_sparks", "J_Knee_Attach_LE", 0.25, 0.75 );
 	add_fx_element( 0, "maps/zombie_tomb/fx_tomb_mech_dmg_steam", "J_Knee_Attach_LE", 0.1, 0.3 );
@@ -120,32 +128,77 @@ init()
 	init_animtree();
 }
 
+setup_fx_alt( index )
+{
+	if ( !is_true( self.fx_initialized ) )
+	{
+		self.fx_initialized = 1;
+		self.smoke_fx = playfxontag( 0, level._effect["mech_exhaust_smoke"], self, "tag_back_exhaust_FX" );
+		self setsoundentcontext( "f35", "interior" );
+	}
+
+	if ( index == 10 )
+		self setsoundentcontext( "f35", "exterior" );
+
+	for ( i = 0; i < level.mechz_clientside_fx[index].size; i++ )
+	{
+		fx_struct = level.mechz_clientside_fx[index][i];
+		unique_script_id = "kill_fx_" + index + "_" + self getentitynumber();
+		self thread sndplayfxloops( 0, index, fx_struct.tag_name );
+
+		if ( isdefined( fx_struct.min_freq ) )
+		{
+			self thread mechz_do_manual_looping_fx( 0, unique_script_id, fx_struct.tag_name, fx_struct.fx_element, fx_struct.min_freq, fx_struct.max_freq );
+			continue;
+		}
+
+		self thread mechz_do_auto_looping_fx( 0, index, fx_struct.tag_name, fx_struct.fx_element );
+	}
+}
+
 setup_fx( localclientnum, index, bnewent, binitialsnap, fieldname, bwasdemojump )
 {
-    if ( !is_true( self.fx_initialized ) )
-    {
-        self.fx_initialized = 1;
-        self.smoke_fx = playfxontag( localclientnum, level._effect["mech_exhaust_smoke"], self, "tag_back_exhaust_FX" );
-        self setsoundentcontext( "f35", "interior" );
-    }
+	if ( !is_true( self.fx_initialized ) )
+	{
+		self.fx_initialized = 1;
+		self.smoke_fx = playfxontag( localclientnum, level._effect["mech_exhaust_smoke"], self, "tag_back_exhaust_FX" );
+		self setsoundentcontext( "f35", "interior" );
+	}
 
-    if ( index == 10 )
-        self setsoundentcontext( "f35", "exterior" );
+	if ( index == 10 )
+		self setsoundentcontext( "f35", "exterior" );
 
-    for ( i = 0; i < level.mechz_clientside_fx[index].size; i++ )
-    {
-        fx_struct = level.mechz_clientside_fx[index][i];
-        unique_script_id = "kill_fx_" + index + "_" + self getentitynumber();
-        self thread sndplayfxloops( localclientnum, index, fx_struct.tag_name );
+	for ( i = 0; i < level.mechz_clientside_fx[index].size; i++ )
+	{
+		fx_struct = level.mechz_clientside_fx[index][i];
+		unique_script_id = "kill_fx_" + index + "_" + self getentitynumber();
+		self thread sndplayfxloops( localclientnum, index, fx_struct.tag_name );
 
-        if ( isdefined( fx_struct.min_freq ) )
-        {
-            self thread mechz_do_manual_looping_fx( localclientnum, unique_script_id, fx_struct.tag_name, fx_struct.fx_element, fx_struct.min_freq, fx_struct.max_freq );
-            continue;
-        }
+		if ( isdefined( fx_struct.min_freq ) )
+		{
+			self thread mechz_do_manual_looping_fx( localclientnum, unique_script_id, fx_struct.tag_name, fx_struct.fx_element, fx_struct.min_freq, fx_struct.max_freq );
+			continue;
+		}
 
-        self thread mechz_do_auto_looping_fx( localclientnum, index, fx_struct.tag_name, fx_struct.fx_element );
-    }
+		self thread mechz_do_auto_looping_fx( localclientnum, index, fx_struct.tag_name, fx_struct.fx_element );
+	}
+}
+
+cleanup_fx_alt( index )
+{
+	unique_script_id = "kill_fx_" + index + "_" + self getentitynumber();
+	fx_array = level.mechz_clientside_fx_inst[index];
+
+	if ( isdefined( fx_array ) && fx_array.size > 0 )
+	{
+		for ( i = fx_array.size - 1; i >= 0; i-- )
+		{
+			stopfx( 0, fx_array[i] );
+			fx_array[i] = undefined;
+		}
+	}
+
+	self notify( unique_script_id );
 }
 
 cleanup_fx( localclientnum, index, bnewent, binitialsnap, fieldname, bwasdemojump )
@@ -163,6 +216,34 @@ cleanup_fx( localclientnum, index, bnewent, binitialsnap, fieldname, bwasdemojum
 	}
 
 	self notify( unique_script_id );
+}
+
+mechz_handle_fx_alt( new_val, old_val )
+{
+	newval = int( new_val );
+	oldval = int( old_val );
+	for ( i = 0; i < level.mechz_clientside_fx.size; i++ )
+	{
+		set_in_new = ( newval & 1 << i ) != 0;
+		set_in_old = ( oldval & 1 << i ) != 0;
+
+		if ( set_in_new && !set_in_old )
+		{
+			self thread setup_fx_alt( i );
+			continue;
+		}
+
+		if ( !set_in_new && set_in_old )
+			self thread cleanup_fx_alt( i );
+	}
+
+	if ( !newval && is_true( self.fx_initialized ) )
+	{
+		self.fx_initialized = 0;
+
+		if ( isdefined( self.smoke_fx ) )
+			deletefx( 0, self.smoke_fx );
+	}
 }
 
 mechz_handle_fx( localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwasdemojump )
@@ -234,6 +315,19 @@ mechz_screen_shake_loop( localclientnum )
 		waitrealtime( 0.1 );
 		wait 0.1;
 	}
+}
+
+mechz_claw_callback_alt( new_val, old_val )
+{
+	oldval = int( old_val );
+	newval = int( new_val );
+	if ( oldval == 1 && newval == 0 )
+	{
+		self stoprumble( 0, "mechz_footsteps" );
+		self notify( "kill_screen_shake" );
+	}
+	else if ( newval == 1 )
+		self thread mechz_screen_shake_loop( 0 );
 }
 
 mechz_claw_callback( localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwasdemojump )

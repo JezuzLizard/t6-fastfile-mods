@@ -19,6 +19,8 @@
 #include maps\mp\animscripts\zm_death;
 #include maps\mp\zombies\_zm_perks;
 
+#include scripts\zm\clientfield_alt_sys;
+
 precache()
 {
 	level._effect["brutus_flashlight"] = loadfx( "maps/zombie_alcatraz/fx_alcatraz_brut_light" );
@@ -62,8 +64,8 @@ main()
 	precachestring( &"ZOMBIE_LOCKED_COST_6000" );
 	flag_init( "brutus_setup_complete" );
 	setdvar( "zombie_double_wide_checks", 1 );
-	registerclientfield( "actor", "helmet_off", 9000, 1, "int" );
-	registerclientfield( "actor", "brutus_lock_down", 9000, 1, "int" );
+	//registerclientfield( "actor", "helmet_off", 9000, 1, "int" );
+	//registerclientfield( "actor", "brutus_lock_down", 9000, 1, "int" );
 
 	if ( !isdefined( level.vsmgr_prio_zm_brutus_teargas ) )
 		level.vsmgr_prio_overlay_zm_ai_screecher_blur = 50;
@@ -2448,15 +2450,15 @@ brutus_lockdown_client_effects( delay )
 	if ( isdefined( delay ) )
 		wait( delay );
 
-	if ( self.brutus_lockdown_state )
+	self.brutus_lockdown_state = !self.brutus_lockdown_state;
+
+	if ( level.script == "zm_tomb" )
 	{
-		self.brutus_lockdown_state = 0;
-		self setclientfield( "brutus_lock_down", 0 );
+		self setclientfield( "brutus_lock_down", self.brutus_lockdown_state );
 	}
 	else
 	{
-		self.brutus_lockdown_state = 1;
-		self setclientfield( "brutus_lock_down", 1 );
+		set_clientfield_alt_allplayers( "actor", "brutus_lock_down", self, self.brutus_lockdown_state );
 	}
 }
 
