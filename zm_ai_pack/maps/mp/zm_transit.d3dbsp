@@ -54611,3 +54611,75 @@
 "script_float" "0.4"
 "guid" "50C5570E"
 }
+{
+"origin" "0 0 -500"
+"export" "1"
+"model" "veh_t6_dlc_zm_mech"
+"classname" "actor_zm_tomb_mech_zombie"
+"script_noteworthy" "mechz_spawner"
+"spawnflags" "1"
+}
+{
+"targetname" "zone_town_barber_spawners"
+"script_noteworthy" "mechz_location"
+"origin" "893 -1293 120"
+"classname" "script_struct"
+"angles" "0 0 0"
+"script_string" "zclassic_transit zstandard_town zgrief_town"
+}
+{
+"targetname" "zone_town_south_spawners"
+"script_noteworthy" "mechz_location"
+"origin" "1464 -1526 -61"
+"classname" "script_struct"
+"angles" "0 0 0"
+"script_string" "zclassic_transit zstandard_town zgrief_town"
+}
+{
+"targetname" "zone_tow_spawners"
+"script_noteworthy" "mechz_location"
+"origin" "1351 -703 -61"
+"classname" "script_struct"
+"angles" "0 0 0"
+"script_string" "zclassic_transit zstandard_town zgrief_town"
+}
+{
+"targetname" "zone_tow_spawners"
+"script_noteworthy" "mechz_location"
+"origin" "1452 -401 -67"
+"classname" "script_struct"
+"angles" "0 0 0"
+"script_string" "zclassic_transit zstandard_town zgrief_town"
+}
+{
+"targetname" "zone_town_west_spawners"
+"script_noteworthy" "mechz_location"
+"origin" "772 -469 -61"
+"classname" "script_struct"
+"angles" "0 0 0"
+"script_string" "zclassic_transit zstandard_town zgrief_town"
+}
+{
+"targetname" "zone_town_east_spawners"
+"script_noteworthy" "mechz_location"
+"origin" "2334 -353 -61"
+"classname" "script_struct"
+"angles" "0 0 0"
+"script_string" "zclassic_transit zstandard_town zgrief_town"
+}
+{
+"targetname" "zone_bar_spawners"
+"script_noteworthy" "mechz_location"
+"origin" "1893 106 88"
+"classname" "script_struct"
+"angles" "0 0 0"
+"script_string" "zclassic_transit zstandard_town zgrief_town"
+}
+{
+"targetname" "zone_town_north_spawners"
+"script_noteworthy" "mechz_location"
+"origin" "1905 849 -56"
+"classname" "script_struct"
+"angles" "0 0 0"
+"script_string" "zclassic_transit zstandard_town zgrief_town"
+}

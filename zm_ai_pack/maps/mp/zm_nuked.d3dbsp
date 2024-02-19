@@ -11323,7 +11323,6 @@
 "classname" "actor_zm_tomb_mech_zombie"
 "script_noteworthy" "mechz_spawner"
 "spawnflags" "1"
-"guid" "8115A178"
 }
 {
 "targetname" "culdesac_yellow_zone_spawners"
