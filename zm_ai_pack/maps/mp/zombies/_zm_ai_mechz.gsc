@@ -81,10 +81,17 @@ main()
 	level._effect["mechz_claw_arm"] = loadfx( "maps/zombie_tomb/fx_tomb_mech_wpn_source" );
 	level._effect["mech_booster_landing"] = loadfx( "maps/zombie_tomb/fx_tomb_mech_jump_landing" );
 	precache();
+	level thread init_animtree();
 	scripts\zm\zm_ai_pack_mod_main::add_visionset_callback( ::register_burn_overlay );
 }
 
 #using_animtree("mechz_claw");
+
+init_animtree()
+{
+	wait 0.05;
+	scriptmodelsuseanimtree( #animtree );
+}
 
 init()
 {
@@ -169,7 +176,10 @@ init()
 	else
 		level thread mechz_spawning_logic();
 
-	scriptmodelsuseanimtree( #animtree );
+	if ( level.script != "zm_tomb" )
+	{
+		scriptmodelsuseanimtree( #animtree );
+	}
 /#
 	setup_devgui();
 #/

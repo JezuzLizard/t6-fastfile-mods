@@ -619,7 +619,7 @@ mechz_flamethrower_cleanup()
 	}
 	else
 	{
-		set_clientfield_alt_allplayers( "actor", "mechz_fx", self, self.fx_field );
+		set_clientfield_alt_allplayers( "mechz_fx", self, self.fx_field );
 	}
 	self.firing = 0;
 	self.doing_tank_sweep = 0;

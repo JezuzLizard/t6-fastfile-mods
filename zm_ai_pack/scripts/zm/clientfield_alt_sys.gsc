@@ -5,7 +5,7 @@ set_clientfield_alt_toplayer( field_name, ent, value )
 	self setClientDvar( field_name, entnum + " " + value );
 }
 
-set_clientfield_alt_allplayers(field_name, ent, value )
+set_clientfield_alt_allplayers( field_name, ent, value )
 {
 	foreach ( player in level.players )
 	{

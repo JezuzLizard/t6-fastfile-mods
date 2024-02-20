@@ -12,6 +12,10 @@ precache()
 
 init_animtree()
 {
+	if ( getDvar( "mapname" ) != "zm_buried" )
+	{
+		wait 0.1;
+	}
 	scriptmodelsuseanimtree( #animtree );
 }
 
@@ -38,6 +42,7 @@ main()
 {
 	precache_fx();
 	register_client_fields();
+	level thread init_animtree();
 }
 
 register_client_fields()

@@ -2459,7 +2459,7 @@ brutus_lockdown_client_effects( delay )
 	}
 	else
 	{
-		set_clientfield_alt_allplayers( "actor", "brutus_lock_down", self, self.brutus_lockdown_state );
+		set_clientfield_alt_allplayers( "brutus_lock_down", self, self.brutus_lockdown_state );
 	}
 }
 

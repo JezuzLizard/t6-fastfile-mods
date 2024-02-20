@@ -15,6 +15,7 @@ precache()
 
 init_animtree()
 {
+	wait 0.05;
 	scriptmodelsuseanimtree( #animtree );
 }
 
@@ -80,7 +81,7 @@ main()
 	registermechzfootstepcb( "zm_tomb_mech_zombie", ::mechzfootstepcbfunc );
 	level._effect["mech_footstep_steam"] = loadfx( "maps/zombie_tomb/fx_tomb_mech_foot_step_steam" );
 	level._effect["mech_exhaust_smoke"] = loadfx( "maps/zombie_tomb/fx_tomb_mech_exhaust_smoke" );
-	init_animtree();
+	level thread init_animtree();
 	scripts\zm\zm_ai_pack_mod_main::add_visionset_callback( ::register_burn_overlay );
 }
 

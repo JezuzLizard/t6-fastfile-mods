@@ -280,7 +280,7 @@ mechz_do_jump( wait_for_stationary_tank )
 	}
 	else
 	{
-		set_clientfield_alt_allplayers( "actor", "mechz_fx", self, self.fx_field );
+		set_clientfield_alt_allplayers( "mechz_fx", self, self.fx_field );
 	}
 	self thread maps\mp\zombies\_zm_spawner::zombie_eye_glow();
 
@@ -313,7 +313,7 @@ mechz_jump_cleanup()
 	}
 	else
 	{
-		set_clientfield_alt_allplayers( "actor", "mechz_fx", self, self.fx_field );
+		set_clientfield_alt_allplayers( "mechz_fx", self, self.fx_field );
 	}
 	self stopanimscripted();
 	self notify( "jump_complete" );

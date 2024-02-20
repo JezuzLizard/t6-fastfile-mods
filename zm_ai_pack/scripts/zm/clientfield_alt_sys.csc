@@ -1,5 +1,6 @@
 execute_clientfield_alt_callback_internal( data, last_data, field_type, field_name )
 {
+	entnum = data.entnum;
 	ent = undefined;
 	field_data = level.clientfield_alts[ field_type ][ field_name ];
 	ent = getEntByNum( 0, entnum );

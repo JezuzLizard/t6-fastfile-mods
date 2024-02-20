@@ -23,6 +23,10 @@ precache()
 
 init_animtree()
 {
+	if ( getDvar( "mapname" ) != "zm_buried" )
+	{
+		wait 0.1;
+	}
 	scriptmodelsuseanimtree( #animtree );
 }
 
@@ -93,6 +97,7 @@ main()
 	else
 		level thread ghost_zone_spawning_think();
 
+	level thread init_animtree();
 	level thread ghost_vox_think();
 	init_time_bomb_ghost_rounds();
 /#

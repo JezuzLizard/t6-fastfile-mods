@@ -300,6 +300,7 @@ can_be_paralyzed_override( zombie )
 
 watch_crash_trigger_override()
 {
+	sloth_set_state_func = getFunction( "maps/mp/zombies/_zm_ai_sloth", "sloth_set_state" );
 	while ( true )
 	{
 		self waittill( "trigger", who );
@@ -307,7 +308,7 @@ watch_crash_trigger_override()
 		if ( isDefined( who ) && isDefined( level.sloth ) && who == level.sloth && who.state == "berserk" )
 		{
 			who setclientfield( "sloth_berserk", 0 );
-			who sloth_set_state( "crash", 0 );
+			who [[ sloth_set_state_func ]]( "crash", 0 );
 		}
 	}
 }
