@@ -54683,3 +54683,67 @@
 "angles" "0 0 0"
 "script_string" "zclassic_transit zstandard_town zgrief_town"
 }
+{
+"targetname" "zone_pri_spawners"
+"script_noteworthy" "mechz_location"
+"origin" "-6587 5366 -55"
+"classname" "script_struct"
+"angles" "0 0 0"
+"script_string" "zclassic_transit zstandard_transit zgrief_transit"
+}
+{
+"targetname" "zone_station_ext_spawners"
+"script_noteworthy" "mechz_location"
+"origin" "-5935 5280 -52"
+"classname" "script_struct"
+"angles" "0 0 0"
+"script_string" "zclassic_transit zstandard_transit zgrief_transit"
+}
+{
+"targetname" "zone_station_ext_spawners"
+"script_noteworthy" "mechz_location"
+"origin" "-6222 4594 -63"
+"classname" "script_struct"
+"angles" "0 0 0"
+"script_string" "zclassic_transit zstandard_transit zgrief_transit"
+}
+{
+"targetname" "zone_station_ext_spawners"
+"script_noteworthy" "mechz_location"
+"origin" "-7141 4763 -63"
+"classname" "script_struct"
+"angles" "0 0 0"
+"script_string" "zclassic_transit zstandard_transit zgrief_transit"
+}
+{
+"targetname" "zone_trans_2b_spawners"
+"script_noteworthy" "mechz_location"
+"origin" "-7868 4832 -57"
+"classname" "script_struct"
+"angles" "0 0 0"
+"script_string" "zclassic_transit zstandard_transit zgrief_transit"
+}
+{
+"targetname" "zone_far_ext_spawners"
+"script_noteworthy" "mechz_location"
+"origin" "7906 -5698 10"
+"classname" "script_struct"
+"angles" "0 0 0"
+"script_string" "zclassic_transit zstandard_farm zgrief_farm"
+}
+{
+"targetname" "zone_brn_spawners"
+"script_noteworthy" "mechz_location"
+"origin" "8177 -4678 264"
+"classname" "script_struct"
+"angles" "0 0 0"
+"script_string" "zclassic_transit zstandard_farm zgrief_farm"
+}
+{
+"targetname" "zone_brn_spawners"
+"script_noteworthy" "mechz_location"
+"origin" "8214 -5498 40"
+"classname" "script_struct"
+"angles" "0 0 0"
+"script_string" "zclassic_transit zstandard_farm zgrief_farm"
+}

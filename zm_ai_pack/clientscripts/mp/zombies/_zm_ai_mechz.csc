@@ -15,7 +15,11 @@ precache()
 
 init_animtree()
 {
-	wait 0.05;
+	if ( getDvar( "mapname" ) != "zm_tomb" )
+	{
+		wait 0.05;
+	}
+	
 	scriptmodelsuseanimtree( #animtree );
 }
 
@@ -48,7 +52,7 @@ main()
 	register_clientfield_alt( "actor", "mechz_fx", "int", ::mechz_handle_fx_alt );
 	//registerclientfield( "actor", "mechz_fx", 14000, 12, "int", ::mechz_handle_fx );
 	//registerclientfield( "toplayer", "mechz_grab", 14000, 1, "int", ::mechz_claw_callback );
-	if ( getDvar( "mapname" ) != "zm_buried" && getDvar( "g_gametype" != "zclassic" ) )
+	if ( getDvar( "mapname" ) != "zm_buried" && getDvar( "g_gametype" ) != "zclassic" )
 	{
 		registerclientfield( "actor", "anim_rate", 14000, 2, "float", undefined, 0 );
 		setupclientfieldanimspeedcallbacks( "actor", 1, "anim_rate" );
@@ -222,7 +226,7 @@ cleanup_fx( localclientnum, index, bnewent, binitialsnap, fieldname, bwasdemojum
 mechz_handle_fx_alt( new_val, old_val )
 {
 	newval = int( new_val );
-	oldval = int( old_val );
+	oldval = old_val != "" ? int( old_val ) : 0;
 	for ( i = 0; i < level.mechz_clientside_fx.size; i++ )
 	{
 		set_in_new = ( newval & 1 << i ) != 0;
@@ -320,7 +324,7 @@ mechz_screen_shake_loop( localclientnum )
 
 mechz_claw_callback_alt( new_val, old_val )
 {
-	oldval = int( old_val );
+	oldval = old_val != "" ? int( old_val ) : 0;
 	newval = int( new_val );
 	if ( oldval == 1 && newval == 0 )
 	{

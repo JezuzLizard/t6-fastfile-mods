@@ -32,26 +32,58 @@ command_thread()
 	{
 		level waittill( "say", message, player, is_hidden );
 
-		if ( message == "print" )
+		args = strTok( message, " " );
+
+		is_server = args[ 0 ] == "s";
+		is_client = args[ 0 ] == "c";
+
+		if ( is_server )
 		{
-			player iPrintLn( player.origin );
+			if ( !isDefined( args[ 1 ] ) )
+			{
+				player iPrintLn( "Missing second argument" );
+				continue;
+			}
+			switch ( args[ 1 ] )
+			{
+				case "print":
+					player iPrintLn( player.origin );
+					break;
+				case "points":
+					player.score = 1000000;
+					break;
+				case "setdoground":
+					level.next_dog_round = level.round_number + 1;
+					break;
+				case "spawnmechz":
+					level.mechz_left_to_spawn = 1;
+					level notify( "spawn_mechz" );
+					break;
+				case "spawnbrutus":
+					level notify( "spawn_brutus", 1 );
+					break;
+				case "printentities":
+					level thread print_entities();
+					break;
+			}
 		}
-		else if (  message == "points" )
-		{
-			player.score = 1000000;
+		else if ( is_client )
+		{			
+			if ( !isDefined( args[ 1 ] ) )
+			{
+				player iPrintLn( "Missing second argument" );
+				continue;
+			}
+			switch ( args[ 1 ] )
+			{
+				case "printentities":
+					player setClientDvar( "say_notify", "printentities" );
+					break;
+			}
 		}
-		else if ( message == "setdoground" )
+		else
 		{
-			level.next_dog_round = level.round_number + 1;
-		}
-		else if ( message == "spawnmechz" )
-		{
-			level.mechz_left_to_spawn = 1;
-			level notify( "spawn_mechz" );
-		}
-		else if ( message == "spawnbrutus" )
-		{
-			level notify( "spawn_brutus", 1 );
+			player iPrintLn( "First argument must be s or c" );
 		}
 	}
 }
@@ -412,4 +444,40 @@ draw_nodes()
 		}
 		wait 0.05;
 	}
+}
+
+print_ent_field( message, field )
+{
+	if ( isDefined( field ) )
+	{
+		print( message + field );
+	}
+	else
+	{
+		print( message + "none" );
+	}
+}
+
+print_entities()
+{
+	ents = getEntArray();
+
+	print( "******SERVER ENTITIES******" );
+	print( "Listing " + ents.size + " entities" );
+	foreach ( ent in ents )
+	{
+		entnum = ent getEntityNumber();
+		print( "***ENT " + entnum + "***" );
+		print_ent_field( "Classname: ", ent.classname );
+		print_ent_field( "Origin: ", ent.origin );
+		print_ent_field( "Angles: ", ent.angles );
+
+		print_ent_field( "Target: ", ent.target );
+		print_ent_field( "Targetname: ", ent.targetname );
+		print_ent_field( "Script_noteworthy: ", ent.script_noteworthy );
+		print_ent_field( "Model: ", ent.model );
+		print_ent_field( "Team: ", ent.team );
+		print( "**************" );
+	}
+	print( "Listed " + ents.size + " entities" );
 }

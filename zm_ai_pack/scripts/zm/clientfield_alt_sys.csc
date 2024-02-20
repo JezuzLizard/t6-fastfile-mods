@@ -13,10 +13,18 @@ execute_clientfield_alt_callback_internal( data, last_data, field_type, field_na
 get_data_from_payload( payload )
 {
 	struct = spawnStruct();
-	tokens = strTok( payload, " " );
+	if ( payload != "" )
+	{
+		tokens = strTok( payload, " " );
 	
-	struct.entnum = int( tokens[ 0 ] );
-	struct.value = tokens[ 1 ];
+		struct.entnum = int( tokens[ 0 ] );
+		struct.value = tokens[ 1 ];
+	}
+	else
+	{
+		struct.entnum = -1;
+		struct.value = "";
+	}
 
 	return struct;
 }
@@ -39,6 +47,12 @@ handle_clientfield_alt_callbacks( dvar_name, field_type, field_name )
 		dvar_value = getDvar( dvar_name );
 		if ( dvar_value != old_dvar_value )
 		{
+			if ( getDvarInt( "clientfield_alt_debug" ) )
+			{
+				print( "handle_clientfield_alt_callbacks( " + dvar_name + ", " + field_type + ", " + field_name + " )" );
+				print( "handle_clientfield_alt_callbacks() dvar_value: \"" + dvar_value + "\" old_dvar_value: \"" + old_dvar_value + "\"" );
+			}
+
 			level execute_clientfield_alt_callback( dvar_value, old_dvar_value, field_type, field_name );
 			old_dvar_value = dvar_value;			
 		}

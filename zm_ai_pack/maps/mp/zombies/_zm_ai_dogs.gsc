@@ -407,7 +407,7 @@ dog_init()
 	self.gibbed = 0;
 	self.head_gibbed = 0;
 	self.default_goalheight = 40;
-	self.ignore_inert = 1;
+	self.ignore_inert = true;
 	self.grenadeawareness = 0;
 	self.badplaceawareness = 0;
 	self.ignoresuppression = 1;

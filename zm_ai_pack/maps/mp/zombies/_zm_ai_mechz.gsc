@@ -615,6 +615,9 @@ mechz_spawn()
 	level notify( "sam_clue_mechz", self );
 	self.closest_player_override = maps\mp\zombies\_zm_ai_mechz::get_favorite_enemy;
 	self.immune_to_slowgun = true;
+	self.ignore_inert = true;
+	self.ignore_lava_damage = true;
+	self.ignore_electric_trap = true;
 	self.animname = "mechz_zombie";
 	self.has_legs = 1;
 	self.no_gib = 1;

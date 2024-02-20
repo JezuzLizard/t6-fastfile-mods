@@ -394,6 +394,9 @@ brutus_spawn( starting_health, has_helmet, helmet_hits, explosive_dmg_taken, zon
 	}
 	self setphysparams( width, 0, 60 );
 	self.immune_to_slowgun = true;
+	self.ignore_inert = true;
+	self.ignore_lava_damage = true;
+	self.ignore_electric_trap = true;
 	self.zombie_init_done = 1;
 	self notify( "zombie_init_done" );
 	self.allowpain = 0;

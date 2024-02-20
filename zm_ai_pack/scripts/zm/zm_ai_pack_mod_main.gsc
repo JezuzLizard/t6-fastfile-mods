@@ -54,6 +54,10 @@ main()
 			level [[ level.ai_data[ keys[ i ] ].main ]]();
 		}
 	}
+	if ( level.script != "zm_tomb" && level.script != "zm_prison" )
+	{
+		level thread check_solo_status();
+	} 
 }
 
 init()
@@ -310,5 +314,17 @@ watch_crash_trigger_override()
 			who setclientfield( "sloth_berserk", 0 );
 			who [[ sloth_set_state_func ]]( "crash", 0 );
 		}
+	}
+}
+
+check_solo_status()
+{
+	if ( getnumexpectedplayers() == 1 && ( !sessionmodeisonlinegame() || !sessionmodeisprivate() ) )
+	{
+		level.is_forever_solo_game = 1;
+	}
+	else
+	{
+		level.is_forever_solo_game = 0;
 	}
 }
