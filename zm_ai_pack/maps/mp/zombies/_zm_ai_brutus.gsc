@@ -402,6 +402,8 @@ brutus_spawn( starting_health, has_helmet, helmet_hits, explosive_dmg_taken, zon
 	self.ignore_inert = true;
 	self.ignore_lava_damage = true;
 	self.ignore_electric_trap = true;
+	self.ignore_distance_tracking = true;
+	self.exclude_distance_cleanup_adding_to_total = true;
 	self.zombie_init_done = 1;
 	self notify( "zombie_init_done" );
 	self.allowpain = 0;

@@ -56,6 +56,9 @@ script,clientscripts/mp/zombies/_zm_ai_avogadro.csc
 script,maps/mp/zombies/_zm_ai_screecher.gsc
 script,clientscripts/mp/zombies/_zm_ai_screecher.csc
 
+script,maps/mp/zombies/_zm_ai_leaper.gsc
+script,clientscripts/mp/zombies/_zm_ai_leaper.csc
+
 script,scripts/zm/zm_ai_pack_mod_debug_main.csc
 script,scripts/zm/zm_ai_pack_mod_debug_main.gsc
 script,scripts/zm/zm_ai_pack_mod_main.csc

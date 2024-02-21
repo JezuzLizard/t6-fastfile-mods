@@ -31329,3 +31329,242 @@
 "classname" "node_pathnode"
 "guid" "CC9CDDB8"
 }
+{
+"origin" "0 0 -500"
+"export" "1"
+"model" "veh_t6_dlc_zm_mech"
+"classname" "actor_zm_tomb_mech_zombie"
+"script_noteworthy" "mechz_spawner"
+"spawnflags" "1"
+}
+{
+"targetname" "zone_green_start_spawners"
+"script_noteworthy" "mechz_location"
+"origin" "1543.26 1403.97 3392.13"
+"classname" "script_struct"
+"angles" "0 0 0"
+}
+{
+"targetname" "zone_green_level1_spawners"
+"script_noteworthy" "mechz_location"
+"origin" "2203.56 1565.42 3398.49"
+"classname" "script_struct"
+"angles" "0 0 0"
+}
+{
+"targetname" "zone_green_level2a_spawners"
+"script_noteworthy" "mechz_location"
+"origin" "2057.82 1292.39 3219.26"
+"classname" "script_struct"
+"angles" "0 0 0"
+}
+{
+"targetname" "zone_green_level2b_spawners"
+"script_noteworthy" "mechz_location"
+"origin" "1452.33 1627.78 3216.13"
+"classname" "script_struct"
+"angles" "0 0 0"
+}
+{
+"targetname" "zone_green_level3a_spawners"
+"script_noteworthy" "mechz_location"
+"origin" "1685.17 2067.07 3046.09"
+"classname" "script_struct"
+"angles" "0 0 0"
+}
+{
+"targetname" "zone_orange_level1_spawners"
+"script_noteworthy" "mechz_location"
+"origin" "2971.25 1990.43 2955.24"
+"classname" "script_struct"
+"angles" "0 0 0"
+}
+{
+"targetname" "zone_orange_level1_spawners"
+"script_noteworthy" "mechz_location"
+"origin" "2618.8 1747.15 2852.12"
+"classname" "script_struct"
+"angles" "0 0 0"
+}
+{
+"targetname" "zone_orange_level2_spawners"
+"script_noteworthy" "mechz_location"
+"origin" "2646.38 1274.17 2654.02"
+"classname" "script_struct"
+"angles" "0 0 0"
+}
+{
+"targetname" "zone_orange_elevator_shaft_middle_1_spawners"
+"script_noteworthy" "mechz_location"
+"origin" "3431.56 2073.77 2490.93"
+"classname" "script_struct"
+"angles" "0 0 0"
+}
+{
+"targetname" "zone_orange_elevator_shaft_middle_2_spawners"
+"script_noteworthy" "mechz_location"
+"origin" "3726.62 1772.9 2229.33"
+"classname" "script_struct"
+"angles" "0 0 0"
+}
+{
+"targetname" "zone_orange_level3a_spawners"
+"script_noteworthy" "mechz_location"
+"origin" "4334.71 1649 1720.64"
+"classname" "script_struct"
+"angles" "0 0 0"
+}
+{
+"targetname" "zone_orange_level3b_spawners"
+"script_noteworthy" "mechz_location"
+"origin" "4011.17 1344.05 1651.87"
+"classname" "script_struct"
+"angles" "0 0 0"
+}
+{
+"targetname" "zone_orange_level3b_spawners"
+"script_noteworthy" "mechz_location"
+"origin" "3260.03 1386.41 1316.37"
+"classname" "script_struct"
+"angles" "0 0 0"
+}
+{
+"targetname" "zone_blue_level4a_spawners"
+"script_noteworthy" "mechz_location"
+"origin" "3126.67 498.965 1296.13"
+"classname" "script_struct"
+"angles" "0 0 0"
+}
+{
+"targetname" "zone_blue_level4a_spawners"
+"script_noteworthy" "mechz_location"
+"origin" "2014.02 526.034 1296.46"
+"classname" "script_struct"
+"angles" "0 0 0"
+}
+{
+"targetname" "zone_blue_level4c_spawners"
+"script_noteworthy" "mechz_location"
+"origin" "2650.14 -459.034 1296.13"
+"classname" "script_struct"
+"angles" "0 0 0"
+}
+{
+"targetname" "zone_blue_level4b_spawners"
+"script_noteworthy" "mechz_location"
+"origin" "1516.2 -438.535 1296.13"
+"classname" "script_struct"
+"angles" "0 0 0"
+}
+{
+"targetname" "zone_blue_level5_spawners"
+"script_noteworthy" "mechz_location"
+"origin" "1985.01 -199.889 1120.13"
+"classname" "script_struct"
+"angles" "0 0 0"
+}
+{
+"targetname" "zone_blue_level5_spawners"
+"script_noteworthy" "mechz_location"
+"origin" "1520.7 -454.917 1120.13"
+"classname" "script_struct"
+"angles" "0 0 0"
+}
+{
+"targetname" "zone_blue_level5_spawners"
+"script_noteworthy" "mechz_location"
+"origin" "2019.77 770.722 1120.13"
+"classname" "script_struct"
+"angles" "0 0 0"
+}
+{
+"targetname" "zone_blue_level5_spawners"
+"script_noteworthy" "mechz_location"
+"origin" "2830.01 845.753 1120.13"
+"classname" "script_struct"
+"angles" "0 0 0"
+}
+{
+"targetname" "zone_blue_level1a_spawners"
+"script_noteworthy" "mechz_location"
+"origin" "2528.77 -519.947 2880.13"
+"classname" "script_struct"
+"angles" "0 0 0"
+}
+{
+"targetname" "zone_blue_level1a_spawners"
+"script_noteworthy" "mechz_location"
+"origin" "2100.78 385.804 2880.13"
+"classname" "script_struct"
+"angles" "0 0 0"
+}
+{
+"targetname" "zone_blue_level2b_spawners"
+"script_noteworthy" "mechz_location"
+"origin" "2036.23 392.668 2704.13"
+"classname" "script_struct"
+"angles" "0 0 0"
+}
+{
+"targetname" "zone_blue_level2b_spawners"
+"script_noteworthy" "mechz_location"
+"origin" "2435.87 590.875 2704.13"
+"classname" "script_struct"
+"angles" "0 0 0"
+}
+{
+"targetname" "zone_blue_level2a_spawners"
+"script_noteworthy" "mechz_location"
+"origin" "2662.58 175.902 2704.13"
+"classname" "script_struct"
+"angles" "0 0 0"
+}
+{
+"targetname" "zone_blue_level2c_spawners"
+"script_noteworthy" "mechz_location"
+"origin" "2910.82 81.4468 2704.13"
+"classname" "script_struct"
+"angles" "0 0 0"
+}
+{
+"targetname" "zone_blue_level2d_spawners"
+"script_noteworthy" "mechz_location"
+"origin" "3098.91 307.819 2714.13"
+"classname" "script_struct"
+"angles" "0 0 0"
+}
+{
+"targetname" "zone_blue_level1c_spawners"
+"script_noteworthy" "mechz_location"
+"origin" "2034.18 696.061 3136.13"
+"classname" "script_struct"
+"angles" "0 0 0"
+}
+{
+"targetname" "zone_blue_level1a_spawners"
+"script_noteworthy" "mechz_location"
+"origin" "2723.02 194.534 3016.13"
+"classname" "script_struct"
+"angles" "0 0 0"
+}
+{
+"targetname" "zone_blue_level1b_spawners"
+"script_noteworthy" "mechz_location"
+"origin" "2973.15 201.932 2880.13"
+"classname" "script_struct"
+"angles" "0 0 0"
+}
+{
+"targetname" "zone_green_level3b_spawners"
+"script_noteworthy" "mechz_location"
+"origin" "2058.92 1448.33 3047.39"
+"classname" "script_struct"
+"angles" "0 0 0"
+}
+{
+"targetname" "zone_green_level3c_spawners"
+"script_noteworthy" "mechz_location"
+"origin" "1659.98 1308.56 3047.23"
+"classname" "script_struct"
+"angles" "0 0 0"
+}

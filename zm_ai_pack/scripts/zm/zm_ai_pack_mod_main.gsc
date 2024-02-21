@@ -1,6 +1,7 @@
 #include maps\mp\zombies\_zm_utility;
 #include common_scripts\utility;
 #include maps\mp\_utility;
+#include maps\mp\zombies\_zm_spawner;
 
 #include maps\mp\zombies\_zm_ai_avogadro;
 #include maps\mp\zombies\_zm_ai_screecher;
@@ -18,7 +19,7 @@ main()
 	replace_single_function( "maps/mp/zombies/_zm_weap_slowgun", "can_be_paralyzed", ::can_be_paralyzed_override );
 	replace_single_function( "maps/mp/zombies/_zm_ai_sloth", "watch_crash_trigger", ::watch_crash_trigger_override );
 
-	
+
 
 	level.script = toLower( getDvar( "mapname" ) );
 	level.gametype = toLower( getDvar( "g_gametype" ) );
@@ -72,6 +73,45 @@ init()
 		{
 			level [[ level.ai_data[ keys[ i ] ].init ]]();
 		}
+	}
+
+	level thread add_spawn_functions_to_spawners();
+}
+
+watch_for_damage_from_players()
+{
+	self endon( "death" );
+
+	for (;;)
+	{
+		self waittill( "damage", amount, attacker, direction_vec, point, type );
+
+		if ( !isdefined( amount ) )
+			continue;
+
+		if ( !isalive( self ) || self.delayeddeath )
+			return;
+
+		if ( !player_attacker( attacker ) )
+			continue;
+
+		self.has_been_damaged_by_player = true;
+
+		if ( is_true( self.is_ghost ) )
+		{
+			continue;
+		}
+		self player_attacks_enemy( attacker, amount, type, point );
+	}
+}
+
+add_spawn_functions_to_spawners()
+{
+	flag_wait( "initial_blackscreen_passed" );
+
+	if ( isDefined( level.ghost_spawners ) )
+	{
+		array_thread( level.ghost_spawners, ::add_spawn_function, ::watch_for_damage_from_players );
 	}
 }
 
@@ -328,5 +368,31 @@ check_solo_status()
 	else
 	{
 		level.is_forever_solo_game = 0;
+	}
+}
+
+increment_enemy_count( who )
+{
+	if ( !is_true( who.has_been_damaged_by_player ) )
+	{
+		return;
+	}
+
+	if ( is_true( who.is_leaper ) )
+	{
+		who thread [maps\mp\zombies\_zm_ai_leaper::leaper_cleanup]();
+	}
+	else if ( is_true( who.is_mechz ) )
+	{
+		level.mechz_left_to_spawn++;
+	}
+	else if ( is_true( who.is_brutus ) )
+	{
+		level.brutus_count++;
+	}
+	//Maybe add dog increment here when possible
+	else
+	{
+		level.zombie_total++;
 	}
 }

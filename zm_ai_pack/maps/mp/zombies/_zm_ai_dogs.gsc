@@ -398,6 +398,8 @@ dog_init()
 	self.script_noteworthy = undefined;
 	self.animname = "zombie_dog";
 	self.no_gib = true;
+	self.ignore_distance_tracking = false;
+	self.exclude_distance_cleanup_adding_to_total = false;
 	self.ignoreall = 1;
 	self.ignoreme = 1;
 	self.allowdeath = 1;

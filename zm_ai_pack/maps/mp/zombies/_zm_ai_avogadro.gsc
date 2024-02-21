@@ -130,6 +130,8 @@ avogadro_prespawn()
 	self endon( "death" );
 	level endon( "intermission" );
 	level.avogadro = self;
+	self.ignore_distance_tracking = true;
+	self.exclude_distance_cleanup_adding_to_total = true;
 	self.immune_to_slowgun = true;
 	self.has_legs = 1;
 	self.no_gib = 1;

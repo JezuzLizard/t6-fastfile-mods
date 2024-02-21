@@ -630,6 +630,7 @@ mechz_spawn()
 	self.meleedamage = 75;
 	self.custom_item_dmg = 2000;
 	self.ignore_distance_tracking = true;
+	self.exclude_distance_cleanup_adding_to_total = true;
 	recalc_zombie_array();
 	width = 15;
 	height = 60;

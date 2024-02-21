@@ -625,6 +625,8 @@ prespawn()
 	self.ignore_inert = true;
 	self.ignore_lava_damage = true;
 	self.ignore_electric_trap = true;
+	self.ignore_distance_tracking = false;
+	self.exclude_distance_cleanup_adding_to_total = false;
 	self maps\mp\zombies\_zm_ai_ghost_ffotd::prespawn_start();
 	self.startinglocation = self.origin;
 	self.animname = "ghost_zombie";
