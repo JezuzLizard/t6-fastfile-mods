@@ -46,7 +46,7 @@ command_thread()
 			}
 			switch ( args[ 1 ] )
 			{
-				case "print":
+				case "printorigin":
 					player iPrintLn( player.origin );
 					break;
 				case "points":
@@ -54,16 +54,22 @@ command_thread()
 					break;
 				case "setdoground":
 					level.next_dog_round = level.round_number + 1;
+					player iPrintLn( "Set next dog round to " + level.next_dog_round );
 					break;
 				case "spawnmechz":
+					player iPrintLn( "Spawning one mechz" );
 					level.mechz_left_to_spawn = 1;
 					level notify( "spawn_mechz" );
 					break;
 				case "spawnbrutus":
+					player iPrintLn( "Spawning one brutus" );
 					level notify( "spawn_brutus", 1 );
 					break;
 				case "printentities":
 					level thread print_entities();
+					break;
+				default:
+					player iPrintLn( "Invalid command" );
 					break;
 			}
 		}

@@ -12,7 +12,13 @@
 #include maps\mp\gametypes_zm\_globallogic_score;
 #include maps\mp\zombies\_zm_powerups;
 #include maps\mp\zombies\_zm_audio;
-#include maps\mp\zm_highrise_elevators;
+//#include maps\mp\zm_highrise_elevators;
+
+main()
+{
+	precache();
+	init();
+}
 
 precache()
 {
@@ -1005,7 +1011,8 @@ leaper_traverse_watcher()
 		{
 			self.elevator_parent = undefined;
 
-			if ( is_true( self maps\mp\zm_highrise_elevators::object_is_on_elevator() ) )
+			object_is_on_elevator_func = getFunction( "maps\mp\zm_highrise_elevators", "object_is_on_elevator" );
+			if ( isDefined( object_is_on_elevator_func ) && is_true( self [[ object_is_on_elevator_func ]]() ) )
 			{
 				if ( isdefined( self.elevator_parent ) )
 				{

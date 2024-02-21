@@ -36,6 +36,9 @@ main()
 	// level.ai_data[ "ghost" ] = spawnStruct();
 	// level.ai_data[ "ghost" ].main = maps\mp\zombies\_zm_ai_ghost::main;
 	// level.ai_data[ "ghost" ].should_execute = !( level.script == "zm_buried" && level.gametype == "zclassic" );
+	// level.ai_data[ "leaper" ] = spawnStruct();
+	// level.ai_data[ "leaper" ].main = maps\mp\zombies\_zm_ai_leaper::main;
+	// level.ai_data[ "leaper" ].should_execute = level.script != "zm_highrise";
 	level.ai_data[ "brutus" ] = spawnStruct();
 	level.ai_data[ "brutus" ].main = maps\mp\zombies\_zm_ai_brutus::main;
 	level.ai_data[ "brutus" ].should_execute = level.script != "zm_prison";
@@ -43,10 +46,10 @@ main()
 	level.ai_data[ "mechz" ].main = maps\mp\zombies\_zm_ai_mechz::main;
 	level.ai_data[ "mechz" ].init = maps\mp\zombies\_zm_ai_mechz::init;
 	level.ai_data[ "mechz" ].should_execute = level.script != "zm_tomb";
-	// level.ai_data[ "zombie_dog" ] = spawnStruct();
-	// level.ai_data[ "zombie_dog" ].main = maps\mp\zombies\_zm_ai_dogs::init;
-	// level.ai_data[ "zombie_dog" ].init = maps\mp\zombies\_zm_ai_dogs::enable_dog_rounds;
-	// level.ai_data[ "zombie_dog" ].should_execute = !( level.gametype == "zstandard" && getGametypeSetting( "allowDogs" ) == 1 );	
+	level.ai_data[ "zombie_dog" ] = spawnStruct();
+	level.ai_data[ "zombie_dog" ].main = maps\mp\zombies\_zm_ai_dogs::init;
+	level.ai_data[ "zombie_dog" ].init = maps\mp\zombies\_zm_ai_dogs::enable_dog_rounds;
+	level.ai_data[ "zombie_dog" ].should_execute = !( level.gametype == "zstandard" && getGametypeSetting( "allowDogs" ) == 1 );	
 
 	keys = getArrayKeys( level.ai_data );
 	for ( i = 0; i < keys.size; i++ )
@@ -380,7 +383,7 @@ increment_enemy_count( who )
 
 	if ( is_true( who.is_leaper ) )
 	{
-		who thread [maps\mp\zombies\_zm_ai_leaper::leaper_cleanup]();
+		who thread maps\mp\zombies\_zm_ai_leaper::leaper_cleanup();
 	}
 	else if ( is_true( who.is_mechz ) )
 	{
