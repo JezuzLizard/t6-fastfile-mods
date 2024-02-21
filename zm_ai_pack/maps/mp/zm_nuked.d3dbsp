@@ -11430,10 +11430,102 @@
 "origin" "100 100 -500"
 }
 {
-"classname" "script_struct"
+"targetname" "culdesac_yellow_zone_spawners"
 "script_noteworthy" "brutus_location"
-"targetname" "culdesac_yellow_zone_spawner"
-"origin" "367 454 -60"
+"origin" "319.748 474.665 -60.8272"
+"classname" "script_struct"
+"angles" "0 0 0"
+}
+{
+"targetname" "culdesac_yellow_zone_spawners"
+"script_noteworthy" "brutus_location"
+"origin" "483.841 -78.011 -63.875"
+"classname" "script_struct"
+"angles" "0 0 0"
+}
+{
+"targetname" "culdesac_green_zone_spawners"
+"script_noteworthy" "brutus_location"
+"origin" "-594.722 142.852 -51.2586"
+"classname" "script_struct"
+"angles" "0 0 0"
+}
+{
+"targetname" "culdesac_green_zone_spawners"
+"script_noteworthy" "brutus_location"
+"origin" "-142.783 291.472 -38.1161"
+"classname" "script_struct"
+"angles" "0 0 0"
+}
+{
+"targetname" "openhouse1_f1_zone_spawners"
+"script_noteworthy" "brutus_location"
+"origin" "-644.561 420.392 -55.875"
+"classname" "script_struct"
+"angles" "0 0 0"
+}
+{
+"targetname" "openhouse1_f2_zone_spawners"
+"script_noteworthy" "brutus_location"
+"origin" "-567.212 392.314 80.125"
+"classname" "script_struct"
+"angles" "0 0 0"
+}
+{
+"targetname" "openhouse1_backyard_zone_spawners"
+"script_noteworthy" "brutus_location"
+"origin" "-1669.56 330.02 -63.0112"
+"classname" "script_struct"
+"angles" "0 0 0"
+}
+{
+"targetname" "openhouse1_backyard_zone_spawners"
+"script_noteworthy" "brutus_location"
+"origin" "-1059.3 838.316 -61.87"
+"classname" "script_struct"
+"angles" "0 0 0"
+}
+{
+"targetname" "openhouse2_f1_zone_spawners"
+"script_noteworthy" "brutus_location"
+"origin" "744.313 257.5 -56.72"
+"classname" "script_struct"
+"angles" "0 0 0"
+}
+{
+"targetname" "openhouse2_f1_zone_spawners"
+"script_noteworthy" "brutus_location"
+"origin" "843.241 612.388 -56.875"
+"classname" "script_struct"
+"angles" "0 0 0"
+}
+{
+"targetname" "openhouse2_backyard_zone_spawners"
+"script_noteworthy" "brutus_location"
+"origin" "1531.81 802.012 -61.7766"
+"classname" "script_struct"
+"angles" "0 0 0"
+}
+{
+"targetname" "openhouse2_backyard_zone_spawners"
+"script_noteworthy" "brutus_location"
+"origin" "1946.32 389.903 -62.781"
+"classname" "script_struct"
+"angles" "0 0 0"
+}
+{
+"targetname" "openhouse2_backyard_zone_spawners"
+"script_noteworthy" "brutus_location"
+"origin" "1371.91 175.223 -58.7049"
+"classname" "script_struct"
+"angles" "0 0 0"
+}
+{
+"targetname" "openhouse2_f2_zone_spawners"
+"script_noteworthy" "brutus_location"
+"origin" "678.909 201.955 79.125"
+"classname" "script_struct"
+"angles" "0 0 0"
 }
 {
 "script_forcespawn" "1"

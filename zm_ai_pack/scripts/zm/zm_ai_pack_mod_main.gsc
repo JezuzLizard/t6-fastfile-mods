@@ -263,7 +263,7 @@ dotraverse_override( traversestate, traversealias, no_powerups )
 perk_machine_knockdown_zombie_override( origin )
 {
 	damage = int( self.health * 0.25 );
-	if ( isDefined( self.animname ) && self.animname == "zombie" )
+	if ( !is_true( self.no_gib )  )
 	{
 		self.a.gib_ref = random( array( "guts", "right_arm", "left_arm" ) );
 		self thread maps\mp\animscripts\zm_death::do_gib();

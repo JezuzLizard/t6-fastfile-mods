@@ -21,15 +21,17 @@
 
 #include scripts\zm\clientfield_alt_sys;
 
+#include sys;
+
 precache()
 {
-	level._effect["brutus_flashlight"] = loadfx( "maps/zombie_alcatraz/fx_alcatraz_brut_light" );
-	level._effect["brutus_spawn"] = loadfx( "maps/zombie_alcatraz/fx_alcatraz_brut_spawn" );
-	level._effect["brutus_death"] = loadfx( "maps/zombie_alcatraz/fx_alcatraz_brut_spawn" );
-	level._effect["brutus_teargas"] = loadfx( "maps/zombie_alcatraz/fx_alcatraz_brut_gas" );
-	level._effect["brutus_lockdown"] = loadfx( "maps/zombie_alcatraz/fx_alcatraz_perk_lock" );
-	level._effect["brutus_lockdown_sm"] = loadfx( "maps/zombie_alcatraz/fx_alcatraz_perk_s_lock" );
-	level._effect["brutus_lockdown_lg"] = loadfx( "maps/zombie_alcatraz/fx_alcatraz_w_bench_lock" );
+	level._effect["brutus_flashlight"] = sys::loadfx( "maps/zombie_alcatraz/fx_alcatraz_brut_light" );
+	level._effect["brutus_spawn"] = sys::loadfx( "maps/zombie_alcatraz/fx_alcatraz_brut_spawn" );
+	level._effect["brutus_death"] = sys::loadfx( "maps/zombie_alcatraz/fx_alcatraz_brut_spawn" );
+	level._effect["brutus_teargas"] = sys::loadfx( "maps/zombie_alcatraz/fx_alcatraz_brut_gas" );
+	level._effect["brutus_lockdown"] = sys::loadfx( "maps/zombie_alcatraz/fx_alcatraz_perk_lock" );
+	level._effect["brutus_lockdown_sm"] = sys::loadfx( "maps/zombie_alcatraz/fx_alcatraz_perk_s_lock" );
+	level._effect["brutus_lockdown_lg"] = sys::loadfx( "maps/zombie_alcatraz/fx_alcatraz_w_bench_lock" );
 	precachemodel( "c_zom_cellbreaker_helmet" );
 	precacheshellshock( "mp_radiation_high" );
 	precacheshellshock( "mp_radiation_med" );
@@ -52,13 +54,13 @@ precache()
 main()
 {
 	precacherumble( "brutus_footsteps" );
-	level._effect["brutus_flashlight"] = loadfx( "maps/zombie_alcatraz/fx_alcatraz_brut_light" );
-	level._effect["brutus_spawn"] = loadfx( "maps/zombie_alcatraz/fx_alcatraz_brut_spawn" );
-	level._effect["brutus_death"] = loadfx( "maps/zombie_alcatraz/fx_alcatraz_brut_spawn" );
-	level._effect["brutus_teargas"] = loadfx( "maps/zombie_alcatraz/fx_alcatraz_brut_gas" );
-	level._effect["brutus_lockdown"] = loadfx( "maps/zombie_alcatraz/fx_alcatraz_perk_lock" );
-	level._effect["brutus_lockdown_sm"] = loadfx( "maps/zombie_alcatraz/fx_alcatraz_perk_s_lock" );
-	level._effect["brutus_lockdown_lg"] = loadfx( "maps/zombie_alcatraz/fx_alcatraz_w_bench_lock" );
+	level._effect["brutus_flashlight"] = sys::loadfx( "maps/zombie_alcatraz/fx_alcatraz_brut_light" );
+	level._effect["brutus_spawn"] = sys::loadfx( "maps/zombie_alcatraz/fx_alcatraz_brut_spawn" );
+	level._effect["brutus_death"] = sys::loadfx( "maps/zombie_alcatraz/fx_alcatraz_brut_spawn" );
+	level._effect["brutus_teargas"] = sys::loadfx( "maps/zombie_alcatraz/fx_alcatraz_brut_gas" );
+	level._effect["brutus_lockdown"] = sys::loadfx( "maps/zombie_alcatraz/fx_alcatraz_perk_lock" );
+	level._effect["brutus_lockdown_sm"] = sys::loadfx( "maps/zombie_alcatraz/fx_alcatraz_perk_s_lock" );
+	level._effect["brutus_lockdown_lg"] = sys::loadfx( "maps/zombie_alcatraz/fx_alcatraz_w_bench_lock" );
 	precachemodel( "c_zom_cellbreaker_helmet" );
 	precacheshellshock( "mp_radiation_high" );
 	precacheshellshock( "mp_radiation_med" );
@@ -1203,15 +1205,34 @@ brutus_stuck_watcher()
 			continue;
 		}
 
-		if ( !findpath( self.origin, self.goal_pos, self, 0, 0 ) )
+		if ( level.script == "zm_prison" )
 		{
+			if ( !findpath( self.origin, self.goal_pos, self, true, false ) )
+			{
 /#
-			println( "Brutus could not path to goal_pos " + self.goal_pos );
+				println( "Brutus could not path to goal_pos " + self.goal_pos );
 #/
-			self.fail_count++;
+				self.fail_count++;
+			}
+			else
+			{
+				self.fail_count = 0;
+			}
 		}
 		else
-			self.fail_count = 0;
+		{
+			if ( !findpath( self.origin, self.goal_pos, self, true, false ) )
+			{
+/#
+				println( "Brutus could not path to goal_pos " + self.goal_pos );
+#/
+				self.fail_count++;
+			}
+			else
+			{
+				self.fail_count = 0;
+			}
+		}
 
 		if ( self.fail_count >= level.brutus_failed_paths_to_teleport )
 		{
@@ -2086,7 +2107,7 @@ teargas_trigger_think()
 
 precache_default_brutus_barrier_fx()
 {
-	level._effect["brutus_smash_default"] = loadfx( "maps/zombie_alcatraz/fx_alcatraz_brut_brk_wood" );
+	level._effect["brutus_smash_default"] = sys::loadfx( "maps/zombie_alcatraz/fx_alcatraz_brut_brk_wood" );
 }
 
 scale_helmet_damage( attacker, damage, headshot_mod, damage_mod, vdir )
