@@ -19,8 +19,6 @@ init()
 
 main()
 {
-	//registerclientfield( "actor", "helmet_off", 9000, 1, "int", ::brutus_helmet_launch_cb );
-	//registerclientfield( "actor", "brutus_lock_down", 9000, 1, "int", ::brutus_lock_down_effects_cb );
 	register_clientfield_alt( "actor", "brutus_lock_down", "int", ::brutus_lock_down_effects_cb_alt );
 	registerbrutusfootstepcb( "zm_alcatraz_brutus", ::brutusfootstepcbfunc );
 }

@@ -40,8 +40,13 @@ precache()
 	precachestring( &"ZOMBIE_LOCKED_COST_6000" );
 	flag_init( "brutus_setup_complete" );
 	setdvar( "zombie_double_wide_checks", 1 );
-	registerclientfield( "actor", "helmet_off", 9000, 1, "int" );
-	registerclientfield( "actor", "brutus_lock_down", 9000, 1, "int" );
+	if ( !isdefined( level.vsmgr_prio_zm_brutus_teargas ) )
+		level.vsmgr_prio_overlay_zm_ai_screecher_blur = 50;
+
+	if ( !isdefined( level.custom_brutus_barrier_fx ) )
+		level.custom_brutus_barrier_fx = ::precache_default_brutus_barrier_fx;
+
+	[[ level.custom_brutus_barrier_fx ]]();
 }
 
 main()
@@ -64,8 +69,6 @@ main()
 	precachestring( &"ZOMBIE_LOCKED_COST_6000" );
 	flag_init( "brutus_setup_complete" );
 	setdvar( "zombie_double_wide_checks", 1 );
-	//registerclientfield( "actor", "helmet_off", 9000, 1, "int" );
-	//registerclientfield( "actor", "brutus_lock_down", 9000, 1, "int" );
 
 	if ( !isdefined( level.vsmgr_prio_zm_brutus_teargas ) )
 		level.vsmgr_prio_overlay_zm_ai_screecher_blur = 50;
@@ -379,6 +382,8 @@ brutus_spawn( starting_health, has_helmet, helmet_hits, explosive_dmg_taken, zon
 	self.has_legs = 1;
 	self.ignore_all_poi = 1;
 	self.is_brutus = 1;
+	self.is_boss = true;
+	self.no_gib = true;
 	self.ignore_enemy_count = 1;
 	self.instakill_func = ::brutus_instakill_override;
 	self.nuke_damage_func = ::brutus_nuke_override;
@@ -413,11 +418,10 @@ brutus_spawn( starting_health, has_helmet, helmet_hits, explosive_dmg_taken, zon
 		spawn_pos = get_random_brutus_spawn_pos( zone_name );
 	}
 	else
+	{
 		spawn_pos = get_best_brutus_spawn_pos( zone_name );
+	}
 
-	spawn_pos = spawnStruct();
-	spawn_pos.origin = level.players[ 0 ].origin;
-	spawn_pos.angles = level.players[ 0 ].angles;
 	if ( !isdefined( spawn_pos ) )
 	{
 /#
@@ -425,7 +429,6 @@ brutus_spawn( starting_health, has_helmet, helmet_hits, explosive_dmg_taken, zon
 		iprintln( "ERROR: Tried to spawn brutus with no brutus spawn_positions!" );
 #/
 		self delete();
-		print( "****BRUTUS DELETED BECAUSE NO SPAWN POS****" );
 		return;
 	}
 

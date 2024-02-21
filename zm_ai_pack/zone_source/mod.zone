@@ -62,3 +62,6 @@ script,scripts/zm/zm_ai_pack_mod_main.csc
 script,scripts/zm/zm_ai_pack_mod_main.gsc
 script,scripts/zm/clientfield_alt_sys.csc
 script,scripts/zm/clientfield_alt_sys.gsc
+
+// Map specific scripts
+script,scripts/zm/zm_prison/zm_ai_pack_mod_zm_prison_main.gsc

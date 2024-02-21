@@ -165,7 +165,10 @@ zm_traverse_barrier : aliased restart notify traverse_anim
 	barrier_crawl	ai_zombie_traverse_v4
 }
 
-
+zm_taunt : restart notify taunt_anim
+{
+	ai_zombie_avogadro_melee_attack_v1
+}
 
 
 

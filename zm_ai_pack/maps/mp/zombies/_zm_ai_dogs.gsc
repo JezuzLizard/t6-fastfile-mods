@@ -397,6 +397,7 @@ dog_init()
 	self.targetname = "zombie_dog";
 	self.script_noteworthy = undefined;
 	self.animname = "zombie_dog";
+	self.no_gib = true;
 	self.ignoreall = 1;
 	self.ignoreme = 1;
 	self.allowdeath = 1;

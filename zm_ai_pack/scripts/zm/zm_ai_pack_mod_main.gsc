@@ -18,6 +18,8 @@ main()
 	replace_single_function( "maps/mp/zombies/_zm_weap_slowgun", "can_be_paralyzed", ::can_be_paralyzed_override );
 	replace_single_function( "maps/mp/zombies/_zm_ai_sloth", "watch_crash_trigger", ::watch_crash_trigger_override );
 
+	
+
 	level.script = toLower( getDvar( "mapname" ) );
 	level.gametype = toLower( getDvar( "g_gametype" ) );
 
@@ -319,7 +321,7 @@ watch_crash_trigger_override()
 
 check_solo_status()
 {
-	if ( getnumexpectedplayers() == 1 && ( !sessionmodeisonlinegame() || !sessionmodeisprivate() ) )
+	if ( getnumexpectedplayers() == 1 && ( !sessionmodeisonlinegame() || !sessionmodeisprivate() ) && !isDedicated() )
 	{
 		level.is_forever_solo_game = 1;
 	}

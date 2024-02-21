@@ -51,7 +51,7 @@ register_clientfields()
 {
 	//registerclientfield( "actor", "mechz_fx", 14000, 12, "int" );
 	//registerclientfield( "toplayer", "mechz_grab", 14000, 1, "int" );
-	if ( getDvar( "mapname" ) != "zm_buried" )
+	if ( getDvar( "mapname" ) != "zm_buried" || getDvar( "g_gametype" ) != "zclassic" )
 	{
 		registerclientfield( "actor", "anim_rate", 14000, 2, "float" );
 	}
@@ -623,6 +623,7 @@ mechz_spawn()
 	self.no_gib = 1;
 	self.ignore_all_poi = 1;
 	self.is_mechz = 1;
+	self.is_boss = true;
 	self.ignore_enemy_count = 1;
 	self.no_damage_points = 1;
 	self.melee_anim_func = ::melee_anim_func;
@@ -631,11 +632,12 @@ mechz_spawn()
 	self.ignore_distance_tracking = true;
 	recalc_zombie_array();
 	width = 15;
+	height = 60;
 	if ( level.script == "zm_tomb" )
 	{
 		width = 20;
 	}
-	self setphysparams( width, 0, 80 );
+	self setphysparams( width, 0, height );
 	self setcandamage( 0 );
 	self.zombie_init_done = 1;
 	self notify( "zombie_init_done" );

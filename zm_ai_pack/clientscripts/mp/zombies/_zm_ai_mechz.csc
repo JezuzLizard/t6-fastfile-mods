@@ -19,7 +19,7 @@ init_animtree()
 	{
 		wait 0.05;
 	}
-	
+
 	scriptmodelsuseanimtree( #animtree );
 }
 
@@ -52,7 +52,7 @@ main()
 	register_clientfield_alt( "actor", "mechz_fx", "int", ::mechz_handle_fx_alt );
 	//registerclientfield( "actor", "mechz_fx", 14000, 12, "int", ::mechz_handle_fx );
 	//registerclientfield( "toplayer", "mechz_grab", 14000, 1, "int", ::mechz_claw_callback );
-	if ( getDvar( "mapname" ) != "zm_buried" && getDvar( "g_gametype" ) != "zclassic" )
+	if ( getDvar( "mapname" ) != "zm_buried" || getDvar( "g_gametype" ) != "zclassic" )
 	{
 		registerclientfield( "actor", "anim_rate", 14000, 2, "float", undefined, 0 );
 		setupclientfieldanimspeedcallbacks( "actor", 1, "anim_rate" );
@@ -436,7 +436,7 @@ sndflamethrower_start( localclientnum, index, tag_name )
 	sndent linkto( self, tag_name );
 	sndent playsound( 0, "zmb_ai_mechz_flame_start" );
 	sndent playloopsound( "zmb_ai_mechz_flame_loop", 0.6 );
-	self thread sndflamethrower_stop( sndent, index );
+	sndflamethrower_stop( sndent, index );
 }
 
 sndflamethrower_stop( ent, index )

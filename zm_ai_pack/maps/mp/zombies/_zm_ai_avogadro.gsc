@@ -134,6 +134,7 @@ avogadro_prespawn()
 	self.has_legs = 1;
 	self.no_gib = 1;
 	self.is_avogadro = 1;
+	self.is_boss = true;
 	self.ignore_enemy_count = 1;
 	recalc_zombie_array();
 	self.ignore_nuke = 1;
