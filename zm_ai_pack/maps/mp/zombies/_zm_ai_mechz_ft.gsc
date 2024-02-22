@@ -21,11 +21,11 @@ init_flamethrower_triggers()
 		return;
 	}
 	flag_wait( "initial_players_connected" );
-	level.flamethrower_trigger_array = getentarray( "flamethrower_trigger", "script_noteworthy" );
+	level.flamethrower_trigger_array = sys::getentarray( "flamethrower_trigger", "script_noteworthy" );
 	assert( isdefined( level.flamethrower_trigger_array ) && level.flamethrower_trigger_array.size >= 4 );
 
 	for ( i = 0; i < level.flamethrower_trigger_array.size; i++ )
-		level.flamethrower_trigger_array[i] enablelinkto();
+		level.flamethrower_trigger_array[i] enablesys::linkto();
 }
 
 mechz_flamethrower_initial_setup()
@@ -47,9 +47,9 @@ mechz_flamethrower_initial_setup()
 
 	if ( getDvar( "mapname" ) == "zm_tomb" )
 	{
-		self.flamethrower_trigger.origin = self gettagorigin( "tag_flamethrower_FX" );
-		self.flamethrower_trigger.angles = self gettagangles( "tag_flamethrower_FX" );
-		self.flamethrower_trigger linkto( self, "tag_flamethrower_FX" );
+		self.flamethrower_trigger.origin = self sys::gettagorigin( "tag_flamethrower_FX" );
+		self.flamethrower_trigger.angles = self sys::gettagangles( "tag_flamethrower_FX" );
+		self.flamethrower_trigger sys::linkto( self, "tag_flamethrower_FX" );
 	}
 
 	self thread mechz_watch_for_flamethrower_damage();
@@ -80,7 +80,7 @@ release_flamethrower_trigger()
 		return;
 
 	self.flamethrower_trigger.in_use = 0;
-	self.flamethrower_trigger unlink();
+	self.flamethrower_trigger sys::unlink();
 	self.flamethrower_trigger.origin = self.flamethrower_trigger.original_position;
 	self.flamethrower_linked = 0;
 	self.flamethrower_trigger = undefined;
@@ -93,7 +93,7 @@ mechz_flamethrower_dist_watcher()
 
 	while ( true )
 	{
-		if ( !isdefined( self.favoriteenemy ) || !is_player_valid( self.favoriteenemy, 1, 1 ) || distancesquared( self.origin, self.favoriteenemy.origin ) > 50000 )
+		if ( !isdefined( self.favoriteenemy ) || !is_player_valid( self.favoriteenemy, 1, 1 ) || sys::distancesquared( self.origin, self.favoriteenemy.origin ) > 50000 )
 		{
 			self notify( "stop_ft" );
 			return;
@@ -139,7 +139,7 @@ mechz_play_flamethrower_aim()
 	if ( isdefined( self.curr_aim_anim ) )
 	{
 		self stopanimscripted();
-		self animscripted( self.origin, self.angles, self.curr_aim_anim );
+		self sys::animscripted( self.origin, self.angles, self.curr_aim_anim );
 		self maps\mp\animscripts\zm_shared::donotetracks( "flamethrower_anim" );
 	}
 	else
@@ -170,13 +170,13 @@ mechz_flamethrower_tank_sweep()
 	{
 		self stopanimscripted();
 		self.angles = vectortoangles( level.vh_tank.origin - self.origin );
-		self animscripted( self.origin, self.angles, "zm_flamethrower_sweep_up" );
+		self sys::animscripted( self.origin, self.angles, "zm_flamethrower_sweep_up" );
 		self maps\mp\animscripts\zm_shared::donotetracks( "flamethrower_anim" );
 
 		if ( level.vh_tank ent_flag( "tank_moving" ) )
 			break;
 			
-		func = getFunction( "maps/mp/zm_tomb_tank", "get_players_on_tank" );
+		func = pluto_sys::getfunction( "maps/mp/zm_tomb_tank", "get_players_on_tank" );
 		if ( isDefined( func ) )
 		{
 			a_players_on_tank = [[ func ]]( 1 );
@@ -207,9 +207,9 @@ hit_by_flamethrower( mechz )
 {
 	dist = distance(self.origin, mechz.origin);
 	dirTo = self.origin - mechz.flamethrower_fx.origin;
-	dirTo = vectornormalize(dirTo);
+	dirTo = sys::vectornormalize(dirTo);
 	mechDir = anglestoforward(mechz.flamethrower_fx.angles + (180,0,0));
-	dot = vectordot(dirTo, mechDir);
+	dot = sys::vectordot(dirTo, mechDir);
 
 	if ( isDefined( self.is_zombie ) && self.is_zombie )
 	{
@@ -228,17 +228,17 @@ hit_by_flamethrower( mechz )
 
 mech_flamethrower_fx()
 {
-	self.flamethrower_fx = spawn("script_model", self GetTagOrigin("tag_flamethrower_FX"));
+	self.flamethrower_fx = sys::spawn("script_model", self GetTagOrigin("tag_flamethrower_FX"));
 	self.flamethrower_fx setmodel("tag_origin");
 	self.flamethrower_fx.angles = self GetTagAngles("tag_flamethrower_FX");
-	self.flamethrower_fx linkto(self, "tag_flamethrower_FX");
+	self.flamethrower_fx sys::linkto(self, "tag_flamethrower_FX");
 	ft = self.flamethrower_fx;
 
 	self waittill( "death" );
 	
 	if ( isDefined( ft ) )
 	{
-		ft unlink();
+		ft sys::unlink();
 		ft delete();
 	}
 }
@@ -252,7 +252,7 @@ mechz_watch_for_flamethrower_damage()
 		self thread mech_flamethrower_fx();
 	}
 
-	entity_on_tank_func = getFunction( "maps/mp/zm_tomb_tank",  "entity_on_tank" );
+	entity_on_tank_func = pluto_sys::getfunction( "maps/mp/zm_tomb_tank",  "entity_on_tank" );
 
 	while ( true )
 	{
@@ -263,14 +263,14 @@ mechz_watch_for_flamethrower_damage()
 		while ( isdefined( self.firing ) && self.firing )
 		{
 			do_tank_sweep_auto_damage = isdefined( self.doing_tank_sweep ) && self.doing_tank_sweep && !level.vh_tank ent_flag( "tank_moving" );
-			players = getplayers();
+			players = sys::getplayers();
 
 			for ( i = 0; i < players.size; i++ )
 			{
 				if ( !( isdefined( players[i].is_burning ) && players[i].is_burning ) )
 				{
 					if ( isDefined( entity_on_tank_func ) && do_tank_sweep_auto_damage && players[i] [[ entity_on_tank_func ]]() 
-						|| isDefined( self.flamethrower_trigger ) && players[i] istouching( self.flamethrower_trigger ) || level.script != "zm_tomb" && players[ i ] hit_by_flamethrower( self ) )
+						|| isDefined( self.flamethrower_trigger ) && players[i] sys::istouching( self.flamethrower_trigger ) || level.script != "zm_tomb" && players[ i ] hit_by_flamethrower( self ) )
 					{
 						players[i] thread player_flame_damage();
 					}
@@ -288,7 +288,7 @@ mechz_watch_for_flamethrower_damage()
 					continue;
 
 				if ( isDefined( entity_on_tank_func ) && do_tank_sweep_auto_damage && zombies[i] [[ entity_on_tank_func ]]() 
-					|| isDefined( self.flamethrower_trigger ) &&  zombies[i] istouching( self.flamethrower_trigger ) || level.script != "zm_tomb" && zombies[ i ] hit_by_flamethrower( self ) )
+					|| isDefined( self.flamethrower_trigger ) &&  zombies[i] sys::istouching( self.flamethrower_trigger ) || level.script != "zm_tomb" && zombies[ i ] hit_by_flamethrower( self ) )
 				{
 					zombies[i].on_fire = 1;
 					zombies[i] promote_to_explosive();
@@ -398,7 +398,7 @@ zombie_burning_dmg()
 	while ( true )
 	{
 		eyeorigin = self geteye();
-		players = get_players();
+		players = sys::getplayers();
 
 		for ( i = 0; i < players.size; i++ )
 		{
@@ -406,7 +406,7 @@ zombie_burning_dmg()
 			{
 				playereye = players[i] geteye();
 
-				if ( distancesquared( eyeorigin, playereye ) < damageradius * damageradius )
+				if ( sys::distancesquared( eyeorigin, playereye ) < damageradius * damageradius )
 				{
 					players[i] dodamage( damage, self.origin, self );
 					players[i] notify( "burned" );
@@ -444,13 +444,13 @@ explode_on_death()
 	if ( is_mature() )
 	{
 		if ( isdefined( level._effect["zomb_gib"] ) )
-			playfx( level._effect["zomb_gib"], self gettagorigin( tag ) );
+			playfx( level._effect["zomb_gib"], self sys::gettagorigin( tag ) );
 	}
 	else if ( isdefined( level._effect["spawn_cloud"] ) )
-		playfx( level._effect["spawn_cloud"], self gettagorigin( tag ) );
+		playfx( level._effect["spawn_cloud"], self sys::gettagorigin( tag ) );
 
 	self radiusdamage( self.origin, 128, 30, 15, undefined, "MOD_EXPLOSIVE" );
-	self ghost();
+	self sys::ghost();
 
 	if ( isdefined( self.isdog ) && self.isdog )
 		self hide();
@@ -505,7 +505,7 @@ should_do_flamethrower_attack()
 		return false;
 	}
 
-	if ( isdefined( self.last_flamethrower_time ) && gettime() - self.last_flamethrower_time < level.mechz_flamethrower_cooldown_time )
+	if ( isdefined( self.last_flamethrower_time ) && sys::gettime() - self.last_flamethrower_time < level.mechz_flamethrower_cooldown_time )
 	{
 /#
 		if ( getdvarint( #"_id_E7121222" ) > 1 )
@@ -514,7 +514,7 @@ should_do_flamethrower_attack()
 		return false;
 	}
 
-	n_dist_sq = distancesquared( self.origin, self.favoriteenemy.origin );
+	n_dist_sq = sys::distancesquared( self.origin, self.favoriteenemy.origin );
 
 	if ( n_dist_sq < 10000 || n_dist_sq > 50000 )
 	{
@@ -551,20 +551,20 @@ mechz_do_flamethrower_attack( tank_sweep )
 #/
 	self thread mechz_stop_basic_find_flesh();
 	self.ai_state = "flamethrower_attack";
-	self setgoalpos( self.origin );
+	self sys::setgoalpos( self.origin );
 	self clearanim( %root, 0.2 );
-	self.last_flamethrower_time = gettime();
+	self.last_flamethrower_time = sys::gettime();
 	self thread mechz_kill_flamethrower_watcher();
 
 	if ( !isdefined( self.flamethrower_trigger ) && !isDefined( self.flamethrower_fx ) )
 		self mechz_flamethrower_initial_setup();
 
 	n_nearby_enemies = 0;
-	a_players = getplayers();
+	a_players = sys::getplayers();
 
 	foreach ( player in a_players )
 	{
-		if ( distance2dsquared( player.origin, self.favoriteenemy.origin ) < 10000 )
+		if ( sys::distance2dsquared( player.origin, self.favoriteenemy.origin ) < 10000 )
 			n_nearby_enemies++;
 	}
 
@@ -576,17 +576,17 @@ mechz_do_flamethrower_attack( tank_sweep )
 	else if ( randomint( 100 ) < level.mechz_ft_sweep_chance && n_nearby_enemies > 1 )
 	{
 		self.doing_ft_sweep = 1;
-		self animscripted( self.origin, self.angles, "zm_flamethrower_sweep" );
+		self sys::animscripted( self.origin, self.angles, "zm_flamethrower_sweep" );
 		self maps\mp\animscripts\zm_shared::donotetracks( "flamethrower_anim" );
 	}
 	else
 	{
-		self animscripted( self.origin, self.angles, "zm_flamethrower_aim_start" );
+		self sys::animscripted( self.origin, self.angles, "zm_flamethrower_aim_start" );
 		self thread mechz_flamethrower_aim();
 		self maps\mp\animscripts\zm_shared::donotetracks( "flamethrower_anim" );
 	}
 
-	self orientmode( "face default" );
+	self sys::orientmode( "face default" );
 
 	if ( isdefined( self.doing_ft_sweep ) && self.doing_ft_sweep )
 		self.doing_ft_sweep = 0;

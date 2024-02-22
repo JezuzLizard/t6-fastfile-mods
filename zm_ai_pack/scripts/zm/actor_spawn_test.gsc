@@ -125,17 +125,17 @@ init()
 	level.player_out_of_playable_area_monitor = false;
 	flag_wait( "initial_blackscreen_passed" );
 
-	//brutus_spawners = getEntArray( "brutus_zombie_spawner", "script_noteworthy" );
-	//giant_robot0_spawners = getEntArray( "ai_giant_robot_0", "targetname" );
-	//giant_robot1_spawners = getEntArray( "ai_giant_robot_1", "targetname" );
-	//giant_robot2_spawners = getEntArray( "ai_giant_robot_2", "targetname" );
-	//leaper_spawners = getEntArray( "leaper_zombie_spawner", "script_noteworthy" );
-	//mechz_spawners = getEntArray( "mechz_spawner", "script_noteworthy" );
-	//zombie_dog_spawners = getEntArray( "zombie_dog_spawner", "script_noteworthy" );
-	//avogadro_spawners = getEntArray( "avogadro_zombie_spawner", "script_noteworthy" );
-	//screecher_spawners = getEntArray( "screecher_zombie_spawner", "script_noteworthy" );
-	//ghost_spawners = getEntArray( "ghost_zombie_spawner", "script_noteworthy" );
-	//sloth_spawners = getEntArray( "sloth_zombie_spawner", "script_noteworthy" );
+	//brutus_spawners = sys::getentarray( "brutus_zombie_spawner", "script_noteworthy" );
+	//giant_robot0_spawners = sys::getentarray( "ai_giant_robot_0", "targetname" );
+	//giant_robot1_spawners = sys::getentarray( "ai_giant_robot_1", "targetname" );
+	//giant_robot2_spawners = sys::getentarray( "ai_giant_robot_2", "targetname" );
+	//leaper_spawners = sys::getentarray( "leaper_zombie_spawner", "script_noteworthy" );
+	//mechz_spawners = sys::getentarray( "mechz_spawner", "script_noteworthy" );
+	//zombie_dog_spawners = sys::getentarray( "zombie_dog_spawner", "script_noteworthy" );
+	//avogadro_spawners = sys::getentarray( "avogadro_zombie_spawner", "script_noteworthy" );
+	//screecher_spawners = sys::getentarray( "screecher_zombie_spawner", "script_noteworthy" );
+	//ghost_spawners = sys::getentarray( "ghost_zombie_spawner", "script_noteworthy" );
+	//sloth_spawners = sys::getentarray( "sloth_zombie_spawner", "script_noteworthy" );
 
 	origin = level.players[ 0 ].origin;
 

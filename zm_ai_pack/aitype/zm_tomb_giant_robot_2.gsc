@@ -46,20 +46,20 @@ main()
     self.team = "neutral";
     self.type = "zombie";
     self.weapon = "";
-    self setengagementmindist( 0.0, 0.0 );
-    self setengagementmaxdist( 100.0, 300.0 );
+    self sys::setengagementmindist( 0.0, 0.0 );
+    self sys::setengagementmaxdist( 100.0, 300.0 );
     character\c_zom_giant_robot_2::main();
-    self setcharacterindex( 0 );
+    self sys::setcharacterindex( 0 );
 }
 
 spawner()
 {
-    self setspawnerteam( "neutral" );
+    self sys::setspawnerteam( "neutral" );
 }
 
 precache( ai_index )
 {
     level thread reference_anims_from_animtree();
-    precacheanimstatedef( ai_index, #animtree, "zm_tomb_giant_robot" );
+    sys::precacheanimstatedef( ai_index, #animtree, "zm_tomb_giant_robot" );
     character\c_zom_giant_robot_2::precache();
 }

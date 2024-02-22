@@ -25,31 +25,31 @@ main()
 	level.gametype = toLower( getDvar( "g_gametype" ) );
 
 	level.ai_data = [];
-	// level.ai_data[ "avogadro" ] = spawnStruct();
+	// level.ai_data[ "avogadro" ] = sys::spawnstruct();
 	// level.ai_data[ "avogadro" ].main = maps\mp\zombies\_zm_ai_avogadro::main;
 	// level.ai_data[ "avogadro" ].init = maps\mp\zombies\_zm_ai_avogadro::init;
 	// level.ai_data[ "avogadro" ].should_execute = !( level.script == "zm_transit" && level.gametype == "zclassic" );
-	// level.ai_data[ "screecher" ] = spawnStruct();
+	// level.ai_data[ "screecher" ] = sys::spawnstruct();
 	// level.ai_data[ "screecher" ].main = maps\mp\zombies\_zm_ai_screecher::main;
 	// level.ai_data[ "screecher" ].init = maps\mp\zombies\_zm_ai_screecher::init;
 	// level.ai_data[ "screecher" ].should_execute = !( level.script == "zm_transit" && level.gametype == "zclassic" );
-	// level.ai_data[ "ghost" ] = spawnStruct();
+	// level.ai_data[ "ghost" ] = sys::spawnstruct();
 	// level.ai_data[ "ghost" ].main = maps\mp\zombies\_zm_ai_ghost::main;
 	// level.ai_data[ "ghost" ].should_execute = !( level.script == "zm_buried" && level.gametype == "zclassic" );
-	// level.ai_data[ "leaper" ] = spawnStruct();
+	// level.ai_data[ "leaper" ] = sys::spawnstruct();
 	// level.ai_data[ "leaper" ].main = maps\mp\zombies\_zm_ai_leaper::main;
 	// level.ai_data[ "leaper" ].should_execute = level.script != "zm_highrise";
-	level.ai_data[ "brutus" ] = spawnStruct();
+	level.ai_data[ "brutus" ] = sys::spawnstruct();
 	level.ai_data[ "brutus" ].main = maps\mp\zombies\_zm_ai_brutus::main;
 	level.ai_data[ "brutus" ].should_execute = level.script != "zm_prison";
-	level.ai_data[ "mechz" ] = spawnStruct();
+	level.ai_data[ "mechz" ] = sys::spawnstruct();
 	level.ai_data[ "mechz" ].main = maps\mp\zombies\_zm_ai_mechz::main;
 	level.ai_data[ "mechz" ].init = maps\mp\zombies\_zm_ai_mechz::init;
 	level.ai_data[ "mechz" ].should_execute = level.script != "zm_tomb";
-	level.ai_data[ "zombie_dog" ] = spawnStruct();
-	level.ai_data[ "zombie_dog" ].main = maps\mp\zombies\_zm_ai_dogs::init;
-	level.ai_data[ "zombie_dog" ].init = maps\mp\zombies\_zm_ai_dogs::enable_dog_rounds;
-	level.ai_data[ "zombie_dog" ].should_execute = !( level.gametype == "zstandard" && getGametypeSetting( "allowDogs" ) == 1 );	
+	//level.ai_data[ "zombie_dog" ] = sys::spawnstruct();
+	//level.ai_data[ "zombie_dog" ].main = maps\mp\zombies\_zm_ai_dogs::init;
+	//level.ai_data[ "zombie_dog" ].init = maps\mp\zombies\_zm_ai_dogs::enable_dog_rounds;
+	//level.ai_data[ "zombie_dog" ].should_execute = !( level.gametype == "zstandard" && getGametypeSetting( "allowDogs" ) == 1 );	
 
 	keys = getArrayKeys( level.ai_data );
 	for ( i = 0; i < keys.size; i++ )
@@ -193,9 +193,9 @@ dotraverse_teleport( no_powerups )
 		self.is_traversing = true;
 		self stop_basic_find_flesh();
 		self.ai_state = "idle";
-		//self setanimstatefromasd( "zm_idle" );
-		self animmode( "noclip" );
-		self orientmode( "face angle", startnode.angles[1] );
+		//self sys::setanimstatefromasd( "zm_idle" );
+		self sys::animmode( "noclip" );
+		self sys::orientmode( "face angle", startnode.angles[1] );
 		self.origin = original_origin + ( forward * i );
 		self setGoalPos( self.origin );
 		wait 0.05;
@@ -207,8 +207,7 @@ dotraverse_teleport( no_powerups )
 
 	self.origin = endnode.origin;
 
-	print( "Ending custom traverse" );
-	self animmode( "none" );
+	self sys::animmode( "none" );
 	self.is_traversing = false;
 }
 
@@ -234,13 +233,13 @@ dotraverse_override( traversestate, traversealias, no_powerups )
 	self notify( "zombie_start_traverse" );
 	self.traversestartnode = self getnegotiationstartnode();
 	assert( isdefined( self.traversestartnode ) );
-	self orientmode( "face angle", self.traversestartnode.angles[1] );
+	self sys::orientmode( "face angle", self.traversestartnode.angles[1] );
 	self.traversestartz = self.origin[2];
 
 	if ( isdefined( self.pre_traverse ) )
 		self [[ self.pre_traverse ]]();
 
-	self setanimstatefromasd( traversestate, traversealias );
+	self sys::setanimstatefromasd( traversestate, traversealias );
 	self maps\mp\animscripts\zm_shared::donotetracks( "traverse_anim" );
 	self traversemode( "gravity" );
 	self.a.nodeath = 0;
@@ -314,7 +313,7 @@ get_idle_anim()
 
 replace_single_function( path, func_name, func_override )
 {
-	func = getFunction( path, func_name );
+	func = pluto_sys::getfunction( path, func_name );
 
 	if ( isDefined( func ) )
 	{
@@ -349,7 +348,7 @@ can_be_paralyzed_override( zombie )
 
 watch_crash_trigger_override()
 {
-	sloth_set_state_func = getFunction( "maps/mp/zombies/_zm_ai_sloth", "sloth_set_state" );
+	sloth_set_state_func = pluto_sys::getfunction( "maps/mp/zombies/_zm_ai_sloth", "sloth_set_state" );
 	while ( true )
 	{
 		self waittill( "trigger", who );

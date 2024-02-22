@@ -19,7 +19,7 @@ mechz_debug()
 		{
 			if ( debug_level == 1 )
 			{
-				mechz_array = getentarray( "mechz_zombie_ai" );
+				mechz_array = sys::getentarray( "mechz_zombie_ai" );
 
 				for ( i = 0; i < mechz_array.size; i++ )
 				{
@@ -127,7 +127,7 @@ watch_devgui_mechz()
 			mechz mechz_stop_basic_find_flesh();
 			mechz.ai_state = "devgui";
 			mechz.goal_pos = ( 446, -4318, 200 );
-			mechz setgoalpos( mechz.goal_pos );
+			mechz sys::setgoalpos( mechz.goal_pos );
 		}
 
 		if ( getdvar( #"_id_6CF3EB40" ) == "on" )
@@ -149,7 +149,7 @@ watch_devgui_mechz()
 			mechz mechz_stop_basic_find_flesh();
 			mechz.ai_state = "devgui";
 			mechz.goal_pos = ( 1657, -336, 92 );
-			mechz setgoalpos( mechz.goal_pos );
+			mechz sys::setgoalpos( mechz.goal_pos );
 		}
 
 		if ( getdvar( #"_id_0DE1409A" ) == "on" )
@@ -233,18 +233,18 @@ setup_force_behavior()
 /#
 	if ( !isdefined( level.test_align_struct ) )
 	{
-		player = get_players()[0];
+		player = sys::getplayers()[0];
 		pos = player.origin;
 		offset = anglestoforward( player.angles );
-		offset = vectornormalize( offset );
-		level.test_align_struct = spawn( "script_model", pos + 300 * offset );
+		offset = sys::vectornormalize( offset );
+		level.test_align_struct = sys::spawn( "script_model", pos + 300 * offset );
 		level.test_align_struct setmodel( "tag_origin" );
 		level.test_align_struct.angles = player.angles + vectorscale( ( 0, 1, 0 ), 180.0 );
 		level.test_align_struct thread align_test_struct();
 		level.test_align_struct.angles = player.angles + vectorscale( ( 0, 1, 0 ), 180.0 );
 	}
 
-	self linkto( level.test_align_struct, "tag_origin", ( 0, 0, 0 ), ( 0, 0, 0 ) );
+	self sys::linkto( level.test_align_struct, "tag_origin", ( 0, 0, 0 ), ( 0, 0, 0 ) );
 	self.fx_field = self.fx_field & ~64;
 	self.fx_field = self.fx_field & ~128;
 	self.fx_field = self.fx_field & ~256;
@@ -258,7 +258,7 @@ align_test_struct()
 	{
 		pos = level.players[0].origin;
 		offset = anglestoforward( level.players[0].angles );
-		offset = vectornormalize( offset );
+		offset = sys::vectornormalize( offset );
 		dist = getdvarint( #"_id_6DCD047E" );
 		level.test_align_struct.origin = pos + dist * offset;
 		level.test_align_struct.angles = get_behavior_orient();
@@ -270,7 +270,7 @@ align_test_struct()
 scripted_behavior( anim_scripted_name, notify_name )
 {
 /#
-	self animscripted( level.test_align_struct.origin, level.test_align_struct.angles, anim_scripted_name );
+	self sys::animscripted( level.test_align_struct.origin, level.test_align_struct.angles, anim_scripted_name );
 	self maps\mp\animscripts\zm_shared::donotetracks( notify_name );
 #/
 }
@@ -283,7 +283,7 @@ mechz_force_jump_in()
 
 	while ( true )
 	{
-		self animscripted( self.origin, self.angles, "zm_idle" );
+		self sys::animscripted( self.origin, self.angles, "zm_idle" );
 		wait 0.2;
 		self scripted_behavior( "zm_spawn", "jump_anim" );
 	}
@@ -298,13 +298,13 @@ mechz_force_jump_out()
 
 	while ( true )
 	{
-		self animscripted( self.origin, self.angles, "zm_idle" );
+		self sys::animscripted( self.origin, self.angles, "zm_idle" );
 		wait 0.2;
 		self scripted_behavior( "zm_fly_out", "jump_anim" );
-		self ghost();
-		self animscripted( self.origin, self.angles, "zm_fly_hover" );
+		self sys::ghost();
+		self sys::animscripted( self.origin, self.angles, "zm_fly_hover" );
 		wait( level.mechz_jump_delay );
-		self show();
+		self sys::show();
 		self scripted_behavior( "zm_fly_in", "jump_anim" );
 	}
 #/
@@ -319,7 +319,7 @@ mechz_force_flamethrower()
 	self setup_force_behavior();
 	curr_aim_anim = 1;
 	curr_timer = 0;
-	self animscripted( self.origin, self.angles, "zm_idle" );
+	self sys::animscripted( self.origin, self.angles, "zm_idle" );
 	wait 0.2;
 	self scripted_behavior( "zm_flamethrower_aim_start", "flamethrower_anim" );
 
@@ -357,21 +357,21 @@ fake_launch_claw()
 {
 /#
 	self.launching_claw = 1;
-	v_claw_origin = self gettagorigin( "tag_claw" );
+	v_claw_origin = self sys::gettagorigin( "tag_claw" );
 	v_claw_angles = vectortoangles( self.origin - level.players[0].origin );
 	self.fx_field = self.fx_field | 256;
 	self setclientfield( "mechz_fx", self.fx_field );
 	self.m_claw setanim( %ai_zombie_mech_grapple_arm_open_idle, 1, 0, 1 );
-	self.m_claw unlink();
-	self.m_claw.fx_ent = spawn( "script_model", self.m_claw gettagorigin( "tag_claw" ) );
-	self.m_claw.fx_ent.angles = self.m_claw gettagangles( "tag_claw" );
+	self.m_claw sys::unlink();
+	self.m_claw.fx_ent = sys::spawn( "script_model", self.m_claw sys::gettagorigin( "tag_claw" ) );
+	self.m_claw.fx_ent.angles = self.m_claw sys::gettagangles( "tag_claw" );
 	self.m_claw.fx_ent setmodel( "tag_origin" );
-	self.m_claw.fx_ent linkto( self.m_claw, "tag_claw" );
+	self.m_claw.fx_ent sys::linkto( self.m_claw, "tag_claw" );
 	network_safe_play_fx_on_tag( "mech_claw", 1, level._effect["mechz_claw"], self.m_claw.fx_ent, "tag_origin" );
 	self.m_claw clearanim( %root, 0.2 );
 	self.m_claw setanim( %ai_zombie_mech_grapple_arm_open_idle, 1, 0.2, 1 );
 	offset = anglestoforward( self.angles );
-	offset = vectornormalize( offset );
+	offset = sys::vectornormalize( offset );
 	target_pos = self.origin + offset * 500 + vectorscale( ( 0, 0, 1 ), 36.0 );
 	n_time = 0.0833333;
 	self.m_claw moveto( target_pos, n_time );
@@ -384,11 +384,11 @@ fake_launch_claw()
 	self.m_claw.fx_ent delete();
 	self.fx_field = self.fx_field & ~256;
 	self setclientfield( "mechz_fx", self.fx_field );
-	v_claw_origin = self gettagorigin( "tag_claw" );
-	v_claw_angles = self gettagangles( "tag_claw" );
+	v_claw_origin = self sys::gettagorigin( "tag_claw" );
+	v_claw_angles = self sys::gettagangles( "tag_claw" );
 	self.m_claw.origin = v_claw_origin;
 	self.m_claw.angles = v_claw_angles;
-	self.m_claw linkto( self, "tag_claw" );
+	self.m_claw sys::linkto( self, "tag_claw" );
 	self.launching_claw = 0;
 #/
 }
@@ -401,7 +401,7 @@ mechz_force_claw_attack()
 
 	while ( true )
 	{
-		self animscripted( self.origin, self.angles, "zm_idle" );
+		self sys::animscripted( self.origin, self.angles, "zm_idle" );
 		wait 0.2;
 		self scripted_behavior( "zm_grapple_aim_start", "grapple_anim" );
 		self thread fake_launch_claw();
@@ -495,7 +495,7 @@ mechz_force_melee()
 
 	while ( true )
 	{
-		self animscripted( self.origin, self.angles, "zm_idle" );
+		self sys::animscripted( self.origin, self.angles, "zm_idle" );
 		wait 0.2;
 		self scripted_behavior( "zm_melee_stand", "melee_anim" );
 	}

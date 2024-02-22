@@ -54747,3 +54747,196 @@
 "angles" "0 0 0"
 "script_string" "zclassic_transit zstandard_farm zgrief_farm"
 }
+{
+"classname" "actor_zm_alcatraz_brutus"
+"model" "c_zom_cellbreaker_fb"
+"export" "2"
+"angles" "0 180 0"
+"spawnflags" "3"
+"script_noteworthy" "brutus_zombie_spawner"
+"origin" "100 100 -500"
+}
+{
+"targetname" "zone_tow_spawners"
+"script_noteworthy" "brutus_location"
+"origin" "1382.76 -489.104 -67.875"
+"classname" "script_struct"
+"angles" "0 0 0"
+"script_string" "zclassic_town zstandard_town zgrief_town"
+}
+{
+"targetname" "zone_tow_spawners"
+"script_noteworthy" "brutus_location"
+"origin" "1126.05 -502.775 -61.875"
+"classname" "script_struct"
+"angles" "0 0 0"
+"script_string" "zclassic_town zstandard_town zgrief_town"
+}
+{
+"targetname" "zone_town_south_spawners"
+"script_noteworthy" "brutus_location"
+"origin" "1925.02 -1474.78 -56.3992"
+"classname" "script_struct"
+"angles" "0 0 0"
+"script_string" "zclassic_town zstandard_town zgrief_town"
+}
+{
+"targetname" "zone_town_south_spawners"
+"script_noteworthy" "brutus_location"
+"origin" "959.013 -1474.86 -47.088"
+"classname" "script_struct"
+"angles" "0 0 0"
+"script_string" "zclassic_town zstandard_town zgrief_town"
+}
+{
+"targetname" "zone_town_barber_spawners"
+"script_noteworthy" "brutus_location"
+"origin" "968.193 -911.043 120.125"
+"classname" "script_struct"
+"angles" "0 0 0"
+"script_string" "zclassic_town zstandard_town zgrief_town"
+}
+{
+"targetname" "zone_town_north_spawners"
+"script_noteworthy" "brutus_location"
+"origin" "1530.97 750.57 -61.875"
+"classname" "script_struct"
+"angles" "0 0 0"
+"script_string" "zclassic_town zstandard_town zgrief_town"
+}
+{
+"targetname" "zone_ban_spawners"
+"script_noteworthy" "brutus_location"
+"origin" "982.982 447.794 -39.875"
+"classname" "script_struct"
+"angles" "0 0 0"
+"script_string" "zclassic_town zstandard_town zgrief_town"
+}
+{
+"targetname" "zone_bar_spawners"
+"script_noteworthy" "brutus_location"
+"origin" "2118.19 343.046 -55.875"
+"classname" "script_struct"
+"angles" "0 0 0"
+"script_string" "zclassic_town zstandard_town zgrief_town"
+}
+{
+"targetname" "zone_bar_spawners"
+"script_noteworthy" "brutus_location"
+"origin" "2114.55 29.5759 88.125"
+"classname" "script_struct"
+"angles" "0 0 0"
+"script_string" "zclassic_town zstandard_town zgrief_town"
+}
+{
+"targetname" "zone_town_east_spawners"
+"script_noteworthy" "brutus_location"
+"origin" "2333.71 -665.085 -55.875"
+"classname" "script_struct"
+"angles" "0 0 0"
+"script_string" "zclassic_town zstandard_town zgrief_town"
+}
+{
+"targetname" "zone_tow_spawners"
+"script_noteworthy" "brutus_location"
+"origin" "1332.75 185.541 -69.875"
+"classname" "script_struct"
+"angles" "0 0 0"
+"script_string" "zclassic_town zstandard_town zgrief_town"
+}
+{
+"targetname" "zone_pri_spawners"
+"script_noteworthy" "brutus_location"
+"origin" "-6834.19 5264.24 -58.2852"
+"classname" "script_struct"
+"angles" "0 0 0"
+"script_string" "zclassic_transit zstandard_transit zgrief_transit"
+}
+{
+"targetname" "zone_station_ext_spawners"
+"script_noteworthy" "brutus_location"
+"origin" "-6066.56 4846.77 -62.0586"
+"classname" "script_struct"
+"angles" "0 0 0"
+"script_string" "zclassic_transit zstandard_transit zgrief_transit"
+}
+{
+"targetname" "zone_station_ext_spawners"
+"script_noteworthy" "brutus_location"
+"origin" "-6231.13 5459.16 -55.875"
+"classname" "script_struct"
+"angles" "0 0 0"
+"script_string" "zclassic_transit zstandard_transit zgrief_transit"
+}
+{
+"targetname" "zone_station_ext_spawners"
+"script_noteworthy" "brutus_location"
+"origin" "-7059.45 4344.02 -63.875"
+"classname" "script_struct"
+"angles" "0 0 0"
+"script_string" "zclassic_transit zstandard_transit zgrief_transit"
+}
+{
+"targetname" "zone_station_ext_spawners"
+"script_noteworthy" "brutus_location"
+"origin" "-7461.69 4402.73 -63.875"
+"classname" "script_struct"
+"angles" "0 0 0"
+"script_string" "zclassic_transit zstandard_transit zgrief_transit"
+}
+{
+"targetname" "zone_trans_2b_spawners"
+"script_noteworthy" "brutus_location"
+"origin" "-7767.91 5305.2 -59.47"
+"classname" "script_struct"
+"angles" "0 0 0"
+"script_string" "zclassic_transit zstandard_transit zgrief_transit"
+}
+{
+"targetname" "zone_far_ext_spawners"
+"script_noteworthy" "brutus_location"
+"origin" "7143.08 -5728.47 -46.6953"
+"classname" "script_struct"
+"angles" "0 0 0"
+"script_string" "zclassic_farm zstandard_farm zgrief_farm"
+}
+{
+"targetname" "zone_brn_spawners"
+"script_noteworthy" "brutus_location"
+"origin" "7783.4 -5056.01 40.387"
+"classname" "script_struct"
+"angles" "0 0 0"
+"script_string" "zclassic_farm zstandard_farm zgrief_farm"
+}
+{
+"targetname" "zone_brn_spawners"
+"script_noteworthy" "brutus_location"
+"origin" "8175.57 -5321.69 269.39"
+"classname" "script_struct"
+"angles" "0 0 0"
+"script_string" "zclassic_farm zstandard_farm zgrief_farm"
+}
+{
+"targetname" "zone_far_ext_spawners"
+"script_noteworthy" "brutus_location"
+"origin" "8685.24 -5735.16 50.125"
+"classname" "script_struct"
+"angles" "0 0 0"
+"script_string" "zclassic_farm zstandard_farm zgrief_farm"
+}
+{
+"targetname" "zone_farm_house_spawners"
+"script_noteworthy" "brutus_location"
+"origin" "8078.18 -6518.55 245.125"
+"classname" "script_struct"
+"angles" "0 0 0"
+"script_string" "zclassic_farm zstandard_farm zgrief_farm"
+}
+{
+"targetname" "zone_farm_house_spawners"
+"script_noteworthy" "brutus_location"
+"origin" "7929.28 -6417.91 117.125"
+"classname" "script_struct"
+"angles" "0 0 0"
+"script_string" "zclassic_farm zstandard_farm zgrief_farm"
+}

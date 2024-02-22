@@ -30,21 +30,21 @@ precache()
 	precachemodel( "c_zom_mech_claw" );
 	precachemodel( "c_zom_mech_faceplate" );
 	precachemodel( "c_zom_mech_powersupply_cap" );
-	level._effect["mech_dmg_sparks"] = loadfx( "maps/zombie_tomb/fx_tomb_mech_dmg_sparks" );
-	level._effect["mech_dmg_steam"] = loadfx( "maps/zombie_tomb/fx_tomb_mech_dmg_steam" );
-	level._effect["mech_booster"] = loadfx( "maps/zombie_tomb/fx_tomb_mech_jump_booster" );
-	level._effect["mech_wpn_source"] = loadfx( "maps/zombie_tomb/fx_tomb_mech_wpn_source" );
-	level._effect["mech_wpn_flamethrower"] = loadfx( "maps/zombie_tomb/fx_tomb_mech_wpn_flamethrower" );
-	level._effect["mech_booster_landing"] = loadfx( "maps/zombie_tomb/fx_tomb_mech_jump_landing" );
-	level._effect["mech_faceplate_dmg"] = loadfx( "maps/zombie_tomb/fx_tomb_mech_dmg_armor_face" );
-	level._effect["mech_armor_dmg"] = loadfx( "maps/zombie_tomb/fx_tomb_mech_dmg_armor" );
-	level._effect["mech_exhaust"] = loadfx( "maps/zombie_tomb/fx_tomb_mech_exhaust_smoke" );
-	level._effect["mech_booster_feet"] = loadfx( "maps/zombie_tomb/fx_tomb_mech_jump_booster_sm" );
-	level._effect["mech_headlamp"] = loadfx( "maps/zombie_tomb/fx_tomb_mech_head_light" );
-	level._effect["mech_footstep_steam"] = loadfx( "maps/zombie_tomb/fx_tomb_mech_foot_step_steam" );
+	level._effect["mech_dmg_sparks"] = sys::loadfx( "maps/zombie_tomb/fx_tomb_mech_dmg_sparks" );
+	level._effect["mech_dmg_steam"] = sys::loadfx( "maps/zombie_tomb/fx_tomb_mech_dmg_steam" );
+	level._effect["mech_booster"] = sys::loadfx( "maps/zombie_tomb/fx_tomb_mech_jump_booster" );
+	level._effect["mech_wpn_source"] = sys::loadfx( "maps/zombie_tomb/fx_tomb_mech_wpn_source" );
+	level._effect["mech_wpn_flamethrower"] = sys::loadfx( "maps/zombie_tomb/fx_tomb_mech_wpn_flamethrower" );
+	level._effect["mech_booster_landing"] = sys::loadfx( "maps/zombie_tomb/fx_tomb_mech_jump_landing" );
+	level._effect["mech_faceplate_dmg"] = sys::loadfx( "maps/zombie_tomb/fx_tomb_mech_dmg_armor_face" );
+	level._effect["mech_armor_dmg"] = sys::loadfx( "maps/zombie_tomb/fx_tomb_mech_dmg_armor" );
+	level._effect["mech_exhaust"] = sys::loadfx( "maps/zombie_tomb/fx_tomb_mech_exhaust_smoke" );
+	level._effect["mech_booster_feet"] = sys::loadfx( "maps/zombie_tomb/fx_tomb_mech_jump_booster_sm" );
+	level._effect["mech_headlamp"] = sys::loadfx( "maps/zombie_tomb/fx_tomb_mech_head_light" );
+	level._effect["mech_footstep_steam"] = sys::loadfx( "maps/zombie_tomb/fx_tomb_mech_foot_step_steam" );
 	setdvar( "zombie_double_wide_checks", 1 );
 	precacherumble( "mechz_footsteps" );
-	precacheshellshock( "lava_small" );
+	sys::precacheshellshock( "lava_small" );
 }
 
 register_clientfields()
@@ -74,12 +74,12 @@ register_burn_overlay()
 main()
 {
 	register_clientfields();
-	level._effect["mechz_death"] = loadfx( "maps/zombie_tomb/fx_tomb_mech_death" );
-	level._effect["mechz_sparks"] = loadfx( "maps/zombie_tomb/fx_tomb_mech_dmg_sparks" );
-	level._effect["mechz_steam"] = loadfx( "maps/zombie_tomb/fx_tomb_mech_dmg_steam" );
-	level._effect["mechz_claw"] = loadfx( "maps/zombie_tomb/fx_tomb_mech_wpn_claw" );
-	level._effect["mechz_claw_arm"] = loadfx( "maps/zombie_tomb/fx_tomb_mech_wpn_source" );
-	level._effect["mech_booster_landing"] = loadfx( "maps/zombie_tomb/fx_tomb_mech_jump_landing" );
+	level._effect["mechz_death"] = sys::loadfx( "maps/zombie_tomb/fx_tomb_mech_death" );
+	level._effect["mechz_sparks"] = sys::loadfx( "maps/zombie_tomb/fx_tomb_mech_dmg_sparks" );
+	level._effect["mechz_steam"] = sys::loadfx( "maps/zombie_tomb/fx_tomb_mech_dmg_steam" );
+	level._effect["mechz_claw"] = sys::loadfx( "maps/zombie_tomb/fx_tomb_mech_wpn_claw" );
+	level._effect["mechz_claw_arm"] = sys::loadfx( "maps/zombie_tomb/fx_tomb_mech_wpn_source" );
+	level._effect["mech_booster_landing"] = sys::loadfx( "maps/zombie_tomb/fx_tomb_mech_jump_landing" );
 	precache();
 	level thread init_animtree();
 	scripts\zm\zm_ai_pack_mod_main::add_visionset_callback( ::register_burn_overlay );
@@ -96,7 +96,7 @@ init_animtree()
 init()
 {
 	maps\mp\zombies\_zm_ai_mechz_ffotd::mechz_init_start();
-	level.mechz_spawners = getentarray( "mechz_spawner", "script_noteworthy" );
+	level.mechz_spawners = sys::getentarray( "mechz_spawner", "script_noteworthy" );
 
 	if ( level.mechz_spawners.size == 0 )
 		return;
@@ -189,21 +189,21 @@ init()
 mechz_setup_armor_pieces()
 {
 	level.mechz_armor_info = [];
-	level.mechz_armor_info[0] = spawnstruct();
+	level.mechz_armor_info[0] = sys::spawnstruct();
 	level.mechz_armor_info[0].model = "c_zom_mech_armor_knee_left";
 	level.mechz_armor_info[0].tag = "J_Knee_Attach_LE";
-	level.mechz_armor_info[1] = spawnstruct();
+	level.mechz_armor_info[1] = sys::spawnstruct();
 	level.mechz_armor_info[1].model = "c_zom_mech_armor_knee_right";
 	level.mechz_armor_info[1].tag = "J_Knee_attach_RI";
-	level.mechz_armor_info[2] = spawnstruct();
+	level.mechz_armor_info[2] = sys::spawnstruct();
 	level.mechz_armor_info[2].model = "c_zom_mech_armor_shoulder_left";
 	level.mechz_armor_info[2].tag = "J_ShoulderArmor_LE";
-	level.mechz_armor_info[3] = spawnstruct();
+	level.mechz_armor_info[3] = sys::spawnstruct();
 	level.mechz_armor_info[3].model = "c_zom_mech_armor_shoulder_right";
 	level.mechz_armor_info[3].tag = "J_ShoulderArmor_RI";
-	level.mechz_armor_info[4] = spawnstruct();
+	level.mechz_armor_info[4] = sys::spawnstruct();
 	level.mechz_armor_info[4].tag = "J_Root_Attach_LE";
-	level.mechz_armor_info[5] = spawnstruct();
+	level.mechz_armor_info[5] = sys::spawnstruct();
 	level.mechz_armor_info[5].tag = "J_Root_Attach_RI";
 
 	for ( i = 0; i < level.mechz_armor_info.size; i++ )
@@ -354,8 +354,8 @@ mechz_setup_snd()
 
 	if ( !isdefined( self.sndloopent ) )
 	{
-		self.sndloopent = spawn( "script_origin", self.origin );
-		self.sndloopent linkto( self, "tag_origin" );
+		self.sndloopent = sys::spawn( "script_origin", self.origin );
+		self.sndloopent sys::linkto( self, "tag_origin" );
 		self thread snddeleteentondeath( self.sndloopent );
 	}
 
@@ -528,7 +528,7 @@ mechz_attach_objects()
 
 	for ( i = 0; i < level.mechz_armor_info.size; i++ )
 	{
-		self.armor_state[i] = spawnstruct();
+		self.armor_state[i] = sys::spawnstruct();
 		self.armor_state[i].index = i;
 		self.armor_state[i].tag = level.mechz_armor_info[i].tag;
 
@@ -545,17 +545,17 @@ mechz_attach_objects()
 		self.m_claw = undefined;
 	}
 
-	org = self gettagorigin( "tag_claw" );
-	ang = self gettagangles( "tag_claw" );
-	self.m_claw = spawn( "script_model", org );
+	org = self sys::gettagorigin( "tag_claw" );
+	ang = self sys::gettagangles( "tag_claw" );
+	self.m_claw = sys::spawn( "script_model", org );
 	self.m_claw setmodel( "c_zom_mech_claw" );
 	self.m_claw.angles = ang;
-	self.m_claw linkto( self, "tag_claw" );
+	self.m_claw sys::linkto( self, "tag_claw" );
 	self.m_claw useanimtree( #animtree );
 
 	if ( isdefined( self.m_claw_damage_trigger ) )
 	{
-		self.m_claw_damage_trigger unlink();
+		self.m_claw_damage_trigger sys::unlink();
 		self.m_claw_damage_trigger delete();
 		self.m_claw_damage_trigger = undefined;
 	}
@@ -563,10 +563,10 @@ mechz_attach_objects()
 	trigger_spawnflags = 0;
 	trigger_radius = 3;
 	trigger_height = 15;
-	self.m_claw_damage_trigger = spawn( "trigger_damage", org, trigger_spawnflags, trigger_radius, trigger_height );
+	self.m_claw_damage_trigger = sys::spawn( "trigger_damage", org, trigger_spawnflags, trigger_radius, trigger_height );
 	self.m_claw_damage_trigger.angles = ang;
-	self.m_claw_damage_trigger enablelinkto();
-	self.m_claw_damage_trigger linkto( self, "tag_claw" );
+	self.m_claw_damage_trigger enablesys::linkto();
+	self.m_claw_damage_trigger sys::linkto( self, "tag_claw" );
 	self thread mechz_claw_damage_trigger_thread();
 	self attach( "c_zom_mech_faceplate", "J_Helmet", 0 );
 	self.has_helmet = 1;
@@ -643,14 +643,14 @@ mechz_spawn()
 	self.zombie_init_done = 1;
 	self notify( "zombie_init_done" );
 	self.allowpain = 0;
-	self animmode( "normal" );
-	self orientmode( "face enemy" );
+	self sys::animmode( "normal" );
+	self sys::orientmode( "face enemy" );
 	self maps\mp\zombies\_zm_spawner::zombie_setup_attack_properties();
 	self.completed_emerging_into_playable_area = 1;
 	self notify( "completed_emerging_into_playable_area" );
 	self.no_powerups = 0;
-	self setfreecameralockonallowed( 0 );
-	self notsolid();
+	self sys::setfreecameralockonallowed( 0 );
+	self sys::notsolid();
 	self thread maps\mp\zombies\_zm_spawner::zombie_eye_glow();
 	level thread maps\mp\zombies\_zm_spawner::zombie_death_event( self );
 	self thread maps\mp\zombies\_zm_spawner::enemy_death_detection();
@@ -684,10 +684,10 @@ mechz_spawn()
 	if ( !isdefined( spawn_pos.angles ) )
 		spawn_pos.angles = ( 0, 0, 0 );
 
-	self animscripted( spawn_pos.origin, spawn_pos.angles, "zm_spawn" );
+	self sys::animscripted( spawn_pos.origin, spawn_pos.angles, "zm_spawn" );
 	self maps\mp\animscripts\zm_shared::donotetracks( "jump_anim" );
-	self setfreecameralockonallowed( 1 );
-	self solid();
+	self sys::setfreecameralockonallowed( 1 );
+	self sys::solid();
 	self set_zombie_run_cycle( "walk" );
 
 	if ( isdefined( level.mechz_find_flesh_override_func ) )
@@ -705,11 +705,11 @@ get_closest_mechz_spawn_pos( org )
 {
 	best_dist = -1;
 	best_pos = undefined;
-	players = get_players();
+	players = sys::getplayers();
 
 	for ( i = 0; i < level.zombie_mechz_locations.size; i++ )
 	{
-		dist = distancesquared( org, level.zombie_mechz_locations[i].origin );
+		dist = sys::distancesquared( org, level.zombie_mechz_locations[i].origin );
 
 		if ( dist < best_dist || best_dist < 0 )
 		{
@@ -732,7 +732,7 @@ get_best_mechz_spawn_pos( ignore_used_positions )
 
 	best_dist = -1;
 	best_pos = undefined;
-	players = get_players();
+	players = sys::getplayers();
 
 	for ( i = 0; i < level.zombie_mechz_locations.size; i++ )
 	{
@@ -746,7 +746,7 @@ get_best_mechz_spawn_pos( ignore_used_positions )
 		{
 			if ( is_player_valid( players[j], 1, 1 ) )
 			{
-				dist = distancesquared( level.zombie_mechz_locations[i].origin, players[j].origin );
+				dist = sys::distancesquared( level.zombie_mechz_locations[i].origin, players[j].origin );
 
 				if ( dist < best_dist || best_dist < 0 )
 				{
@@ -785,7 +785,7 @@ mechz_health_increases()
 {
 	if ( !isdefined( level.mechz_last_spawn_round ) || level.round_number > level.mechz_last_spawn_round )
 	{
-		a_players = getplayers();
+		a_players = sys::getplayers();
 		n_player_modifier = 1;
 
 		if ( a_players.size > 1 )
@@ -868,7 +868,7 @@ mechz_death()
 mechz_explode( str_tag, death_origin )
 {
 	wait 2.0;
-	v_origin = self gettagorigin( str_tag );
+	v_origin = self sys::gettagorigin( str_tag );
 	level notify( "mechz_exploded", v_origin );
 	playsoundatposition( "zmb_ai_mechz_death_explode", v_origin );
 	playfx( level._effect["mechz_death"], v_origin );
@@ -924,7 +924,7 @@ mechz_stun( time )
 
 	while ( curr_time < time )
 	{
-		self animscripted( self.origin, self.angles, "zm_stun" );
+		self sys::animscripted( self.origin, self.angles, "zm_stun" );
 		self maps\mp\animscripts\zm_shared::donotetracks( "stun_anim" );
 		self clearanim( %root, 0 );
 		curr_time = curr_time + anim_time;
@@ -956,18 +956,18 @@ mechz_tank_hit_callback()
 	v_trace = physicstrace( self.origin, v_trace_end, ( -15, -15, -5 ), ( 15, 15, 5 ), self );
 	self.origin = v_trace["position"];
 	timer = 0;
-	self animscripted( self.origin, self.angles, "zm_tank_hit_in" );
+	self sys::animscripted( self.origin, self.angles, "zm_tank_hit_in" );
 	self maps\mp\animscripts\zm_shared::donotetracks( "pain_anim" );
 	anim_length = self getanimlengthfromasd( "zm_tank_hit_loop", 0 );
 
 	while ( timer < level.mechz_tank_knockdown_time )
 	{
 		timer = timer + anim_length;
-		self animscripted( self.origin, self.angles, "zm_tank_hit_loop" );
+		self sys::animscripted( self.origin, self.angles, "zm_tank_hit_loop" );
 		self maps\mp\animscripts\zm_shared::donotetracks( "pain_anim" );
 	}
 
-	self animscripted( self.origin, self.angles, "zm_tank_hit_out" );
+	self sys::animscripted( self.origin, self.angles, "zm_tank_hit_out" );
 	self maps\mp\animscripts\zm_shared::donotetracks( "pain_anim" );
 /#
 	if ( getdvarint( #"_id_E7121222" ) > 1 )
@@ -976,20 +976,20 @@ mechz_tank_hit_callback()
 	self.not_interruptable = 0;
 	self.mechz_hit_by_tank = 0;
 
-	if ( !level.vh_tank ent_flag( "tank_moving" ) && self istouching( level.vh_tank ) )
+	if ( !level.vh_tank ent_flag( "tank_moving" ) && self sys::istouching( level.vh_tank ) )
 	{
-		self notsolid();
-		self ghost();
+		self sys::notsolid();
+		self sys::ghost();
 		self.mechz_hidden = 1;
 
 		if ( isdefined( self.m_claw ) )
-			self.m_claw ghost();
+			self.m_claw sys::ghost();
 
 		self.fx_field_old = self.fx_field;
 		self thread maps\mp\zombies\_zm_spawner::zombie_eye_glow_stop();
 		self fx_cleanup();
 		self mechz_do_jump();
-		self solid();
+		self sys::solid();
 		self.mechz_hidden = 0;
 	}
 }
@@ -1014,18 +1014,18 @@ mechz_robot_stomp_callback()
 	v_trace = physicstrace( self.origin, v_trace_end, ( -15, -15, -5 ), ( 15, 15, 5 ), self );
 	self.origin = v_trace["position"];
 	timer = 0;
-	self animscripted( self.origin, self.angles, "zm_robot_hit_in" );
+	self sys::animscripted( self.origin, self.angles, "zm_robot_hit_in" );
 	self maps\mp\animscripts\zm_shared::donotetracks( "pain_anim" );
 	anim_length = self getanimlengthfromasd( "zm_robot_hit_loop", 0 );
 
 	while ( timer < level.mechz_robot_knockdown_time )
 	{
 		timer = timer + anim_length;
-		self animscripted( self.origin, self.angles, "zm_robot_hit_loop" );
+		self sys::animscripted( self.origin, self.angles, "zm_robot_hit_loop" );
 		self maps\mp\animscripts\zm_shared::donotetracks( "pain_anim" );
 	}
 
-	self animscripted( self.origin, self.angles, "zm_robot_hit_out" );
+	self sys::animscripted( self.origin, self.angles, "zm_robot_hit_out" );
 	self maps\mp\animscripts\zm_shared::donotetracks( "jump_anim" );
 /#
 	if ( getdvarint( #"_id_E7121222" ) > 1 )
@@ -1043,7 +1043,7 @@ mechz_delayed_item_delete()
 
 mechz_get_closest_valid_player()
 {
-	players = get_players();
+	players = sys::getplayers();
 
 	if ( isdefined( self.ignore_player ) )
 	{
@@ -1083,7 +1083,7 @@ mechz_get_closest_valid_player()
 
 get_favorite_enemy( origin, players )
 {
-	mechz_targets = getplayers();
+	mechz_targets = sys::getplayers();
 	least_hunted = undefined;
 	best_hunted_val = -1;
 	best_dist = -1;
@@ -1107,7 +1107,7 @@ get_favorite_enemy( origin, players )
 			continue;
 		}
 
-		distances[i] = distancesquared( self.origin, mechz_targets[i].origin );
+		distances[i] = sys::distancesquared( self.origin, mechz_targets[i].origin );
 	}
 
 	found_weapon_target = 0;
@@ -1138,14 +1138,14 @@ get_favorite_enemy( origin, players )
 
 	if ( isdefined( self.favoriteenemy ) && is_player_valid( self.favoriteenemy, 1, 1 ) )
 	{
-		if ( distancesquared( self.origin, self.favoriteenemy.origin ) <= level.mechz_sticky_dist_sq )
+		if ( sys::distancesquared( self.origin, self.favoriteenemy.origin ) <= level.mechz_sticky_dist_sq )
 		{
 			self.favoriteenemy.hunted_by++;
 			return self.favoriteenemy;
 		}
 	}
 
-	func = getFunction( "maps/mp/zm_tomb_chamber", "is_player_in_chamber" );
+	func = pluto_sys::getfunction( "maps/mp/zm_tomb_chamber", "is_player_in_chamber" );
 	for ( i = 0; i < mechz_targets.size; i++ )
 	{
 		if ( isdefined( mechz_targets[i].in_giant_robot_head ) )
@@ -1191,9 +1191,9 @@ mechz_check_in_arc( right_offset )
 	enemy_vec = self.favoriteenemy.origin - origin;
 	enemy_yaw_vec = ( enemy_vec[0], enemy_vec[1], 0 );
 	facing_yaw_vec = ( facing_vec[0], facing_vec[1], 0 );
-	enemy_yaw_vec = vectornormalize( enemy_yaw_vec );
-	facing_yaw_vec = vectornormalize( facing_yaw_vec );
-	enemy_dot = vectordot( facing_yaw_vec, enemy_yaw_vec );
+	enemy_yaw_vec = sys::vectornormalize( enemy_yaw_vec );
+	facing_yaw_vec = sys::vectornormalize( facing_yaw_vec );
+	enemy_dot = sys::vectordot( facing_yaw_vec, enemy_yaw_vec );
 
 	if ( enemy_dot < cos( level.mechz_aim_max_yaw ) )
 		return false;
@@ -1284,7 +1284,7 @@ watch_for_player_dist()
 		else
 			reset_dist = level.mechz_reset_dist_sq;
 
-		if ( !isdefined( player ) || distancesquared( player.origin, self.origin ) > reset_dist )
+		if ( !isdefined( player ) || sys::distancesquared( player.origin, self.origin ) > reset_dist )
 			self.disable_complex_behaviors = 0;
 
 		wait 0.5;
@@ -1352,14 +1352,14 @@ mechz_find_flesh()
 				println( "\\n\\tMZ: No Enemy, idling\\n" );
 #/
 			self.goal_pos = self.origin;
-			self setgoalpos( self.goal_pos );
+			self sys::setgoalpos( self.goal_pos );
 			self.ai_state = "idle";
-			self setanimstatefromasd( "zm_idle" );
+			self sys::setanimstatefromasd( "zm_idle" );
 			wait 0.5;
 			continue;
 		}
 
-		entity_on_tank_func = getFunction( "maps/mp/zm_tomb_tank", "entity_on_tank" );
+		entity_on_tank_func = pluto_sys::getfunction( "maps/mp/zm_tomb_tank", "entity_on_tank" );
 		if ( isDefined( entity_on_tank_func ) && player [[ entity_on_tank_func ]]() )
 		{
 			if ( level.vh_tank ent_flag( "tank_moving" ) )
@@ -1385,7 +1385,7 @@ mechz_find_flesh()
 					if ( isdefined( self.jump_pos ) )
 					{
 						self.goal_pos = self.jump_pos.origin;
-						self setgoalpos( self.goal_pos );
+						self sys::setgoalpos( self.goal_pos );
 					}
 
 					wait 0.5;
@@ -1403,7 +1403,7 @@ mechz_find_flesh()
 				self.ai_state = "tracking_tank";
 				self.goalradius = level.mechz_custom_goalradius;
 				self.custom_goalradius_override = level.mechz_custom_goalradius;
-				func = getFunction( "maps/mp/zm_tomb_tank", "get_closest_mechz_tag_on_tank" );
+				func = pluto_sys::getfunction( "maps/mp/zm_tomb_tank", "get_closest_mechz_tag_on_tank" );
 				closest_tank_tag = undefined;
 				if ( isDefined( func ) )
 				{
@@ -1420,16 +1420,16 @@ mechz_find_flesh()
 					continue;
 				}
 
-				closest_tank_tag_pos = level.vh_tank gettagorigin( closest_tank_tag );
+				closest_tank_tag_pos = level.vh_tank sys::gettagorigin( closest_tank_tag );
 
-				if ( abs( self.origin[2] - closest_tank_tag_pos[2] ) >= level.mechz_custom_goalradius || distance2dsquared( self.origin, closest_tank_tag_pos ) >= level.mechz_custom_goalradius_sq )
+				if ( abs( self.origin[2] - closest_tank_tag_pos[2] ) >= level.mechz_custom_goalradius || sys::distance2dsquared( self.origin, closest_tank_tag_pos ) >= level.mechz_custom_goalradius_sq )
 				{
 /#
 					if ( getdvarint( #"_id_E7121222" ) > 1 )
 						println( "\\n\\tMZ: Enemy on tank, setting tank pos as goal\\n" );
 #/
 					self.goal_pos = closest_tank_tag_pos;
-					self setgoalpos( self.goal_pos );
+					self sys::setgoalpos( self.goal_pos );
 					self waittill_any_or_timeout( 0.5, "goal", "bad_path" );
 
 					if ( isDefined( entity_on_tank_func ) && !player [[ entity_on_tank_func ]]() )
@@ -1442,7 +1442,7 @@ mechz_find_flesh()
 					}
 				}
 
-				if ( abs( self.origin[2] - closest_tank_tag_pos[2] ) < level.mechz_custom_goalradius && distance2dsquared( self.origin, closest_tank_tag_pos ) < level.mechz_custom_goalradius_sq )
+				if ( abs( self.origin[2] - closest_tank_tag_pos[2] ) < level.mechz_custom_goalradius && sys::distance2dsquared( self.origin, closest_tank_tag_pos ) < level.mechz_custom_goalradius_sq )
 				{
 /#
 					if ( getdvarint( #"_id_E7121222" ) > 1 )
@@ -1467,7 +1467,7 @@ mechz_find_flesh()
 					println( "\\n\\tMZ: Jump Requested, going to jump pos\\n" );
 #/
 				self.goal_pos = self.jump_pos.origin;
-				self setgoalpos( self.goal_pos );
+				self sys::setgoalpos( self.goal_pos );
 				wait 0.5;
 				continue;
 			}
@@ -1479,11 +1479,11 @@ mechz_find_flesh()
 				println( "\\n\\tMZ: Sprinting\\n" );
 #/
 			self.goal_pos = player.origin;
-			self setgoalpos( self.goal_pos );
+			self sys::setgoalpos( self.goal_pos );
 			wait 0.5;
 			continue;
 		}
-		else if ( distancesquared( self.origin, player.origin ) < level.mechz_aggro_dist_sq )
+		else if ( sys::distancesquared( self.origin, player.origin ) < level.mechz_aggro_dist_sq )
 		{
 /#
 			if ( getdvarint( #"_id_E7121222" ) > 1 )
@@ -1521,13 +1521,13 @@ mechz_find_flesh()
 damage_prone_players()
 {
 	self endon( "death" );
-	a_players = getplayers();
+	a_players = sys::getplayers();
 
 	foreach ( player in a_players )
 	{
 		if ( isdefined( self.favoriteenemy ) && self.favoriteenemy == player )
 		{
-			n_dist = distance2dsquared( player.origin, self.origin );
+			n_dist = sys::distance2dsquared( player.origin, self.origin );
 
 			if ( n_dist < 2025 )
 			{
@@ -1550,7 +1550,7 @@ damage_prone_players()
 
 melee_anim_func()
 {
-	self.next_leap_time = gettime() + 1500;
+	self.next_leap_time = sys::gettime() + 1500;
 }
 
 mechz_launch_armor_piece()
@@ -1719,7 +1719,7 @@ mechz_damage_override( inflictor, attacker, damage, flags, meansofdeath, weapon,
 		if ( !( isdefined( self.not_interruptable ) && self.not_interruptable ) && !( isdefined( self.is_traversing ) && self.is_traversing ) )
 		{
 			self mechz_interrupt();
-			self animscripted( self.origin, self.angles, "zm_pain_faceplate" );
+			self sys::animscripted( self.origin, self.angles, "zm_pain_faceplate" );
 			self maps\mp\animscripts\zm_shared::donotetracks( "pain_anim_faceplate" );
 		}
 
@@ -1730,8 +1730,8 @@ mechz_damage_override( inflictor, attacker, damage, flags, meansofdeath, weapon,
 	{
 		self.powerplant_covered = 0;
 		self detach( "c_zom_mech_powersupply_cap", "tag_powersupply" );
-		cap_model = spawn( "script_model", self gettagorigin( "tag_powersupply" ) );
-		cap_model.angles = self gettagangles( "tag_powersupply" );
+		cap_model = sys::spawn( "script_model", self sys::gettagorigin( "tag_powersupply" ) );
+		cap_model.angles = self sys::gettagangles( "tag_powersupply" );
 		cap_model setmodel( "c_zom_mech_powersupply_cap" );
 		cap_model physicslaunch( cap_model.origin, anglestoforward( cap_model.angles ) );
 		cap_model thread mechz_delayed_item_delete();
@@ -1742,7 +1742,7 @@ mechz_damage_override( inflictor, attacker, damage, flags, meansofdeath, weapon,
 		if ( !( isdefined( self.not_interruptable ) && self.not_interruptable ) && !( isdefined( self.is_traversing ) && self.is_traversing ) )
 		{
 			self mechz_interrupt();
-			self animscripted( self.origin, self.angles, "zm_pain_powercore" );
+			self sys::animscripted( self.origin, self.angles, "zm_pain_powercore" );
 			self maps\mp\animscripts\zm_shared::donotetracks( "pain_anim_powercore" );
 		}
 	}
@@ -1793,7 +1793,7 @@ mechz_set_locomotion_speed()
 	self endon( "death" );
 	self.prev_move_speed = self.zombie_move_speed;
 
-	entity_on_tank_func = getFunction( "maps/mp/zm_tomb_tank", "entity_on_tank" );
+	entity_on_tank_func = pluto_sys::getfunction( "maps/mp/zm_tomb_tank", "entity_on_tank" );
 	if ( !isdefined( self.favoriteenemy ) )
 		self.zombie_move_speed = "walk";
 	else if ( isdefined( self.force_run ) && self.force_run )
@@ -1802,7 +1802,7 @@ mechz_set_locomotion_speed()
 		self.zombie_move_speed = "sprint";
 	else if ( isDefined( entity_on_tank_func ) && isdefined( self.favoriteenemy ) && self.favoriteenemy [[ entity_on_tank_func ]]() && isdefined( level.vh_tank ) && level.vh_tank ent_flag( "tank_activated" ) )
 	    self.zombie_move_speed = "run";
-	else if ( isdefined( self.favoriteenemy ) && distancesquared( self.origin, self.favoriteenemy.origin ) > level.mechz_dist_for_sprint )
+	else if ( isdefined( self.favoriteenemy ) && sys::distancesquared( self.origin, self.favoriteenemy.origin ) > level.mechz_dist_for_sprint )
 		self.zombie_move_speed = "run";
 	else if ( !( isdefined( self.has_powerplant ) && self.has_powerplant ) )
 		self.zombie_move_speed = "walk";
@@ -1812,12 +1812,12 @@ mechz_set_locomotion_speed()
 	if ( self.zombie_move_speed == "sprint" && self.prev_move_speed != "sprint" )
 	{
 		self mechz_interrupt();
-		self animscripted( self.origin, self.angles, "zm_sprint_intro" );
+		self sys::animscripted( self.origin, self.angles, "zm_sprint_intro" );
 		self maps\mp\animscripts\zm_shared::donotetracks( "jump_anim" );
 	}
 	else if ( self.zombie_move_speed != "sprint" && self.prev_move_speed == "sprint" )
 	{
-		self animscripted( self.origin, self.angles, "zm_sprint_outro" );
+		self sys::animscripted( self.origin, self.angles, "zm_sprint_outro" );
 		self maps\mp\animscripts\zm_shared::donotetracks( "jump_anim" );
 	}
 
@@ -1827,7 +1827,7 @@ mechz_set_locomotion_speed()
 response_to_air_raid_siren_vo()
 {
 	wait 3.0;
-	a_players = getplayers();
+	a_players = sys::getplayers();
 
 	if ( a_players.size == 0 )
 		return;
@@ -1877,7 +1877,7 @@ start_see_mech_zombie_vo()
 			ai_mechz = zombie;
 	}
 
-	a_players = getplayers();
+	a_players = sys::getplayers();
 
 	if ( a_players.size == 0 )
 		return;
@@ -1897,7 +1897,7 @@ player_looking_at_mechz_watcher( ai_mechz )
 
 	while ( true )
 	{
-		if ( distancesquared( self.origin, ai_mechz.origin ) < 1000000 )
+		if ( sys::distancesquared( self.origin, ai_mechz.origin ) < 1000000 )
 		{
 			if ( self is_player_looking_at( ai_mechz.origin + vectorscale( ( 0, 0, 1 ), 60.0 ), 0.75 ) )
 			{
@@ -1937,14 +1937,14 @@ play_shoot_arm_hint_vo()
 		if ( !isdefined( self.e_grabbed ) )
 			return;
 
-		a_players = getplayers();
+		a_players = sys::getplayers();
 
 		foreach ( player in a_players )
 		{
 			if ( player == self.e_grabbed )
 				continue;
 
-			if ( distancesquared( self.origin, player.origin ) < 1000000 )
+			if ( sys::distancesquared( self.origin, player.origin ) < 1000000 )
 			{
 				if ( player is_player_looking_at( self.origin + vectorscale( ( 0, 0, 1 ), 60.0 ), 0.75 ) )
 				{
@@ -1980,14 +1980,14 @@ mechz_hint_vo()
 			continue;
 		}
 
-		a_players = getplayers();
+		a_players = sys::getplayers();
 
 		foreach ( player in a_players )
 		{
 			if ( isdefined( self.e_grabbed ) && self.e_grabbed == player )
 				continue;
 
-			if ( distancesquared( self.origin, player.origin ) < 1000000 )
+			if ( sys::distancesquared( self.origin, player.origin ) < 1000000 )
 			{
 				if ( player is_player_looking_at( self.origin + vectorscale( ( 0, 0, 1 ), 60.0 ), 0.75 ) )
 				{
@@ -2007,14 +2007,14 @@ mechz_hint_vo()
 shoot_mechz_head_vo()
 {
 	self endon( "death" );
-	a_players = getplayers();
+	a_players = sys::getplayers();
 
 	foreach ( player in a_players )
 	{
 		if ( isdefined( self.e_grabbed ) && self.e_grabbed == player )
 			continue;
 
-		if ( distancesquared( self.origin, player.origin ) < 1000000 )
+		if ( sys::distancesquared( self.origin, player.origin ) < 1000000 )
 		{
 			if ( player is_player_looking_at( self.origin + vectorscale( ( 0, 0, 1 ), 60.0 ), 0.75 ) )
 			{
@@ -2030,11 +2030,11 @@ shoot_mechz_head_vo()
 
 mechz_jump_vo()
 {
-	a_players = getplayers();
+	a_players = sys::getplayers();
 
 	foreach ( player in a_players )
 	{
-		if ( distancesquared( self.origin, player.origin ) < 1000000 )
+		if ( sys::distancesquared( self.origin, player.origin ) < 1000000 )
 		{
 			if ( player is_player_looking_at( self.origin + vectorscale( ( 0, 0, 1 ), 60.0 ), 0.5 ) )
 			{
@@ -2052,11 +2052,11 @@ mechz_stomped_by_giant_robot_vo()
 {
 	self endon( "death" );
 	wait 5.0;
-	a_players = getplayers();
+	a_players = sys::getplayers();
 
 	foreach ( player in a_players )
 	{
-		if ( distancesquared( self.origin, player.origin ) < 1000000 )
+		if ( sys::distancesquared( self.origin, player.origin ) < 1000000 )
 		{
 			if ( player is_player_looking_at( self.origin + vectorscale( ( 0, 0, 1 ), 60.0 ), 0.75 ) )
 			{

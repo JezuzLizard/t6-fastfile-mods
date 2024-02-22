@@ -45,7 +45,7 @@ is_player_in_ghost_zone( player )
 	result = 0;
 
 	if ( !isdefined( level.ghost_zone_overrides ) )
-		level.ghost_zone_overrides = getentarray( "ghost_round_override", "script_noteworthy" );
+		level.ghost_zone_overrides = sys::getentarray( "ghost_round_override", "script_noteworthy" );
 
 	is_player_in_override_trigger = 0;
 
@@ -53,7 +53,7 @@ is_player_in_ghost_zone( player )
 	{
 		foreach ( trigger in level.ghost_zone_overrides )
 		{
-			if ( player istouching( trigger ) )
+			if ( player sys::istouching( trigger ) )
 			{
 				is_player_in_override_trigger = 1;
 				break;
@@ -72,44 +72,44 @@ is_player_in_ghost_zone( player )
 ghost_bad_path_init()
 {
 	level.bad_zones = [];
-	level.bad_zones[0] = spawnstruct();
+	level.bad_zones[0] = sys::spawnstruct();
 	level.bad_zones[0].name = "zone_underground_courthouse";
 	level.bad_zones[0].adjacent = [];
 	level.bad_zones[0].adjacent[0] = "zone_underground_courthouse2";
 	level.bad_zones[0].adjacent[1] = "zone_tunnels_north2";
-	level.bad_zones[0].ignore_func = getFunction( "maps/mp/zm_buried", "is_courthouse_open" );
-	level.bad_zones[1] = spawnstruct();
+	level.bad_zones[0].ignore_func = pluto_sys::getfunction( "maps/mp/zm_buried", "is_courthouse_open" );
+	level.bad_zones[1] = sys::spawnstruct();
 	level.bad_zones[1].name = "zone_underground_courthouse2";
 	level.bad_zones[1].adjacent = [];
 	level.bad_zones[1].adjacent[0] = "zone_underground_courthouse";
 	level.bad_zones[1].adjacent[1] = "zone_tunnels_north2";
-	level.bad_zones[1].ignore_func = getFunction( "maps/mp/zm_buried", "is_courthouse_open" );
-	level.bad_zones[2] = spawnstruct();
+	level.bad_zones[1].ignore_func = pluto_sys::getfunction( "maps/mp/zm_buried", "is_courthouse_open" );
+	level.bad_zones[2] = sys::spawnstruct();
 	level.bad_zones[2].name = "zone_tunnels_north2";
 	level.bad_zones[2].adjacent = [];
 	level.bad_zones[2].adjacent[0] = "zone_underground_courthouse2";
 	level.bad_zones[2].adjacent[1] = "zone_underground_courthouse";
 	level.bad_zones[2].flag = "tunnels2courthouse";
 	level.bad_zones[2].flag_adjacent = "zone_tunnels_north";
-	level.bad_zones[2].ignore_func = getFunction( "maps/mp/zm_buried", "is_courthouse_open" );
-	level.bad_zones[3] = spawnstruct();
+	level.bad_zones[2].ignore_func = pluto_sys::getfunction( "maps/mp/zm_buried", "is_courthouse_open" );
+	level.bad_zones[3] = sys::spawnstruct();
 	level.bad_zones[3].name = "zone_tunnels_north";
 	level.bad_zones[3].adjacent = [];
 	level.bad_zones[3].adjacent[0] = "zone_tunnels_center";
 	level.bad_zones[3].flag = "tunnels2courthouse";
 	level.bad_zones[3].flag_adjacent = "zone_tunnels_north2";
-	level.bad_zones[3].ignore_func = getFunction( "maps/mp/zm_buried", "is_tunnel_open" );
-	level.bad_zones[4] = spawnstruct();
+	level.bad_zones[3].ignore_func = pluto_sys::getfunction( "maps/mp/zm_buried", "is_tunnel_open" );
+	level.bad_zones[4] = sys::spawnstruct();
 	level.bad_zones[4].name = "zone_tunnels_center";
 	level.bad_zones[4].adjacent = [];
 	level.bad_zones[4].adjacent[0] = "zone_tunnels_north";
 	level.bad_zones[4].adjacent[1] = "zone_tunnels_south";
-	level.bad_zones[4].ignore_func = getFunction( "maps/mp/zm_buried", "is_tunnel_open" );
-	level.bad_zones[5] = spawnstruct();
+	level.bad_zones[4].ignore_func = pluto_sys::getfunction( "maps/mp/zm_buried", "is_tunnel_open" );
+	level.bad_zones[5] = sys::spawnstruct();
 	level.bad_zones[5].name = "zone_tunnels_south";
 	level.bad_zones[5].adjacent = [];
 	level.bad_zones[5].adjacent[0] = "zone_tunnels_center";
-	level.bad_zones[5].ignore_func = getFunction( "maps/mp/zm_buried", "is_tunnel_open" );
+	level.bad_zones[5].ignore_func = pluto_sys::getfunction( "maps/mp/zm_buried", "is_tunnel_open" );
 }
 
 ghost_bad_path_failsafe()
@@ -219,7 +219,7 @@ disable_traversal_clip_around_mansion()
 	if ( isdefined( level.ghost_zone_door_clips ) && level.ghost_zone_door_clips.size > 0 )
 	{
 		foreach ( door_clip in level.ghost_zone_door_clips )
-			door_clip notsolid();
+			door_clip sys::notsolid();
 	}
 }
 

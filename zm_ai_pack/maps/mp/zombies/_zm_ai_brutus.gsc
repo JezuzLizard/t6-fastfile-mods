@@ -33,9 +33,9 @@ precache()
 	level._effect["brutus_lockdown_sm"] = sys::loadfx( "maps/zombie_alcatraz/fx_alcatraz_perk_s_lock" );
 	level._effect["brutus_lockdown_lg"] = sys::loadfx( "maps/zombie_alcatraz/fx_alcatraz_w_bench_lock" );
 	precachemodel( "c_zom_cellbreaker_helmet" );
-	precacheshellshock( "mp_radiation_high" );
-	precacheshellshock( "mp_radiation_med" );
-	precacheshellshock( "mp_radiation_low" );
+	sys::precacheshellshock( "mp_radiation_high" );
+	sys::precacheshellshock( "mp_radiation_med" );
+	sys::precacheshellshock( "mp_radiation_low" );
 	precachestring( &"ZOMBIE_LOCKED_COST" );
 	precachestring( &"ZOMBIE_LOCKED_COST_2000" );
 	precachestring( &"ZOMBIE_LOCKED_COST_4000" );
@@ -62,9 +62,9 @@ main()
 	level._effect["brutus_lockdown_sm"] = sys::loadfx( "maps/zombie_alcatraz/fx_alcatraz_perk_s_lock" );
 	level._effect["brutus_lockdown_lg"] = sys::loadfx( "maps/zombie_alcatraz/fx_alcatraz_w_bench_lock" );
 	precachemodel( "c_zom_cellbreaker_helmet" );
-	precacheshellshock( "mp_radiation_high" );
-	precacheshellshock( "mp_radiation_med" );
-	precacheshellshock( "mp_radiation_low" );
+	sys::precacheshellshock( "mp_radiation_high" );
+	sys::precacheshellshock( "mp_radiation_med" );
+	sys::precacheshellshock( "mp_radiation_low" );
 	precachestring( &"ZOMBIE_LOCKED_COST" );
 	precachestring( &"ZOMBIE_LOCKED_COST_2000" );
 	precachestring( &"ZOMBIE_LOCKED_COST_4000" );
@@ -80,7 +80,7 @@ main()
 
 	[[ level.custom_brutus_barrier_fx ]]();
 
-	level.brutus_spawners = getentarray( "brutus_zombie_spawner", "script_noteworthy" );
+	level.brutus_spawners = sys::getentarray( "brutus_zombie_spawner", "script_noteworthy" );
 
 	if ( level.brutus_spawners.size == 0 )
 		return;
@@ -156,7 +156,7 @@ main()
 
 init()
 {
-	level.brutus_spawners = getentarray( "brutus_zombie_spawner", "script_noteworthy" );
+	level.brutus_spawners = sys::getentarray( "brutus_zombie_spawner", "script_noteworthy" );
 
 	if ( level.brutus_spawners.size == 0 )
 		return;
@@ -233,7 +233,7 @@ init()
 setup_interaction_matrix()
 {
 	level.interaction_types = [];
-	level.interaction_types["magic_box"] = spawnstruct();
+	level.interaction_types["magic_box"] = sys::spawnstruct();
 	level.interaction_types["magic_box"].priority = 0;
 	level.interaction_types["magic_box"].animstate = "zm_lock_magicbox";
 	level.interaction_types["magic_box"].notify_name = "box_lock_anim";
@@ -246,7 +246,7 @@ setup_interaction_matrix()
 	level.interaction_types["magic_box"].spawn_bias = 1000;
 	level.interaction_types["magic_box"].num_times_to_scale = 1;
 	level.interaction_types["magic_box"].unlock_cost = 2000;
-	level.interaction_types["perk_machine"] = spawnstruct();
+	level.interaction_types["perk_machine"] = sys::spawnstruct();
 	level.interaction_types["perk_machine"].priority = 1;
 	level.interaction_types["perk_machine"].animstate = "zm_lock_perk_machine";
 	level.interaction_types["perk_machine"].notify_name = "perk_lock_anim";
@@ -260,7 +260,7 @@ setup_interaction_matrix()
 	level.interaction_types["perk_machine"].unlock_cost = 2000;
 	if ( getDvar( "mapname" ) == "zm_prison" )
 	{
-		level.interaction_types["craftable_table"] = spawnstruct();
+		level.interaction_types["craftable_table"] = sys::spawnstruct();
 		level.interaction_types["craftable_table"].priority = 2;
 		level.interaction_types["craftable_table"].animstate = "zm_smash_craftable_table";
 		level.interaction_types["craftable_table"].notify_name = "table_smash_anim";
@@ -276,7 +276,7 @@ setup_interaction_matrix()
 		level.interaction_types["craftable_table"].interaction_yaw_offset = 270;
 		level.interaction_types["craftable_table"].fx_z_offset = -44;
 		level.interaction_types["craftable_table"].fx_yaw_offset = 270;
-		level.interaction_types["trap"] = spawnstruct();
+		level.interaction_types["trap"] = sys::spawnstruct();
 		level.interaction_types["trap"].priority = 3;
 		level.interaction_types["trap"].animstate = "zm_smash_trap";
 		level.interaction_types["trap"].notify_name = "trap_smash_anim";
@@ -287,7 +287,7 @@ setup_interaction_matrix()
 		level.interaction_types["trap"].interact_func = ::trap_smash;
 		level.interaction_types["trap"].spawn_bias = 400;
 		level.interaction_types["trap"].interaction_z_offset = -15;
-		level.interaction_types["plane_ramp"] = spawnstruct();
+		level.interaction_types["plane_ramp"] = sys::spawnstruct();
 		level.interaction_types["plane_ramp"].priority = 4;
 		level.interaction_types["plane_ramp"].animstate = "zm_lock_plane_ramp";
 		level.interaction_types["plane_ramp"].notify_name = "plane_lock_anim";
@@ -305,7 +305,7 @@ setup_interaction_matrix()
 		level.interaction_types["plane_ramp"].fx_x_offset = 70;
 		level.interaction_types["plane_ramp"].fx_yaw_offset = 90;
 	}
-	level.interaction_types["blocker"] = spawnstruct();
+	level.interaction_types["blocker"] = sys::spawnstruct();
 	level.interaction_types["blocker"].priority = 5;
 	level.interaction_types["blocker"].animstate = "zm_smash_blocker";
 	level.interaction_types["blocker"].notify_name = "board_smash_anim";
@@ -409,10 +409,10 @@ brutus_spawn( starting_health, has_helmet, helmet_hits, explosive_dmg_taken, zon
 	self.zombie_init_done = 1;
 	self notify( "zombie_init_done" );
 	self.allowpain = 0;
-	self animmode( "normal" );
-	self orientmode( "face enemy" );
+	self sys::animmode( "normal" );
+	self sys::orientmode( "face enemy" );
 	self maps\mp\zombies\_zm_spawner::zombie_setup_attack_properties();
-	self setfreecameralockonallowed( 0 );
+	self sys::setfreecameralockonallowed( 0 );
 	level thread maps\mp\zombies\_zm_spawner::zombie_death_event( self );
 	self thread maps\mp\zombies\_zm_spawner::enemy_death_detection();
 
@@ -459,7 +459,7 @@ brutus_spawn( starting_health, has_helmet, helmet_hits, explosive_dmg_taken, zon
 	self thread brutus_lockdown_client_effects( 0.5 );
 	playfx( level._effect["brutus_spawn"], self.origin );
 	playsoundatposition( "zmb_ai_brutus_spawn", self.origin );
-	self animscripted( spawn_pos.origin, spawn_pos.angles, "zm_spawn" );
+	self sys::animscripted( spawn_pos.origin, spawn_pos.angles, "zm_spawn" );
 	self thread maps\mp\animscripts\zm_shared::donotetracks( "spawn_anim" );
 	self waittillmatch( "spawn_anim", "spawn_complete" );
 	self.not_interruptable = 0;
@@ -473,9 +473,9 @@ brutus_spawn( starting_health, has_helmet, helmet_hits, explosive_dmg_taken, zon
 brutus_chest_flashlight()
 {
 	wait 0.1;
-	self.chest_flashlight = spawn( "script_model", self.origin );
+	self.chest_flashlight = sys::spawn( "script_model", self.origin );
 	self.chest_flashlight setmodel( "tag_origin" );
-	self.chest_flashlight linkto( self, "J_spineupper", ( 0, 0, 0 ), ( 0, 0, 0 ) );
+	self.chest_flashlight sys::linkto( self, "J_spineupper", ( 0, 0, 0 ), ( 0, 0, 0 ) );
 	playfxontag( level._effect["brutus_flashlight"], self.chest_flashlight, "tag_origin" );
 	self waittill( "death" );
 
@@ -486,23 +486,23 @@ brutus_chest_flashlight()
 brutus_temp_despawn( brutus, endon_notify, respawn_notify )
 {
 	level endon( endon_notify );
-	align_struct = spawn( "script_model", brutus.origin );
+	align_struct = sys::spawn( "script_model", brutus.origin );
 	align_struct.angles = brutus.angles;
 	align_struct setmodel( "tag_origin" );
 
-	if ( !level.brutus_in_grief && ( brutus istouching( level.e_gondola.t_ride ) || isdefined( brutus.force_gondola_teleport ) && brutus.force_gondola_teleport ) )
+	if ( !level.brutus_in_grief && ( brutus sys::istouching( level.e_gondola.t_ride ) || isdefined( brutus.force_gondola_teleport ) && brutus.force_gondola_teleport ) )
 	{
 		brutus.force_gondola_teleport = 0;
-		align_struct linkto( level.e_gondola );
-		brutus linkto( align_struct );
+		align_struct sys::linkto( level.e_gondola );
+		brutus sys::linkto( align_struct );
 	}
 
 	brutus.not_interruptable = 1;
 	playfxontag( level._effect["brutus_spawn"], align_struct, "tag_origin" );
-	brutus animscripted( brutus.origin, brutus.angles, "zm_taunt" );
+	brutus sys::animscripted( brutus.origin, brutus.angles, "zm_taunt" );
 	brutus maps\mp\animscripts\zm_shared::donotetracks( "taunt_anim" );
 	brutus.not_interruptable = 0;
-	brutus ghost();
+	brutus sys::ghost();
 	brutus notify( "brutus_cleanup" );
 	brutus notify( "brutus_teleporting" );
 
@@ -564,9 +564,9 @@ snddelayedmusic()
 
 	if ( !isdefined( self.sndbrutusmusicent ) )
 	{
-		sndentorigin = self gettagorigin( "J_spineupper" );
-		self.sndbrutusmusicent = spawn( "script_origin", sndentorigin );
-		self.sndbrutusmusicent linkto( self, "J_spineupper" );
+		sndentorigin = self sys::gettagorigin( "J_spineupper" );
+		self.sndbrutusmusicent = sys::spawn( "script_origin", sndentorigin );
+		self.sndbrutusmusicent sys::linkto( self, "J_spineupper" );
 		self.sndbrutusmusicent playloopsound( "mus_event_brutus_loop" );
 	}
 
@@ -586,7 +586,7 @@ brutus_health_increases()
 {
 	if ( level.round_number > level.brutus_last_spawn_round )
 	{
-		a_players = getplayers();
+		a_players = sys::getplayers();
 		n_player_modifier = 1;
 
 		if ( a_players.size > 1 )
@@ -804,14 +804,14 @@ brutus_death()
 		{
 			team_points = level.brutus_team_points_for_death;
 			player_points = level.brutus_player_points_for_death;
-			a_players = getplayers( self.team );
+			a_players = sys::getplayers( self.team );
 		}
 		else
 		{
 			multiplier = maps\mp\zombies\_zm_score::get_points_multiplier( self );
 			team_points = multiplier * round_up_score( level.brutus_team_points_for_death, 5 );
 			player_points = multiplier * round_up_score( level.brutus_player_points_for_death, 5 );
-			a_players = getplayers();
+			a_players = sys::getplayers();
 		}
 
 		foreach ( player in a_players )
@@ -880,7 +880,7 @@ brutus_round_tracker()
 	while ( true )
 	{
 		level waittill( "between_round_over" );
-		players = get_players();
+		players = sys::getplayers();
 
 		if ( level.round_number < 9 && ( isdefined( level.is_forever_solo_game ) && level.is_forever_solo_game ) )
 			continue;
@@ -1061,7 +1061,7 @@ brutus_watch_for_gondola()
 	{
 		level waittill( "gondola_moving" );
 
-		if ( !level.brutus_in_grief && self istouching( level.e_gondola.t_ride ) )
+		if ( !level.brutus_in_grief && self sys::istouching( level.e_gondola.t_ride ) )
 			self.force_gondola_teleport = 1;
 
 		wait 0.05;
@@ -1070,7 +1070,7 @@ brutus_watch_for_gondola()
 
 are_all_targets_invalid()
 {
-	a_players = getplayers();
+	a_players = sys::getplayers();
 
 	foreach ( player in a_players )
 	{
@@ -1103,7 +1103,7 @@ brutus_watch_for_non_afterlife_players()
 
 	while ( b_all_players_in_afterlife )
 	{
-		a_players = getplayers();
+		a_players = sys::getplayers();
 
 		foreach ( player in a_players )
 		{
@@ -1120,23 +1120,23 @@ brutus_watch_for_non_afterlife_players()
 brutus_stuck_teleport()
 {
 	self endon( "death" );
-	align_struct = spawn( "script_model", self.origin );
+	align_struct = sys::spawn( "script_model", self.origin );
 	align_struct.angles = self.angles;
 	align_struct setmodel( "tag_origin" );
 
-	if ( !level.brutus_in_grief && ( self istouching( level.e_gondola.t_ride ) || isdefined( self.force_gondola_teleport ) && self.force_gondola_teleport ) )
+	if ( !level.brutus_in_grief && ( self sys::istouching( level.e_gondola.t_ride ) || isdefined( self.force_gondola_teleport ) && self.force_gondola_teleport ) )
 	{
 		self.force_gondola_teleport = 0;
-		align_struct linkto( level.e_gondola );
-		self linkto( align_struct );
+		align_struct sys::linkto( level.e_gondola );
+		self sys::linkto( align_struct );
 	}
 
 	self.not_interruptable = 1;
 	playfxontag( level._effect["brutus_spawn"], align_struct, "tag_origin" );
-	self animscripted( self.origin, self.angles, "zm_taunt" );
+	self sys::animscripted( self.origin, self.angles, "zm_taunt" );
 	self maps\mp\animscripts\zm_shared::donotetracks( "taunt_anim" );
 	self.not_interruptable = 0;
-	self ghost();
+	self sys::ghost();
 	self notify( "brutus_cleanup" );
 	self notify( "brutus_teleporting" );
 
@@ -1180,7 +1180,7 @@ watch_for_valid_melee()
 	{
 		self waittillmatch( "melee_anim", "end" );
 
-		if ( isdefined( self.favorite_enemy ) && distancesquared( self.origin, self.favorite_enemy.origin ) < 16384 && !( isdefined( self.favorite_enemy.is_on_gondola ) && self.favorite_enemy.is_on_gondola ) )
+		if ( isdefined( self.favorite_enemy ) && sys::distancesquared( self.origin, self.favorite_enemy.origin ) < 16384 && !( isdefined( self.favorite_enemy.is_on_gondola ) && self.favorite_enemy.is_on_gondola ) )
 			self.fail_count = 0;
 	}
 }
@@ -1315,7 +1315,7 @@ brutus_find_flesh()
 				self.priority_item = self get_priority_item_for_brutus( brutus_zone, 1 );
 		}
 
-		if ( isdefined( player ) && distancesquared( self.origin, player.origin ) < level.brutus_aggro_dist_sq && isdefined( player_zone ) && should_brutus_aggro( player_zone, brutus_zone ) )
+		if ( isdefined( player ) && sys::distancesquared( self.origin, player.origin ) < level.brutus_aggro_dist_sq && isdefined( player_zone ) && should_brutus_aggro( player_zone, brutus_zone ) )
 		{
 			self.favorite_enemy = player;
 			self.goal_pos = player.origin;
@@ -1327,7 +1327,7 @@ brutus_find_flesh()
 			self.goalradius = 12;
 			self.custom_goalradius_override = 12;
 			self.goal_pos = self get_interact_offset( self.priority_item, self.ai_state );
-			self setgoalpos( self.goal_pos );
+			self sys::setgoalpos( self.goal_pos );
 		}
 		else if ( isdefined( player ) )
 		{
@@ -1339,8 +1339,8 @@ brutus_find_flesh()
 		{
 			self.goal_pos = self.origin;
 			self.ai_state = "idle";
-			self setanimstatefromasd( "zm_idle" );
-			self setgoalpos( self.goal_pos );
+			self sys::setanimstatefromasd( "zm_idle" );
+			self sys::setgoalpos( self.goal_pos );
 		}
 
 		wait 1;
@@ -1354,7 +1354,7 @@ trap_damage_callback( trap )
 	if ( !( isdefined( self.not_interruptable ) && self.not_interruptable ) )
 	{
 		self.not_interruptable = 1;
-		self animscripted( self.origin, self.angles, "zm_taunt" );
+		self sys::animscripted( self.origin, self.angles, "zm_taunt" );
 		self maps\mp\animscripts\shared::donotetracks( "taunt_anim" );
 
 		if ( trap.targetname == "fan_trap" )
@@ -1458,7 +1458,7 @@ get_priority_item_for_brutus( zone_name, do_secondary_zone_checks )
 
 get_dist_score( object )
 {
-	return distancesquared( self.origin, object.origin );
+	return sys::distancesquared( self.origin, object.origin );
 }
 
 get_trap_score( object )
@@ -1466,7 +1466,7 @@ get_trap_score( object )
 	if ( sighttracepassed( self.origin + ( 0, 0, 1 ), object.origin, 0, self ) )
 		return 0;
 
-	return distancesquared( self.origin, object.origin );
+	return sys::distancesquared( self.origin, object.origin );
 }
 
 get_magic_boxes( zone_name )
@@ -1486,11 +1486,11 @@ is_magic_box_valid()
 get_perk_machine_trigger()
 {
 	if ( self.targetname == "vendingelectric_cherry" )
-		perk_machine = getent( "vending_electriccherry", "target" );
+		perk_machine = sys::getent( "vending_electriccherry", "target" );
 	else if ( self.targetname == "vending_deadshot_model" )
-		perk_machine = getent( "vending_deadshot", "target" );
+		perk_machine = sys::getent( "vending_deadshot", "target" );
 	else
-		perk_machine = getent( self.targetname, "target" );
+		perk_machine = sys::getent( self.targetname, "target" );
 
 	return perk_machine;
 }
@@ -1522,7 +1522,7 @@ get_trigger_for_craftable()
 			return level.a_uts_craftables[i];
 	}
 
-	trig_ent = getent( self.targetname, "target" );
+	trig_ent = sys::getent( self.targetname, "target" );
 	return trig_ent;
 }
 
@@ -1555,7 +1555,7 @@ get_closest_trap_for_brutus()
 		if ( !level.trap_triggers[i] [[ level.interaction_types["trap"].validity_func ]]() )
 			continue;
 
-		dist = distancesquared( self.origin, level.trap_triggers[i].origin );
+		dist = sys::distancesquared( self.origin, level.trap_triggers[i].origin );
 
 		if ( dist < best_dist || best_dist < 0 )
 		{
@@ -1621,7 +1621,7 @@ is_blocker_valid()
 brutus_get_closest_valid_player()
 {
 	valid_player_found = 0;
-	players = get_players();
+	players = sys::getplayers();
 
 	if ( isdefined( level._zombie_using_humangun ) && level._zombie_using_humangun )
 		players = arraycombine( players, level._zombie_human_array, 0, 0 );
@@ -1663,7 +1663,7 @@ watch_for_player_dist()
 	{
 		player = brutus_get_closest_valid_player();
 
-		if ( !isdefined( player ) || distancesquared( player.origin, self.origin ) > level.brutus_reset_dist_sq )
+		if ( !isdefined( player ) || sys::distancesquared( player.origin, self.origin ) > level.brutus_reset_dist_sq )
 		{
 			self.ai_state = "idle";
 			self notify( "zombie_acquire_enemy" );
@@ -1699,7 +1699,7 @@ brutus_goal_watcher()
 			angles = angles + ( 0, interaction.interaction_yaw_offset, 0 );
 
 		self.not_interruptable = 1;
-		self animscripted( origin, angles, interaction.animstate );
+		self sys::animscripted( origin, angles, interaction.animstate );
 		self thread maps\mp\animscripts\zm_shared::donotetracks( interaction.notify_name );
 		self thread snddointeractionvox( interaction.notify_name );
 		self waittillmatch( interaction.notify_name, interaction.action_notetrack );
@@ -1764,11 +1764,11 @@ brutus_fire_teargas_when_possible()
 
 	self.not_interruptable = 1;
 	self playsound( "vox_brutus_enraged" );
-	self animscripted( self.origin, self.angles, "zm_teargas_attack" );
+	self sys::animscripted( self.origin, self.angles, "zm_teargas_attack" );
 	self thread maps\mp\animscripts\zm_shared::donotetracks( "teargas_anim" );
 	self waittillmatch( "teargas_anim", "grenade_drop" );
-	v_org_left = self gettagorigin( "TAG_WEAPON_LEFT" );
-	v_org_right = self gettagorigin( "TAG_WEAPON_RIGHT" );
+	v_org_left = self sys::gettagorigin( "TAG_WEAPON_LEFT" );
+	v_org_right = self sys::gettagorigin( "TAG_WEAPON_RIGHT" );
 	self thread sndplaydelayedsmokeaudio( v_org_left, v_org_right );
 	self magicgrenadetype( "willy_pete_zm", v_org_left, ( 0, 0, 0 ), 0.4 );
 	self magicgrenadetype( "willy_pete_zm", v_org_right, ( 0, 0, 0 ), 0.4 );
@@ -1819,7 +1819,7 @@ brutus_remove_helmet( vdir )
 
 		self.not_interruptable = 1;
 		self playsound( "vox_brutus_exert" );
-		self animscripted( self.origin, self.angles, "zm_pain" );
+		self sys::animscripted( self.origin, self.angles, "zm_pain" );
 		self maps\mp\animscripts\zm_shared::donotetracks( "pain_anim" );
 		self.not_interruptable = 0;
 	}
@@ -1912,7 +1912,7 @@ perk_machine_lock()
 	else
 		lock_fx = level._effect["brutus_lockdown"];
 
-	perk_machine.lock_fx = spawn( "script_model", self.priority_item.origin );
+	perk_machine.lock_fx = sys::spawn( "script_model", self.priority_item.origin );
 	perk_machine.lock_fx.angles = self.priority_item.angles;
 	perk_machine.lock_fx = offset_fx_struct( int_struct, perk_machine.lock_fx );
 	perk_machine.lock_fx setmodel( "tag_origin" );
@@ -1936,7 +1936,7 @@ craftable_table_lock()
 
 	craftable_table = table_struct get_trigger_for_craftable();
 	int_struct = level.interaction_types["craftable_table"];
-	craftable_table.lock_fx = spawn( "script_model", table_struct.origin );
+	craftable_table.lock_fx = sys::spawn( "script_model", table_struct.origin );
 	craftable_table.lock_fx.angles = table_struct.angles;
 	craftable_table.lock_fx = offset_fx_struct( int_struct, craftable_table.lock_fx );
 	craftable_table.lock_fx setmodel( "tag_origin" );
@@ -1987,7 +1987,7 @@ plane_ramp_lock()
 		return;
 
 	int_struct = level.interaction_types["plane_ramp"];
-	plane_ramp.lock_fx = spawn( "script_model", plane_ramp.origin );
+	plane_ramp.lock_fx = sys::spawn( "script_model", plane_ramp.origin );
 	plane_ramp.lock_fx.angles = plane_ramp.angles;
 	plane_ramp.lock_fx = offset_fx_struct( int_struct, plane_ramp.lock_fx );
 	plane_ramp.lock_fx setmodel( "tag_origin" );
@@ -2040,7 +2040,7 @@ blocker_smash()
 
 melee_anim_func()
 {
-	self.next_leap_time = gettime() + 1500;
+	self.next_leap_time = sys::gettime() + 1500;
 }
 
 kill_teargas_after_duration( duration )
@@ -2066,7 +2066,7 @@ teargas_player( player )
 
 		while ( true )
 		{
-			if ( !player istouching( self ) )
+			if ( !player sys::istouching( self ) )
 				clear_timer = clear_timer + 0.1;
 			else
 				clear_timer = 0;
@@ -2078,9 +2078,9 @@ teargas_player( player )
 			}
 			else if ( teargas_timer % 5 == 0 )
 			{
-				if ( distancesquared( player.origin, self.origin ) > level.brutus_teargas_radius * 2 / 3 * ( level.brutus_teargas_radius * 2 / 3 ) )
+				if ( sys::distancesquared( player.origin, self.origin ) > level.brutus_teargas_radius * 2 / 3 * ( level.brutus_teargas_radius * 2 / 3 ) )
 					player shellshock( "mp_radiation_low", 1.5 );
-				else if ( distancesquared( player.origin, self.origin ) > level.brutus_teargas_radius * 1 / 3 * ( level.brutus_teargas_radius * 1 / 3 ) )
+				else if ( sys::distancesquared( player.origin, self.origin ) > level.brutus_teargas_radius * 1 / 3 * ( level.brutus_teargas_radius * 1 / 3 ) )
 					player shellshock( "mp_radiation_med", 1.5 );
 				else
 					player shellshock( "mp_radiation_high", 1.5 );
@@ -2096,7 +2096,7 @@ teargas_trigger_think()
 {
 	self endon( "kill_teargas" );
 	self thread kill_teargas_after_duration( level.brutus_teargas_duration );
-	players = get_players();
+	players = sys::getplayers();
 
 	for ( i = 0; i < players.size; i++ )
 	{
@@ -2300,10 +2300,10 @@ custom_brutus_flame_death_fx()
 	{
 		if ( !self.isdog )
 		{
-			v_origin = self gettagorigin( "J_SpineLower" );
-			e_origin = spawn( "script_origin", v_origin );
+			v_origin = self sys::gettagorigin( "J_SpineLower" );
+			e_origin = sys::spawn( "script_origin", v_origin );
 			e_origin setmodel( "tag_origin" );
-			e_origin linkto( self, "J_SpineLower" );
+			e_origin sys::linkto( self, "J_SpineLower" );
 			playfxontag( level._effect["character_fire_death_torso"], e_origin, "tag_origin" );
 			a_script_origins[a_script_origins.size] = e_origin;
 		}
@@ -2324,10 +2324,10 @@ custom_brutus_flame_death_fx()
 		tagarray[2] = "J_Knee_RI";
 		tagarray[3] = "J_Knee_LE";
 		tagarray = maps\mp\animscripts\zm_death::randomize_array( tagarray );
-		v_origin = self gettagorigin( tagarray[0] );
-		e_origin = spawn( "script_origin", v_origin );
+		v_origin = self sys::gettagorigin( tagarray[0] );
+		e_origin = sys::spawn( "script_origin", v_origin );
 		e_origin setmodel( "tag_origin" );
-		e_origin linkto( self, tagarray[0] );
+		e_origin sys::linkto( self, tagarray[0] );
 		playfxontag( level._effect["character_fire_death_torso"], e_origin, "tag_origin" );
 		a_script_origins[a_script_origins.size] = e_origin;
 		wait 1;
@@ -2341,14 +2341,14 @@ custom_brutus_flame_death_fx()
 		}
 
 		tagarray = maps\mp\animscripts\zm_death::randomize_array( tagarray );
-		v_origin_0 = self gettagorigin( tagarray[0] );
-		v_origin_1 = self gettagorigin( tagarray[1] );
-		e_origin_0 = spawn( "script_origin", v_origin_0 );
-		e_origin_1 = spawn( "script_origin", v_origin_1 );
+		v_origin_0 = self sys::gettagorigin( tagarray[0] );
+		v_origin_1 = self sys::gettagorigin( tagarray[1] );
+		e_origin_0 = sys::spawn( "script_origin", v_origin_0 );
+		e_origin_1 = sys::spawn( "script_origin", v_origin_1 );
 		e_origin_0 setmodel( "tag_origin" );
 		e_origin_1 setmodel( "tag_origin" );
-		e_origin_0 linkto( self, tagarray[0] );
-		e_origin_1 linkto( self, tagarray[1] );
+		e_origin_0 sys::linkto( self, tagarray[0] );
+		e_origin_1 sys::linkto( self, tagarray[1] );
 		playfxontag( level._effect["character_fire_death_torso"], e_origin_0, "tag_origin" );
 		playfxontag( level._effect["character_fire_death_torso"], e_origin_1, "tag_origin" );
 		a_script_origins[a_script_origins.size] = e_origin_0;
@@ -2390,7 +2390,7 @@ brutus_debug()
 		{
 			if ( debug_level == 1 )
 			{
-				brutus_array = getentarray( "brutus_zombie_ai" );
+				brutus_array = sys::getentarray( "brutus_zombie_ai" );
 
 				for ( i = 0; i < brutus_array.size; i++ )
 				{
@@ -2451,7 +2451,7 @@ brutus_watch_enemy()
 
 get_favorite_enemy()
 {
-	brutus_targets = getplayers();
+	brutus_targets = sys::getplayers();
 	least_hunted = brutus_targets[0];
 
 	for ( i = 0; i < brutus_targets.size; i++ )
@@ -2517,14 +2517,14 @@ get_brutus_interest_points()
 
 build_trap_array()
 {
-	fan_array = getentarray( "acid_trap_trigger", "targetname" );
-	acid_array = getentarray( "fan_trap_use_trigger", "targetname" );
+	fan_array = sys::getentarray( "acid_trap_trigger", "targetname" );
+	acid_array = sys::getentarray( "fan_trap_use_trigger", "targetname" );
 	level.trap_triggers = arraycombine( fan_array, acid_array, 0, 0 );
 }
 
 add_machines_in_zone( zone, zone_name, match_string )
 {
-	machine_array = getentarray( match_string, "targetname" );
+	machine_array = sys::getentarray( match_string, "targetname" );
 
 	for ( i = 0; i < machine_array.size; i++ )
 	{
@@ -2579,7 +2579,7 @@ get_zone_craftable_tables( zone_name )
 	while ( level.a_uts_craftables.size == 0 )
 		wait 1;
 
-	scr_org = spawn( "script_origin", ( 0, 0, 0 ) );
+	scr_org = sys::spawn( "script_origin", ( 0, 0, 0 ) );
 	craftable_tables = level.a_uts_craftables;
 
 	for ( i = 0; i < craftable_tables.size; i++ )
@@ -2601,8 +2601,8 @@ get_zone_traps( zone_name )
 {
 	zone = level.zones[zone_name];
 	zone.traps = [];
-	acid_traps = getentarray( "acid_trap_trigger", "targetname" );
-	scr_org = spawn( "script_origin", ( 0, 0, 0 ) );
+	acid_traps = sys::getentarray( "acid_trap_trigger", "targetname" );
+	scr_org = sys::spawn( "script_origin", ( 0, 0, 0 ) );
 
 	for ( i = 0; i < acid_traps.size; i++ )
 	{
@@ -2618,7 +2618,7 @@ get_zone_traps( zone_name )
 		}
 	}
 
-	fan_traps = getentarray( "fan_trap_use_trigger", "targetname" );
+	fan_traps = sys::getentarray( "fan_trap_use_trigger", "targetname" );
 
 	for ( i = 0; i < fan_traps.size; i++ )
 	{
@@ -2634,7 +2634,7 @@ get_zone_traps( zone_name )
 		}
 	}
 
-	tower_traps = getentarray( "tower_trap_activate_trigger", "targetname" );
+	tower_traps = sys::getentarray( "tower_trap_activate_trigger", "targetname" );
 
 	for ( i = 0; i < tower_traps.size; i++ )
 	{
@@ -2658,13 +2658,13 @@ get_zone_plane_ramp( zone_name )
 	flag_wait( "initial_players_connected" );
 	zone = level.zones[zone_name];
 	zone.plane_triggers = [];
-	scr_org = spawn( "script_origin", ( 0, 0, 0 ) );
-	fly_trigger = getent( "plane_fly_trigger", "targetname" );
+	scr_org = sys::spawn( "script_origin", ( 0, 0, 0 ) );
+	fly_trigger = sys::getent( "plane_fly_trigger", "targetname" );
 	scr_org.origin = fly_trigger.origin;
 
 	if ( scr_org entity_in_zone( zone_name, 1 ) )
 	{
-		fly_trigger_target = spawn( "script_model", ( 0, 0, 0 ) );
+		fly_trigger_target = sys::spawn( "script_model", ( 0, 0, 0 ) );
 		fly_trigger_target.targetname = "fly_target";
 		fly_trigger.fly_trigger_target = fly_trigger_target;
 		fly_trigger_target.fly_trigger = fly_trigger;
@@ -2777,7 +2777,7 @@ check_plane_valid( player )
 			plane_struct.is_locked = 0;
 			plane_struct.locked_cost = undefined;
 			plane_struct.lock_fx delete();
-			func = getFunction( "maps/mp/zm_alcatraz_sq", "reset_plane_hint_string" );
+			func = pluto_sys::getfunction( "maps/mp/zm_alcatraz_sq", "reset_plane_hint_string" );
 			plane_struct [[ func ]]( player );
 		}
 
@@ -2879,7 +2879,7 @@ transfer_plane_trigger( from, to )
 
 	if ( from == "fly" )
 	{
-		t_plane_fly = getent( "plane_fly_trigger", "targetname" );
+		t_plane_fly = sys::getent( "plane_fly_trigger", "targetname" );
 		t_plane_fly sethintstring( &"ZM_PRISON_PLANE_BOARD" );
 	}
 }

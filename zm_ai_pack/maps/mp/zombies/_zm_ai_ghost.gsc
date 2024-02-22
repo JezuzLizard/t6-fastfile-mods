@@ -35,12 +35,12 @@ precache_fx()
 	if ( !isdefined( level.ghost_effects ) )
 	{
 		level.ghost_effects = [];
-		level.ghost_effects[1] = loadfx( "maps/zombie_buried/fx_buried_ghost_death" );
-		level.ghost_effects[2] = loadfx( "maps/zombie_buried/fx_buried_ghost_drain" );
-		level.ghost_effects[3] = loadfx( "maps/zombie_buried/fx_buried_ghost_spawn" );
-		level.ghost_effects[4] = loadfx( "maps/zombie_buried/fx_buried_ghost_trail" );
-		level.ghost_effects[5] = loadfx( "maps/zombie_buried/fx_buried_ghost_evaporation" );
-		level.ghost_impact_effects[1] = loadfx( "maps/zombie_buried/fx_buried_ghost_impact" );
+		level.ghost_effects[1] = sys::loadfx( "maps/zombie_buried/fx_buried_ghost_death" );
+		level.ghost_effects[2] = sys::loadfx( "maps/zombie_buried/fx_buried_ghost_drain" );
+		level.ghost_effects[3] = sys::loadfx( "maps/zombie_buried/fx_buried_ghost_spawn" );
+		level.ghost_effects[4] = sys::loadfx( "maps/zombie_buried/fx_buried_ghost_trail" );
+		level.ghost_effects[5] = sys::loadfx( "maps/zombie_buried/fx_buried_ghost_evaporation" );
+		level.ghost_impact_effects[1] = sys::loadfx( "maps/zombie_buried/fx_buried_ghost_impact" );
 	}
 }
 
@@ -54,14 +54,14 @@ main()
 	if ( !init_ghost_spawners() )
 		return;
 
-	level.slowgun_reset_anim_func = getFunction( "maps/mp/zombies/_zm_weap_slowgun", "reset_anim" );
-	level.slowgun_set_anim_rate_func = getFunction( "maps/mp/zombies/_zm_weap_slowgun", "set_anim_rate" );
-	level.slowgun_zombie_slow_for_time = getFunction( "maps/mp/zombies/_zm_weap_slowgun", "zombie_slow_for_time" );
-	level.time_bomb_get_time_bomb_saved_round_type = getFunction( "maps/mp/zombies/_zm_weap_time_bomb", "get_time_bomb_saved_round_type" );
-	level.time_bomb_time_bomb_add_custom_func_global_save = getFunction( "maps/mp/zombies/_zm_weap_time_bomb", "time_bomb_add_custom_func_global_save" );
-	level.time_bomb_time_bomb_add_custom_func_global_restore = getFunction( "maps/mp/zombies/_zm_weap_time_bomb", "time_bomb_add_custom_func_global_restore" );
-	level.time_bomb_register_time_bomb_enemy_save_filter = getFunction( "maps/mp/zombies/_zm_weap_time_bomb", "register_time_bomb_enemy_save_filter" );
-	level.time_bomb_register_time_bomb_enemy = getFunction( "maps/mp/zombies/_zm_weap_time_bomb", "register_time_bomb_enemy" );
+	level.slowgun_reset_anim_func = pluto_sys::getfunction( "maps/mp/zombies/_zm_weap_slowgun", "reset_anim" );
+	level.slowgun_set_anim_rate_func = pluto_sys::getfunction( "maps/mp/zombies/_zm_weap_slowgun", "set_anim_rate" );
+	level.slowgun_zombie_slow_for_time = pluto_sys::getfunction( "maps/mp/zombies/_zm_weap_slowgun", "zombie_slow_for_time" );
+	level.time_bomb_get_time_bomb_saved_round_type = pluto_sys::getfunction( "maps/mp/zombies/_zm_weap_time_bomb", "get_time_bomb_saved_round_type" );
+	level.time_bomb_time_bomb_add_custom_func_global_save = pluto_sys::getfunction( "maps/mp/zombies/_zm_weap_time_bomb", "time_bomb_add_custom_func_global_save" );
+	level.time_bomb_time_bomb_add_custom_func_global_restore = pluto_sys::getfunction( "maps/mp/zombies/_zm_weap_time_bomb", "time_bomb_add_custom_func_global_restore" );
+	level.time_bomb_register_time_bomb_enemy_save_filter = pluto_sys::getfunction( "maps/mp/zombies/_zm_weap_time_bomb", "register_time_bomb_enemy_save_filter" );
+	level.time_bomb_register_time_bomb_enemy = pluto_sys::getfunction( "maps/mp/zombies/_zm_weap_time_bomb", "register_time_bomb_enemy" );
 
 	init_ghost_zone();
 	init_ghost_sounds();
@@ -70,7 +70,7 @@ main()
 	level.zombie_ai_limit_ghost_per_player = 1;
 	level.zombie_ghost_count = 0;
 	level.ghost_health = 100;
-	level.zombie_ghost_round_states = spawnstruct();
+	level.zombie_ghost_round_states = sys::spawnstruct();
 	level.zombie_ghost_round_states.any_player_in_ghost_zone = 0;
 	level.zombie_ghost_round_states.active_zombie_locations = [];
 	level.is_ghost_round_started = ::is_ghost_round_started;
@@ -117,14 +117,14 @@ init()
 	if ( !init_ghost_spawners() )
 		return;
 
-	level.slowgun_reset_anim_func = getFunction( "maps/mp/zombies/_zm_weap_slowgun", "reset_anim" );
-	level.slowgun_set_anim_rate_func = getFunction( "maps/mp/zombies/_zm_weap_slowgun", "set_anim_rate" );
-	level.slowgun_zombie_slow_for_time = getFunction( "maps/mp/zombies/_zm_weap_slowgun", "zombie_slow_for_time" );
-	level.time_bomb_get_time_bomb_saved_round_type = getFunction( "maps/mp/zombies/_zm_weap_time_bomb", "get_time_bomb_saved_round_type" );
-	level.time_bomb_time_bomb_add_custom_func_global_save = getFunction( "maps/mp/zombies/_zm_weap_time_bomb", "time_bomb_add_custom_func_global_save" );
-	level.time_bomb_time_bomb_add_custom_func_global_restore = getFunction( "maps/mp/zombies/_zm_weap_time_bomb", "time_bomb_add_custom_func_global_restore" );
-	level.time_bomb_register_time_bomb_enemy_save_filter = getFunction( "maps/mp/zombies/_zm_weap_time_bomb", "register_time_bomb_enemy_save_filter" );
-	level.time_bomb_register_time_bomb_enemy = getFunction( "maps/mp/zombies/_zm_weap_time_bomb", "register_time_bomb_enemy" );
+	level.slowgun_reset_anim_func = pluto_sys::getfunction( "maps/mp/zombies/_zm_weap_slowgun", "reset_anim" );
+	level.slowgun_set_anim_rate_func = pluto_sys::getfunction( "maps/mp/zombies/_zm_weap_slowgun", "set_anim_rate" );
+	level.slowgun_zombie_slow_for_time = pluto_sys::getfunction( "maps/mp/zombies/_zm_weap_slowgun", "zombie_slow_for_time" );
+	level.time_bomb_get_time_bomb_saved_round_type = pluto_sys::getfunction( "maps/mp/zombies/_zm_weap_time_bomb", "get_time_bomb_saved_round_type" );
+	level.time_bomb_time_bomb_add_custom_func_global_save = pluto_sys::getfunction( "maps/mp/zombies/_zm_weap_time_bomb", "time_bomb_add_custom_func_global_save" );
+	level.time_bomb_time_bomb_add_custom_func_global_restore = pluto_sys::getfunction( "maps/mp/zombies/_zm_weap_time_bomb", "time_bomb_add_custom_func_global_restore" );
+	level.time_bomb_register_time_bomb_enemy_save_filter = pluto_sys::getfunction( "maps/mp/zombies/_zm_weap_time_bomb", "register_time_bomb_enemy_save_filter" );
+	level.time_bomb_register_time_bomb_enemy = pluto_sys::getfunction( "maps/mp/zombies/_zm_weap_time_bomb", "register_time_bomb_enemy" );
 
 	init_ghost_zone();
 	init_ghost_sounds();
@@ -133,7 +133,7 @@ init()
 	level.zombie_ai_limit_ghost_per_player = 1;
 	level.zombie_ghost_count = 0;
 	level.ghost_health = 100;
-	level.zombie_ghost_round_states = spawnstruct();
+	level.zombie_ghost_round_states = sys::spawnstruct();
 	level.zombie_ghost_round_states.any_player_in_ghost_zone = 0;
 	level.zombie_ghost_round_states.active_zombie_locations = [];
 	level.is_ghost_round_started = ::is_ghost_round_started;
@@ -172,7 +172,7 @@ init()
 
 init_ghost_spawners()
 {
-	level.ghost_spawners = getentarray( "ghost_zombie_spawner", "script_noteworthy" );
+	level.ghost_spawners = sys::getentarray( "ghost_zombie_spawner", "script_noteworthy" );
 
 	if ( level.ghost_spawners.size == 0 )
 		return false;
@@ -223,8 +223,8 @@ init_ghost_sounds()
 
 init_ghost_zone()
 {
-	level.ghost_start_area = getent( "ghost_start_area", "targetname" );
-	level.ghost_zone_door_clips = getentarray( "ghost_zone_door_clip", "targetname" );
+	level.ghost_start_area = sys::getent( "ghost_start_area", "targetname" );
+	level.ghost_zone_door_clips = sys::getentarray( "ghost_zone_door_clip", "targetname" );
 	enable_ghost_zone_door_ai_clips();
 	level.ghost_zone_start_lower_locations = getstructarray( "ghost_zone_start_lower_location", "targetname" );
 	level.ghost_drop_down_locations = getstructarray( "ghost_start_zone_spawners", "targetname" );
@@ -232,12 +232,12 @@ init_ghost_zone()
 	level.ghost_back_standing_locations = getstructarray( "ghost_back_standing_location", "targetname" );
 	level.ghost_front_flying_out_path_starts = getstructarray( "ghost_front_flying_out_path_start", "targetname" );
 	level.ghost_back_flying_out_path_starts = getstructarray( "ghost_back_flying_out_path_start", "targetname" );
-	level.ghost_gazebo_pit_volume = getent( "sloth_pack_volume", "targetname" );
+	level.ghost_gazebo_pit_volume = sys::getent( "sloth_pack_volume", "targetname" );
 	level.ghost_gazebo_pit_perk_pos = getstruct( "ghost_gazebo_pit_perk_pos", "targetname" );
 	level.ghost_entry_room_to_mansion = "ghost_to_maze_zone_1";
 	level.ghost_entry_room_to_maze = "ghost_to_maze_zone_5";
 	level.ghost_rooms = [];
-	a_rooms = getentarray( "ghost_zone", "script_noteworthy" );
+	a_rooms = sys::getentarray( "ghost_zone", "script_noteworthy" );
 
 	foreach ( room in a_rooms )
 	{
@@ -245,7 +245,7 @@ init_ghost_zone()
 
 		if ( !isdefined( level.ghost_rooms[str_targetname] ) )
 		{
-			level.ghost_rooms[str_targetname] = spawnstruct();
+			level.ghost_rooms[str_targetname] = sys::spawnstruct();
 			level.ghost_rooms[str_targetname].ghost_spawn_locations = [];
 			level.ghost_rooms[str_targetname].volumes = [];
 			level.ghost_rooms[str_targetname].name = str_targetname;
@@ -320,7 +320,7 @@ ghost_zone_spawning_think()
 
 		while ( valid_player_count < 1 )
 		{
-			players = getplayers();
+			players = sys::getplayers();
 			valid_player_count = 0;
 
 			foreach ( player in players )
@@ -394,7 +394,7 @@ is_player_in_ghost_room( player, room )
 {
 	foreach ( volume in room.volumes )
 	{
-		if ( player istouching( volume ) )
+		if ( player sys::istouching( volume ) )
 			return true;
 	}
 
@@ -434,7 +434,7 @@ player_in_ghost_zone_monitor()
 	{
 		if ( isdefined( level.zombie_ghost_round_states.any_player_in_ghost_zone ) && level.zombie_ghost_round_states.any_player_in_ghost_zone )
 		{
-			players = getplayers();
+			players = sys::getplayers();
 
 			foreach ( player in players )
 			{
@@ -475,13 +475,13 @@ player_in_ghost_zone_monitor()
 
 is_any_player_near_point( target, spawn_pos )
 {
-	players = getplayers();
+	players = sys::getplayers();
 
 	foreach ( player in players )
 	{
 		if ( target != player && is_player_valid( player ) )
 		{
-			dist_squared = distancesquared( player.origin, spawn_pos );
+			dist_squared = sys::distancesquared( player.origin, spawn_pos );
 
 			if ( dist_squared < 84 * 84 )
 				return true;
@@ -493,7 +493,7 @@ is_any_player_near_point( target, spawn_pos )
 
 is_in_start_area()
 {
-	if ( isdefined( level.ghost_start_area ) && self istouching( level.ghost_start_area ) )
+	if ( isdefined( level.ghost_start_area ) && self sys::istouching( level.ghost_start_area ) )
 		return true;
 
 	return false;
@@ -558,7 +558,7 @@ get_best_spawn_point( player )
 check_players_in_ghost_zone()
 {
 	result = 0;
-	players = getplayers();
+	players = sys::getplayers();
 
 	foreach ( player in players )
 	{
@@ -640,7 +640,7 @@ prespawn()
 	self.noplayermeleeblood = 1;
 	self.paralyzer_hit_callback = ::paralyzer_callback;
 	self.paralyzer_slowtime = 0;
-	self.paralyzer_score_time_ms = gettime();
+	self.paralyzer_score_time_ms = sys::gettime();
 	self.ignore_slowgun_anim_rates = undefined;
 	self.reset_anim = ::ghost_reset_anim;
 	self.custom_springpad_fling = ::ghost_springpad_fling;
@@ -663,7 +663,7 @@ prespawn()
 	}
 
 	self set_zombie_run_cycle( "run" );
-	self setanimstatefromasd( "zm_move_run" );
+	self sys::setanimstatefromasd( "zm_move_run" );
 	self.actor_damage_func = ::ghost_damage_func;
 	self.deathfunction = ::ghost_death_func;
 	self.maxhealth = level.ghost_health;
@@ -672,8 +672,8 @@ prespawn()
 	self notify( "zombie_init_done" );
 	self.allowpain = 0;
 	self.ignore_nuke = 1;
-	self animmode( "normal" );
-	self orientmode( "face enemy" );
+	self sys::animmode( "normal" );
+	self sys::orientmode( "face enemy" );
 	self bloodimpact( "none" );
 	self disableaimassist();
 	self.forcemovementscriptstate = 0;
@@ -683,7 +683,7 @@ prespawn()
 		self.pathenemyfightdist = 0;
 
 	self maps\mp\zombies\_zm_spawner::zombie_complete_emerging_into_playable_area();
-	self setfreecameralockonallowed( 0 );
+	self sys::setfreecameralockonallowed( 0 );
 	self.startinglocation = self.origin;
 
 	if ( isdefined( level.ghost_custom_think_logic ) )
@@ -781,7 +781,7 @@ ghost_reset_anim()
 	substate = self getanimsubstatefromasd();
 
 	if ( animstate == "zm_death" )
-		self setanimstatefromasd( "zm_death_no_restart", substate );
+		self sys::setanimstatefromasd( "zm_death_no_restart", substate );
 	else if ( isDefined( level.slowgun_reset_anim_func ) )
 		self [[ level.slowgun_reset_anim_func ]]();
 }
@@ -791,7 +791,7 @@ wait_ghost_ghost( time )
 	wait( time );
 
 	if ( isdefined( self ) )
-		self ghost();
+		self sys::ghost();
 }
 
 ghost_death_func()
@@ -809,7 +809,7 @@ ghost_death_func()
 		self thread [[ self.extra_custom_death_logic ]]();
 
 	qrate = self getclientfield( "anim_rate" );
-	self setanimstatefromasd( "zm_death" );
+	self sys::setanimstatefromasd( "zm_death" );
 	self thread wait_ghost_ghost( self getanimlengthfromasd( "zm_death", 0 ) );
 	maps\mp\animscripts\zm_shared::donotetracks( "death_anim" );
 
@@ -930,7 +930,7 @@ ghost_think()
 
 start_spawn()
 {
-	self animscripted( self.origin, self.angles, "zm_spawn" );
+	self sys::animscripted( self.origin, self.angles, "zm_spawn" );
 	self maps\mp\animscripts\zm_shared::donotetracks( "spawn_anim" );
 	self start_chase();
 }
@@ -972,9 +972,9 @@ find_flesh()
 		else if ( isdefined( self.is_spawned_in_ghost_zone ) && self.is_spawned_in_ghost_zone )
 			self.find_target = 1;
 
-		self.zombie_path_timer = gettime() + randomfloatrange( 1, 3 ) * 1000;
+		self.zombie_path_timer = sys::gettime() + randomfloatrange( 1, 3 ) * 1000;
 
-		while ( gettime() < self.zombie_path_timer )
+		while ( sys::gettime() < self.zombie_path_timer )
 			wait 0.1;
 
 		self notify( "path_timer_done" );
@@ -987,7 +987,7 @@ find_flesh()
 get_closest_valid_player( origin )
 {
 	valid_player_found = 0;
-	players = get_players();
+	players = sys::getplayers();
 
 	while ( !valid_player_found )
 	{
@@ -1055,7 +1055,7 @@ get_closest_player( origin, players )
 
 does_fall_into_pap_hole()
 {
-	if ( isDefined( level.ghost_gazebo_pit_volume ) && self istouching( level.ghost_gazebo_pit_volume ) )
+	if ( isDefined( level.ghost_gazebo_pit_volume ) && self sys::istouching( level.ghost_gazebo_pit_volume ) )
 	{
 		self forceteleport( level.ghost_gazebo_pit_perk_pos.origin, ( 0, 0, 0 ) );
 		wait 0.1;
@@ -1067,9 +1067,9 @@ does_fall_into_pap_hole()
 
 start_script_move()
 {
-	self.script_mover = spawn( "script_origin", self.origin );
+	self.script_mover = sys::spawn( "script_origin", self.origin );
 	self.script_mover.angles = self.angles;
-	self linkto( self.script_mover );
+	self sys::linkto( self.script_mover );
 	self.state = "script_move_update";
 	self setclientfield( "ghost_fx", 4 );
 	player = self.favoriteenemy;
@@ -1133,8 +1133,8 @@ script_move_update()
 
 	if ( is_player_valid( player ) && isdefined( self.script_move_target_node ) )
 	{
-		desired_angles = vectortoangles( vectornormalize( player.origin - self.origin ) );
-		distance_squared = distancesquared( self.origin, self.script_move_target_node.origin );
+		desired_angles = vectortoangles( sys::vectornormalize( player.origin - self.origin ) );
+		distance_squared = sys::distancesquared( self.origin, self.script_move_target_node.origin );
 
 		if ( distance_squared < 24 )
 		{
@@ -1150,7 +1150,7 @@ script_move_update()
 
 		draw_debug_star( self.script_move_target_node.origin, ( 0, 0, 1 ), 1 );
 		target_node_pos = self.script_move_target_node.origin + vectorscale( ( 0, 0, 1 ), 36.0 );
-		distance_squared_to_target_node_pos = distancesquared( self.origin, target_node_pos );
+		distance_squared_to_target_node_pos = sys::distancesquared( self.origin, target_node_pos );
 		moved_distance_during_interval = 80.0;
 
 		if ( distance_squared_to_target_node_pos <= moved_distance_during_interval * moved_distance_during_interval )
@@ -1162,7 +1162,7 @@ script_move_update()
 		}
 		else
 		{
-			distance_squared_to_player = distancesquared( self.origin, player.origin );
+			distance_squared_to_player = sys::distancesquared( self.origin, player.origin );
 
 			if ( distance_squared_to_player < 540 && !( isdefined( self.script_mover.search_target_node_again ) && self.script_mover.search_target_node_again ) )
 			{
@@ -1174,7 +1174,7 @@ script_move_update()
 				self.script_move_sin_index = 0;
 
 			move_dir = target_node_pos - self.origin;
-			move_dir = vectornormalize( move_dir );
+			move_dir = sys::vectornormalize( move_dir );
 			target_point = self.origin + move_dir * 800 * 0.1;
 			x_offset = level.ghost_script_move_sin[self.script_move_sin_index] * 6;
 			z_offset = level.ghost_script_move_sin[self.script_move_sin_index] * 12;
@@ -1197,7 +1197,7 @@ remove_script_mover()
 	if ( isdefined( self.script_mover ) )
 	{
 		self dontinterpolate();
-		self unlink();
+		self sys::unlink();
 		self.script_mover delete();
 	}
 }
@@ -1205,7 +1205,7 @@ remove_script_mover()
 start_chase()
 {
 	self set_zombie_run_cycle( "run" );
-	self setanimstatefromasd( "zm_move_run" );
+	self sys::setanimstatefromasd( "zm_move_run" );
 	self.state = "chase_update";
 	self setclientfield( "ghost_fx", 4 );
 }
@@ -1247,7 +1247,7 @@ chase_update()
 			return;
 		}
 
-		distsquared = distancesquared( self.origin, player.origin );
+		distsquared = sys::distancesquared( self.origin, player.origin );
 
 		if ( distsquared > 300 * 300 )
 		{
@@ -1281,7 +1281,7 @@ chase_update()
 		self set_zombie_run_cycle( "run" );
 
 		if ( self getanimstatefromasd() != "zm_move_run" )
-			self setanimstatefromasd( "zm_move_run" );
+			self sys::setanimstatefromasd( "zm_move_run" );
 
 		self start_runaway();
 	}
@@ -1294,7 +1294,7 @@ need_wait()
 
 start_wait()
 {
-	self setanimstatefromasd( "zm_idle" );
+	self sys::setanimstatefromasd( "zm_idle" );
 	self setclientfield( "ghost_fx", 4 );
 	self.state = "wait_update";
 }
@@ -1326,7 +1326,7 @@ wait_update()
 		self set_zombie_run_cycle( "run" );
 
 		if ( self getanimstatefromasd() != "zm_move_run" )
-			self setanimstatefromasd( "zm_move_run" );
+			self sys::setanimstatefromasd( "zm_move_run" );
 
 		self setclientfield( "ghost_fx", 4 );
 		self start_runaway();
@@ -1353,8 +1353,8 @@ start_evaporate( need_deletion )
 	else
 	{
 		self.state = "evaporate_update";
-		self ghost();
-		self notsolid();
+		self sys::ghost();
+		self sys::notsolid();
 	}
 }
 
@@ -1385,19 +1385,19 @@ evaporate_update()
 	}
 	else if ( is_player_valid( player ) )
 	{
-		self solid();
-		self show();
+		self sys::solid();
+		self sys::show();
 		self start_chase();
 	}
 }
 
 is_within_capsule( point, origin, angles, radius, range )
 {
-	forward_dir = vectornormalize( anglestoforward( angles ) );
+	forward_dir = sys::vectornormalize( anglestoforward( angles ) );
 	start = origin + forward_dir * radius;
 	end = start + forward_dir * range;
 	point_intersect = pointonsegmentnearesttopoint( start, end, point );
-	distance_squared = distancesquared( point_intersect, point );
+	distance_squared = sys::distancesquared( point_intersect, point );
 
 	if ( distance_squared <= radius * radius )
 		return true;
@@ -1419,18 +1419,18 @@ get_dot_production_2d( point, origin, angles )
 {
 	forward_dir = anglestoforward( angles );
 	forward_dir = ( forward_dir[0], forward_dir[1], 0 );
-	forward_dir = vectornormalize( forward_dir );
+	forward_dir = sys::vectornormalize( forward_dir );
 	to_point_dir = point - origin;
 	to_point_dir = ( to_point_dir[0], to_point_dir[1], 0 );
-	to_point_dir = vectornormalize( to_point_dir );
-	return vectordot( forward_dir, to_point_dir );
+	to_point_dir = sys::vectornormalize( to_point_dir );
+	return sys::vectordot( forward_dir, to_point_dir );
 }
 
 is_in_room( room )
 {
 	foreach ( volume in room.volumes )
 	{
-		if ( self istouching( volume ) )
+		if ( self sys::istouching( volume ) )
 			return true;
 	}
 
@@ -1492,7 +1492,7 @@ can_drain_points( self_pos, target_pos )
 	if ( isdefined( self.force_killable ) && self.force_killable )
 		return false;
 
-	dist = distancesquared( self_pos, target_pos );
+	dist = sys::distancesquared( self_pos, target_pos );
 
 	if ( dist < 60 * 60 )
 		return true;
@@ -1507,13 +1507,13 @@ set_chase_status( move_speed )
 	if ( self.zombie_move_speed != move_speed )
 	{
 		self set_zombie_run_cycle( move_speed );
-		self setanimstatefromasd( "zm_move_" + move_speed );
+		self sys::setanimstatefromasd( "zm_move_" + move_speed );
 	}
 }
 
 start_drain()
 {
-	self setanimstatefromasd( "zm_drain" );
+	self sys::setanimstatefromasd( "zm_drain" );
 	self setclientfield( "ghost_fx", 2 );
 	self.state = "drain_update";
 }
@@ -1530,9 +1530,9 @@ drain_update()
 		if ( can_drain_points( self.origin, player.origin ) )
 		{
 			if ( self getanimstatefromasd() != "zm_drain" )
-				self setanimstatefromasd( "zm_drain" );
+				self sys::setanimstatefromasd( "zm_drain" );
 
-			self orientmode( "face enemy" );
+			self sys::orientmode( "face enemy" );
 
 			if ( !( isdefined( self.is_draining ) && self.is_draining ) )
 				self thread drain_player( player );
@@ -1545,7 +1545,7 @@ drain_update()
 		self set_zombie_run_cycle( "run" );
 
 		if ( self getanimstatefromasd() != "zm_move_run" )
-			self setanimstatefromasd( "zm_move_run" );
+			self sys::setanimstatefromasd( "zm_move_run" );
 
 		self setclientfield( "ghost_fx", 4 );
 		self start_runaway();
@@ -1611,14 +1611,14 @@ start_runaway()
 {
 	wait 2;
 	self.state = "runaway_update";
-	self setgoalpos( self.startinglocation );
+	self sys::setgoalpos( self.startinglocation );
 	self set_chase_status( "run" );
 }
 
 does_reach_runaway_goal()
 {
 	result = 0;
-	dist_squared = distancesquared( self.origin, self.startinglocation );
+	dist_squared = sys::distancesquared( self.origin, self.startinglocation );
 
 	if ( dist_squared < 60 * 60 )
 		result = 1;
@@ -1656,7 +1656,7 @@ runaway_update()
 	}
 	else
 	{
-		self setgoalpos( self.startinglocation );
+		self sys::setgoalpos( self.startinglocation );
 /#
 		draw_debug_star( self.startinglocation, ( 0, 0, 1 ), 1 );
 		draw_debug_line( self.origin, self.startinglocation, ( 0, 1, 0 ), 1, 0 );
@@ -1851,7 +1851,7 @@ enable_ghost_zone_door_ai_clips()
 	{
 		foreach ( door_clip in level.ghost_zone_door_clips )
 		{
-			door_clip solid();
+			door_clip sys::solid();
 			door_clip disconnectpaths();
 		}
 	}
@@ -1863,7 +1863,7 @@ disable_ghost_zone_door_ai_clips()
 	{
 		foreach ( door_clip in level.ghost_zone_door_clips )
 		{
-			door_clip notsolid();
+			door_clip sys::notsolid();
 			door_clip connectpaths();
 		}
 	}
@@ -1881,7 +1881,7 @@ clear_all_active_zombies()
 		{
 			if ( !( isdefined( zombie.is_ghost ) && zombie.is_ghost ) )
 			{
-				spawn_point = spawnstruct();
+				spawn_point = sys::spawnstruct();
 				spawn_point.origin = zombie.origin;
 				spawn_point.angles = zombie.angles;
 
@@ -2013,7 +2013,7 @@ should_last_ghost_drop_powerup()
 sndghostroundmus()
 {
 	level endon( "ghost_round_end" );
-	ent = spawn( "script_origin", ( 0, 0, 0 ) );
+	ent = sys::spawn( "script_origin", ( 0, 0, 0 ) );
 	level.sndroundwait = 1;
 	ent thread sndghostroundmus_end();
 	ent endon( "sndGhostRoundEnd" );
@@ -2046,7 +2046,7 @@ sndghostroundready()
 		if ( level.zombie_ghost_round_states.next_ghost_round_number == level.round_number )
 		{
 			playsoundatposition( "zmb_ghost_round_srt", mansion );
-			ent = spawn( "script_origin", mansion );
+			ent = sys::spawn( "script_origin", mansion );
 			ent playloopsound( "zmb_ghost_round_lp", 3 );
 			ent thread sndghostroundready_stoplp();
 			break;
@@ -2070,7 +2070,7 @@ check_sending_away_zombie_followers()
 	if ( flag_exists( "time_bomb_restore_active" ) && flag( "time_bomb_restore_active" ) )
 		return;
 
-	players = getplayers();
+	players = sys::getplayers();
 	valid_player_in_ghost_zone_count = 0;
 	valid_player_count = 0;
 
@@ -2115,14 +2115,14 @@ send_away_zombie_follower( player )
 	dest = 0;
 	awaydir = self.origin - player.origin;
 	awaydir = ( awaydir[0], awaydir[1], 0 );
-	awaydir = vectornormalize( awaydir );
+	awaydir = sys::vectornormalize( awaydir );
 	endpos = self.origin + vectorscale( awaydir, 600 );
 	locs = array_randomize( level.enemy_dog_locations );
 
 	for ( i = 0; i < locs.size; i++ )
 	{
-		dist_zombie = distancesquared( locs[i].origin, endpos );
-		dist_player = distancesquared( locs[i].origin, player.origin );
+		dist_zombie = sys::distancesquared( locs[i].origin, endpos );
+		dist_player = sys::distancesquared( locs[i].origin, player.origin );
 
 		if ( dist_zombie < dist_player )
 		{
@@ -2135,7 +2135,7 @@ send_away_zombie_follower( player )
 	self notify( "zombie_acquire_enemy" );
 
 	if ( isdefined( locs[dest] ) )
-		self setgoalpos( locs[dest].origin );
+		self sys::setgoalpos( locs[dest].origin );
 
 	wait 5;
 	self thread maps\mp\zombies\_zm_ai_basic::find_flesh();
@@ -2233,7 +2233,7 @@ player_moving_speed_scale_think()
 
 	while ( true )
 	{
-		players = get_players();
+		players = sys::getplayers();
 
 		foreach ( player in players )
 		{
@@ -2409,7 +2409,7 @@ get_next_spot_during_ghost_round_presentation()
 spawn_ghost_round_presentation_ghost()
 {
 	spawn_point = get_next_spot_during_ghost_round_presentation();
-	ghost = spawn( "script_model", spawn_point.origin );
+	ghost = sys::spawn( "script_model", spawn_point.origin );
 	ghost.angles = spawn_point.angles;
 	ghost setmodel( "c_zom_zombie_buried_ghost_woman_fb" );
 
@@ -2430,9 +2430,9 @@ spawn_ghost_round_presentation_ghost()
 	wait 0.5;
 	ghost useanimtree( #animtree );
 	ghost setanim( %ai_zombie_ghost_idle );
-	ghost.script_mover = spawn( "script_origin", ghost.origin );
+	ghost.script_mover = sys::spawn( "script_origin", ghost.origin );
 	ghost.script_mover.angles = ghost.angles;
-	ghost linkto( ghost.script_mover );
+	ghost sys::linkto( ghost.script_mover );
 	ghost setclientfield( "sndGhostAudio", 1 );
 }
 
@@ -2444,7 +2444,7 @@ ghost_round_presentation_think()
 		return;
 
 	if ( !isdefined( level.sndmansionent ) )
-		level.sndmansionent = spawn( "script_origin", ( 2830, 555, 436 ) );
+		level.sndmansionent = sys::spawn( "script_origin", ( 2830, 555, 436 ) );
 
 	flag_wait( "start_zombie_round_logic" );
 
@@ -2492,14 +2492,14 @@ ghost_switch_windows()
 		next_spot = get_next_spot_during_ghost_round_presentation();
 		self setclientfield( "ghost_fx", 5 );
 		self setclientfield( "sndGhostAudio", 0 );
-		self ghost();
+		self sys::ghost();
 		self.script_mover moveto( next_spot.origin, 1 );
 		self.script_mover waittill( "movedone" );
 		self.script_mover.origin = next_spot.origin;
 		self.script_mover.angles = next_spot.angles;
 		self setclientfield( "ghost_fx", 3 );
 		self setclientfield( "sndGhostAudio", 1 );
-		self show();
+		self sys::show();
 		wait 6;
 	}
 }
@@ -2511,7 +2511,7 @@ ghost_round_presentation_sound()
 
 	while ( true )
 	{
-		players = getplayers();
+		players = sys::getplayers();
 
 		foreach ( player in players )
 		{
@@ -2605,7 +2605,7 @@ init_time_bomb_ghost_rounds()
 	}
 }
 
-is_ghost()
+is_sys::ghost()
 {
 	return !( isdefined( self.is_ghost ) && self.is_ghost );
 }
@@ -2685,7 +2685,7 @@ time_bomb_custom_get_enemy_func()
 
 time_bomb_global_data_save_ghosts()
 {
-	s_temp = spawnstruct();
+	s_temp = sys::spawnstruct();
 	s_temp.ghost_count = level.zombie_ghost_count;
 	s_temp.round_started = level.zombie_ghost_round_states.is_started;
 	s_temp.round_first_done = level.zombie_ghost_round_states.is_first_ghost_round_finished;
@@ -2702,7 +2702,7 @@ time_bomb_global_data_restore_ghosts()
 	level.zombie_ghost_round_states.next_ghost_round_number = self.ghost_data.round_next;
 	level.zombie_ghost_round_states.round_zombie_total = self.ghost_data.zombie_total;
 
-	foreach ( player in get_players() )
+	foreach ( player in sys::getplayers() )
 		player.ghost_count = 0;
 }
 
@@ -2779,7 +2779,7 @@ _restore_ghost_data( save_struct, n_index )
 		self.favoriteenemy = s_data.favoriteenemy;
 
 	self.ignore_timebomb_slowdown = 1;
-	self setgoalpos( self.origin );
+	self sys::setgoalpos( self.origin );
 }
 
 _respawn_ghost_failsafe()
@@ -2812,7 +2812,7 @@ devgui_warp_to_mansion()
 #/
 }
 
-devgui_toggle_no_ghost()
+devgui_toggle_no_sys::ghost()
 {
 /#
 	level.force_no_ghost = !level.force_no_ghost;

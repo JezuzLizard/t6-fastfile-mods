@@ -65,8 +65,8 @@ main()
     self.team = "axis";
     self.type = "zombie_dog";
     self.weapon = "";
-    self setengagementmindist( 256.0, 0.0 );
-    self setengagementmaxdist( 768.0, 1024.0 );
+    self sys::setengagementmindist( 256.0, 0.0 );
+    self sys::setengagementmaxdist( 768.0, 1024.0 );
     randchar = codescripts\character::get_random_character( 2 );
 
     switch ( randchar )
@@ -79,18 +79,18 @@ main()
             break;
     }
 
-    self setcharacterindex( randchar );
+    self sys::setcharacterindex( randchar );
 }
 
 spawner()
 {
-    self setspawnerteam( "axis" );
+    self sys::setspawnerteam( "axis" );
 }
 
 precache( ai_index )
 {
     level thread reference_anims_from_animtree();
-    precacheanimstatedef( ai_index, #animtree, "zm_nuked_dog" );
+    sys::precacheanimstatedef( ai_index, #animtree, "zm_nuked_dog" );
     character\character_sp_zombie_dog::precache();
     character\character_sp_zombie_dog::precache();
 }

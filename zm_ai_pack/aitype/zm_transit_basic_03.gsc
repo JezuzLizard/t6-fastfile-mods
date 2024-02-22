@@ -468,8 +468,8 @@ main()
     self.team = "axis";
     self.type = "zombie";
     self.weapon = "";
-    self setengagementmindist( 0.0, 0.0 );
-    self setengagementmaxdist( 100.0, 300.0 );
+    self sys::setengagementmindist( 0.0, 0.0 );
+    self sys::setengagementmaxdist( 100.0, 300.0 );
     randchar = codescripts\character::get_random_character( 5 );
 
     switch ( randchar )
@@ -491,18 +491,18 @@ main()
             break;
     }
 
-    self setcharacterindex( randchar );
+    self sys::setcharacterindex( randchar );
 }
 
 spawner()
 {
-    self setspawnerteam( "axis" );
+    self sys::setspawnerteam( "axis" );
 }
 
 precache( ai_index )
 {
     level thread reference_anims_from_animtree();
-    precacheanimstatedef( ai_index, #animtree, "zm_transit_basic" );
+    sys::precacheanimstatedef( ai_index, #animtree, "zm_transit_basic" );
     character\c_zom_zombie3_01::precache();
     character\c_zom_zombie3_02::precache();
     character\c_zom_zombie3_03::precache();

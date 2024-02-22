@@ -20,12 +20,12 @@ precache()
 	precachemodel( "fx_axis_createfx" );
 	include_weapon( "screecher_arms_zm", 0 );
 	precachestring( &"ZOMBIE_SCREECHER_ATTACH_FIRST" );
-	level._effect["screecher_spawn_a"] = loadfx( "maps/zombie/fx_zmb_screech_hand_dirt_burst" );
-	level._effect["screecher_spawn_b"] = loadfx( "maps/zombie/fx_zmb_screech_body_dirt_billowing" );
-	level._effect["screecher_spawn_c"] = loadfx( "maps/zombie/fx_zmb_screech_body_dirt_falling" );
-	level._effect["screecher_hole"] = loadfx( "maps/zombie/fx_zmb_screecher_hole" );
-	level._effect["screecher_vortex"] = loadfx( "maps/zombie/fx_zmb_screecher_vortex" );
-	level._effect["screecher_death"] = loadfx( "maps/zombie/fx_zmb_screech_death_ash" );
+	level._effect["screecher_spawn_a"] = sys::loadfx( "maps/zombie/fx_zmb_screech_hand_dirt_burst" );
+	level._effect["screecher_spawn_b"] = sys::loadfx( "maps/zombie/fx_zmb_screech_body_dirt_billowing" );
+	level._effect["screecher_spawn_c"] = sys::loadfx( "maps/zombie/fx_zmb_screech_body_dirt_falling" );
+	level._effect["screecher_hole"] = sys::loadfx( "maps/zombie/fx_zmb_screecher_hole" );
+	level._effect["screecher_vortex"] = sys::loadfx( "maps/zombie/fx_zmb_screecher_vortex" );
+	level._effect["screecher_death"] = sys::loadfx( "maps/zombie/fx_zmb_screech_death_ash" );
 }
 
 register_clientfields()
@@ -42,7 +42,7 @@ main()
 
 init()
 {
-	level.screecher_spawners = getentarray( "screecher_zombie_spawner", "script_noteworthy" );
+	level.screecher_spawners = sys::getentarray( "screecher_zombie_spawner", "script_noteworthy" );
 	array_thread( level.screecher_spawners, ::add_spawn_function, maps\mp\zombies\_zm_ai_screecher::screecher_prespawn );
 	level.zombie_ai_limit_screecher = 2;
 	level.zombie_screecher_count = 0;
@@ -103,7 +103,7 @@ screecher_spawning_logic()
 
 		while ( valid_players_in_screecher_zone <= 0 )
 		{
-			players = getplayers();
+			players = sys::getplayers();
 			valid_players_in_screecher_zone = 0;
 
 			for ( p = 0; p < players.size; p++ )
@@ -148,14 +148,14 @@ screecher_spawning_logic()
 			if ( isdefined( spawn_point ) )
 				playsoundatposition( "zmb_vocals_screecher_spawn", spawn_point.origin );
 
-			delay_time = gettime() + 5000;
-			now_zone = getent( "screecher_spawn_now", "targetname" );
+			delay_time = sys::gettime() + 5000;
+			now_zone = sys::getent( "screecher_spawn_now", "targetname" );
 
-			while ( gettime() < delay_time )
+			while ( sys::gettime() < delay_time )
 			{
 				in_zone = 0;
 
-				if ( valid_players[0] istouching( now_zone ) )
+				if ( valid_players[0] sys::istouching( now_zone ) )
 				{
 /#
 					screecher_print( "in now zone" );
@@ -258,7 +258,7 @@ player_in_screecher_zone( player )
 
 screecher_should_runaway( player )
 {
-	players = get_players();
+	players = sys::getplayers();
 
 	if ( players.size == 1 )
 	{
@@ -281,7 +281,7 @@ screecher_should_runaway( player )
 screecher_get_closest_valid_player( origin, ignore_player )
 {
 	valid_player_found = 0;
-	players = get_players();
+	players = sys::getplayers();
 
 	if ( isdefined( level._zombie_using_humangun ) && level._zombie_using_humangun )
 		players = arraycombine( players, level._zombie_human_array, 0, 0 );
@@ -325,12 +325,12 @@ zombie_pathing_home()
 	self endon( "death" );
 	self endon( "zombie_acquire_enemy" );
 	level endon( "intermission" );
-	self setgoalpos( self.startinglocation );
+	self sys::setgoalpos( self.startinglocation );
 	self waittill( "goal" );
 	playfx( level._effect["screecher_spawn_b"], self.origin, ( 0, 0, 1 ) );
 	self.no_powerups = 1;
-	self setfreecameralockonallowed( 0 );
-	self animscripted( self.origin, self.angles, "zm_burrow" );
+	self sys::setfreecameralockonallowed( 0 );
+	self sys::animscripted( self.origin, self.angles, "zm_burrow" );
 	self playsound( "zmb_screecher_dig" );
 	maps\mp\animscripts\zm_shared::donotetracks( "burrow_anim" );
 	self delete();
@@ -361,9 +361,9 @@ screecher_find_flesh()
 		else
 			self thread screecher_runaway();
 
-		self.zombie_path_timer = gettime() + randomfloatrange( 1, 3 ) * 1000;
+		self.zombie_path_timer = sys::gettime() + randomfloatrange( 1, 3 ) * 1000;
 
-		while ( gettime() < self.zombie_path_timer )
+		while ( sys::gettime() < self.zombie_path_timer )
 			wait 0.1;
 
 		self notify( "path_timer_done" );
@@ -408,12 +408,12 @@ screecher_prespawn()
 	self.zombie_init_done = 1;
 	self notify( "zombie_init_done" );
 	self.allowpain = 0;
-	self animmode( "normal" );
-	self orientmode( "face enemy" );
+	self sys::animmode( "normal" );
+	self sys::orientmode( "face enemy" );
 	self.forcemovementscriptstate = 0;
 	self maps\mp\zombies\_zm_spawner::zombie_setup_attack_properties();
 	self maps\mp\zombies\_zm_spawner::zombie_complete_emerging_into_playable_area();
-	self setfreecameralockonallowed( 0 );
+	self sys::setfreecameralockonallowed( 0 );
 	self.startinglocation = self.origin;
 	self playsound( "zmb_vocals_screecher_spawn" );
 	self thread play_screecher_fx();
@@ -421,7 +421,7 @@ screecher_prespawn()
 	self thread screecher_rise();
 	self thread screecher_cleanup();
 	self thread screecher_distance_tracking();
-	self.anchor = spawn( "script_origin", self.origin );
+	self.anchor = sys::spawn( "script_origin", self.origin );
 	self.attack_time = 0;
 	self.attack_delay = 1000;
 	self.attack_delay_base = 1000;
@@ -469,8 +469,8 @@ play_screecher_breathing_audio()
 
 	if ( !isdefined( self.loopsoundent ) )
 	{
-		self.loopsoundent = spawn( "script_origin", self.origin );
-		self.loopsoundent linkto( self, "tag_origin" );
+		self.loopsoundent = sys::spawn( "script_origin", self.origin );
+		self.loopsoundent sys::linkto( self, "tag_origin" );
 	}
 
 	self.loopsoundent playloopsound( "zmb_vocals_screecher_breath" );
@@ -479,10 +479,10 @@ play_screecher_breathing_audio()
 screecher_rise()
 {
 	self endon( "death" );
-	self animscripted( self.origin, self.angles, "zm_rise" );
+	self sys::animscripted( self.origin, self.angles, "zm_rise" );
 	maps\mp\animscripts\zm_shared::donotetracks( "rise_anim" );
 	self notify( "risen" );
-	self setfreecameralockonallowed( 1 );
+	self sys::setfreecameralockonallowed( 1 );
 	self.startinglocation = self.origin;
 	self thread screecher_zombie_think();
 	self thread play_screecher_breathing_audio();
@@ -499,7 +499,7 @@ screecher_zombie_think()
 	height_tolerance = 32;
 	self.state = "chase_init";
 	self.isattacking = 0;
-	self.nextspecial = gettime();
+	self.nextspecial = sys::gettime();
 
 	for (;;)
 	{
@@ -532,7 +532,7 @@ screecher_chase_update()
 
 	if ( isdefined( player ) )
 	{
-		dist = distance2dsquared( self.origin, player.origin );
+		dist = sys::distance2dsquared( self.origin, player.origin );
 
 		if ( dist < 57600 )
 		{
@@ -560,7 +560,7 @@ screecher_attack()
 
 	self notify( "stop_find_flesh" );
 	self notify( "zombie_acquire_enemy" );
-	self animmode( "nogravity" );
+	self sys::animmode( "nogravity" );
 	self playsound( "zmb_vocals_screecher_jump" );
 
 	if ( isdefined( self.loopsoundent ) )
@@ -569,19 +569,19 @@ screecher_attack()
 		self.loopsoundent = undefined;
 	}
 
-	self setanimstatefromasd( "zm_jump_up" );
+	self sys::setanimstatefromasd( "zm_jump_up" );
 	maps\mp\animscripts\zm_shared::donotetracks( "jump_up_anim" );
 	asd_state = self screecher_fly_to_player( player );
 	self setplayercollision( 0 );
 	self setclientfield( "render_third_person", 1 );
-	self linkto( self.favoriteenemy, "tag_origin" );
-	self animscripted( self.favoriteenemy.origin, self.favoriteenemy.angles, asd_state );
+	self sys::linkto( self.favoriteenemy, "tag_origin" );
+	self sys::animscripted( self.favoriteenemy.origin, self.favoriteenemy.angles, asd_state );
 	maps\mp\animscripts\zm_shared::donotetracks( "jump_land_success_anim" );
-	org = self.favoriteenemy gettagorigin( "j_head" );
-	angles = self.favoriteenemy gettagangles( "j_head" );
+	org = self.favoriteenemy sys::gettagorigin( "j_head" );
+	angles = self.favoriteenemy sys::gettagangles( "j_head" );
 	self forceteleport( org, angles );
-	self linkto( self.favoriteenemy, "j_head" );
-	self animscripted( self.origin, self.angles, "zm_headpull" );
+	self sys::linkto( self.favoriteenemy, "j_head" );
+	self sys::animscripted( self.origin, self.angles, "zm_headpull" );
 	self.linked_ent = self.favoriteenemy;
 	self.linked_ent setmovespeedscale( 0.5 );
 	self thread screecher_melee_button_watcher();
@@ -591,22 +591,22 @@ screecher_attack()
 screecher_fly_to_player( player )
 {
 	self endon( "death" );
-	self setanimstatefromasd( "zm_jump_loop" );
+	self sys::setanimstatefromasd( "zm_jump_loop" );
 	self.anchor.origin = self.origin;
 	self.anchor.angles = self.angles;
-	self linkto( self.anchor );
+	self sys::linkto( self.anchor );
 	anim_id_back = self getanimfromasd( "zm_jump_land_success_fromback", 0 );
 	anim_id_front = self getanimfromasd( "zm_jump_land_success_fromfront", 0 );
-	end_time = gettime() + 2500;
+	end_time = sys::gettime() + 2500;
 	dist = undefined;
 	dist_update = undefined;
 
-	while ( end_time > gettime() )
+	while ( end_time > sys::gettime() )
 	{
 		goal_pos_back = getstartorigin( player.origin, player.angles, anim_id_back );
 		goal_pos_front = getstartorigin( player.origin, player.angles, anim_id_front );
-		dist_back = distancesquared( self.anchor.origin, goal_pos_back );
-		dist_front = distancesquared( self.anchor.origin, goal_pos_front );
+		dist_back = sys::distancesquared( self.anchor.origin, goal_pos_back );
+		dist_front = sys::distancesquared( self.anchor.origin, goal_pos_front );
 		goal_pos = goal_pos_back;
 		goal_ang = getstartangles( player.origin, player.angles, anim_id_back );
 		asd_state = "zm_jump_land_success_fromback";
@@ -637,7 +637,7 @@ screecher_fly_to_player( player )
 		}
 
 		self.anchor.angles = facing_angles;
-		unit_facing_vec = vectornormalize( facing_vec );
+		unit_facing_vec = sys::vectornormalize( facing_vec );
 		new_pos = self.anchor.origin + vectorscale( unit_facing_vec, dist_update );
 		self.anchor moveto( new_pos, 0.1 );
 		wait 0.1;
@@ -699,7 +699,7 @@ screecher_start_attack()
 		}
 
 		self.state = "attacking";
-		self.attack_time = gettime();
+		self.attack_time = sys::gettime();
 
 		if ( !getdvarint( #"scr_screecher_poison" ) )
 			player startpoisoning();
@@ -761,22 +761,22 @@ screecher_attacking()
 		return;
 	}
 
-	if ( self.attack_time < gettime() )
+	if ( self.attack_time < sys::gettime() )
 	{
 		scratch_score = 5;
-		players = get_players();
+		players = sys::getplayers();
 		self.screecher_score = self.screecher_score + scratch_score;
 		killed_player = self screecher_check_score();
 
 		if ( player.health > 0 && !( isdefined( killed_player ) && killed_player ) )
 		{
 			self.attack_delay = self.attack_delay_base + randomint( self.attack_delay_offset );
-			self.attack_time = gettime() + self.attack_delay;
+			self.attack_time = sys::gettime() + self.attack_delay;
 			self thread claw_fx( player, self.attack_delay * 0.001 );
 			self playsound( "zmb_vocals_screecher_attack" );
 			player playsoundtoplayer( "zmb_screecher_scratch", player );
 			player thread do_player_general_vox( "general", "screecher_attack" );
-			players = get_players();
+			players = sys::getplayers();
 
 			if ( players.size == 1 )
 			{
@@ -803,12 +803,12 @@ screecher_runaway()
 	self notify( "runaway" );
 	self.state = "runaway";
 	self.ignoreall = 1;
-	self setgoalpos( self.startinglocation );
+	self sys::setgoalpos( self.startinglocation );
 	self waittill( "goal" );
 	playfx( level._effect["screecher_spawn_b"], self.origin, ( 0, 0, 1 ) );
 	self.no_powerups = 1;
-	self setfreecameralockonallowed( 0 );
-	self animscripted( self.origin, self.angles, "zm_burrow" );
+	self sys::setfreecameralockonallowed( 0 );
+	self sys::animscripted( self.origin, self.angles, "zm_burrow" );
 	self playsound( "zmb_screecher_dig" );
 	maps\mp\animscripts\zm_shared::donotetracks( "burrow_anim" );
 	self delete();
@@ -858,7 +858,7 @@ screecher_detach( player )
 		player.screecher_weapon = undefined;
 	}
 
-	self unlink();
+	self sys::unlink();
 	self setclientfield( "render_third_person", 0 );
 
 	if ( isdefined( self.linked_ent ) )
@@ -869,10 +869,10 @@ screecher_detach( player )
 	}
 
 	self.green_light = player.green_light;
-	self animcustom( ::screecher_jump_down );
+	self sys::animcustom( ::screecher_jump_down );
 	self waittill( "jump_down_done" );
 	maps\mp\_visionset_mgr::vsmgr_deactivate( "overlay", "zm_ai_screecher_blur", player );
-	self animmode( "normal" );
+	self sys::animmode( "normal" );
 	self.ignoreall = 1;
 	self setplayercollision( 1 );
 
@@ -893,7 +893,7 @@ screecher_detach( player )
 screecher_jump_down()
 {
 	self endon( "death" );
-	self setanimstatefromasd( "zm_headpull_success" );
+	self sys::setanimstatefromasd( "zm_headpull_success" );
 	wait 0.6;
 	self notify( "jump_down_done" );
 }
@@ -1009,14 +1009,14 @@ screecher_distance_tracking()
 	while ( true )
 	{
 		can_delete = 1;
-		players = get_players();
+		players = sys::getplayers();
 
 		foreach ( player in players )
 		{
 			if ( player.sessionstate == "spectator" )
 				continue;
 
-			dist_sq = distancesquared( self.origin, player.origin );
+			dist_sq = sys::distancesquared( self.origin, player.origin );
 
 			if ( dist_sq >= 4000000 )
 				continue;
@@ -1137,9 +1137,9 @@ screecher_damage_func( einflictor, eattacker, idamage, idflags, smeansofdeath, s
 
 screecher_death_func()
 {
-	self unlink();
+	self sys::unlink();
 	self.noragdoll = 1;
-	self setanimstatefromasd( "zm_death" );
+	self sys::setanimstatefromasd( "zm_death" );
 	maps\mp\animscripts\zm_shared::donotetracks( "death_anim" );
 	playfx( level._effect["screecher_death"], self.origin );
 
@@ -1209,7 +1209,7 @@ screecher_debug_axis()
 
 			if ( !isdefined( player.bone_fxaxis ) )
 			{
-				player.bone_fxaxis = spawn( "script_model", org );
+				player.bone_fxaxis = sys::spawn( "script_model", org );
 				player.bone_fxaxis setmodel( "fx_axis_createfx" );
 			}
 

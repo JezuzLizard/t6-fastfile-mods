@@ -29,7 +29,7 @@ killzombiesinpowerstation_override()
 				continue;
 			}
 
-			if ( distancesquared( ( 11344, 7590, -729 ), zombie.origin ) < radiussq )
+			if ( sys::distancesquared( ( 11344, 7590, -729 ), zombie.origin ) < radiussq )
 				continue;
 
 			if ( isdefined( zombie ) && zombie maps\mp\zombies\_zm_zonemgr::entity_in_zone( "zone_prr", 1 ) || isdefined( zombie.zone_name ) && zombie.zone_name == "zone_prr" )

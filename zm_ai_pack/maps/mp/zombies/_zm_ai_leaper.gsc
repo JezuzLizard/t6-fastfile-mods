@@ -27,11 +27,11 @@ precache()
 
 precache_fx()
 {
-	level._effect["leaper_death"] = loadfx( "maps/zombie/fx_zmb_leaper_death" );
-	level._effect["leaper_spawn"] = loadfx( "maps/zombie/fx_zmb_leaper_spawn" );
-	level._effect["leaper_trail"] = loadfx( "maps/zombie/fx_zmb_leaper_trail" );
-	level._effect["leaper_walk"] = loadfx( "maps/zombie/fx_zmb_leaper_walk" );
-	level._effect["leaper_wall_impact"] = loadfx( "maps/zombie/fx_zmb_leaper_wall_impact" );
+	level._effect["leaper_death"] = sys::loadfx( "maps/zombie/fx_zmb_leaper_death" );
+	level._effect["leaper_spawn"] = sys::loadfx( "maps/zombie/fx_zmb_leaper_spawn" );
+	level._effect["leaper_trail"] = sys::loadfx( "maps/zombie/fx_zmb_leaper_trail" );
+	level._effect["leaper_walk"] = sys::loadfx( "maps/zombie/fx_zmb_leaper_walk" );
+	level._effect["leaper_wall_impact"] = sys::loadfx( "maps/zombie/fx_zmb_leaper_wall_impact" );
 }
 
 init()
@@ -42,7 +42,7 @@ init()
 	if ( !isdefined( level.leapers_per_player ) )
 		level.leapers_per_player = 2;
 
-	level.no_jump_triggers = getentarray( "leaper_no_jump_trigger", "targetname" );
+	level.no_jump_triggers = sys::getentarray( "leaper_no_jump_trigger", "targetname" );
 }
 
 leaper_calc_anim_offsets()
@@ -51,7 +51,7 @@ leaper_calc_anim_offsets()
 
 	if ( isdefined( leaper ) )
 	{
-		level.leaper_anim = spawnstruct();
+		level.leaper_anim = sys::spawnstruct();
 		asd = "zm_wall_up";
 		anim_id = leaper getanimfromasd( asd, 0 );
 		level.leaper_anim.up_mid = getmovedelta( anim_id, 0, 0.488 ) + vectorscale( ( 0, 0, 1 ), 6.0 );
@@ -82,7 +82,7 @@ leaper_calc_anim_offsets()
 
 leaper_spawner_init()
 {
-	level.leaper_spawners = getentarray( "leaper_zombie_spawner", "script_noteworthy" );
+	level.leaper_spawners = sys::getentarray( "leaper_zombie_spawner", "script_noteworthy" );
 
 	if ( level.leaper_spawners.size == 0 )
 		return;
@@ -167,11 +167,11 @@ leaper_init()
 	self notify( "zombie_init_done" );
 	self.allowpain = 0;
 	self thread play_ambient_leaper_vocals();
-	self animmode( "normal" );
-	self orientmode( "face enemy" );
+	self sys::animmode( "normal" );
+	self sys::orientmode( "face enemy" );
 	self maps\mp\zombies\_zm_spawner::zombie_setup_attack_properties();
 	self maps\mp\zombies\_zm_spawner::zombie_complete_emerging_into_playable_area();
-	self setfreecameralockonallowed( 0 );
+	self sys::setfreecameralockonallowed( 0 );
 
 	if ( isdefined( self.spawn_point.script_parameters ) && ( self.spawn_point.script_parameters == "emerge_bottom" || self.spawn_point.script_parameters == "emerge_top" ) )
 		self thread do_leaper_emerge( self.spawn_point );
@@ -180,7 +180,7 @@ leaper_init()
 	self thread leaper_check_zone();
 	self thread leaper_check_no_jump();
 	self thread leaper_watch_enemy();
-	self.combat_animmode = ::leaper_combat_animmode;
+	self.combat_sys::animmode = ::leaper_combat_sys::animmode;
 	level thread maps\mp\zombies\_zm_spawner::zombie_death_event( self );
 	self thread maps\mp\zombies\_zm_spawner::enemy_death_detection();
 	self thread leaper_elevator_failsafe();
@@ -262,7 +262,7 @@ leaper_can_use_anim( local_mid, local_end, dir )
 	end = self localtoworldcoords( local_end );
 	real_mid = mid;
 	forward_dist = length( end - start ) * 0.5;
-	forward_vec = vectornormalize( end - start );
+	forward_vec = sys::vectornormalize( end - start );
 	temp_org = start + vectorscale( forward_vec, forward_dist );
 	forward_org = ( temp_org[0], temp_org[1], real_mid[2] );
 	end_top = end + vectorscale( ( 0, 0, 1 ), 24.0 );
@@ -373,7 +373,7 @@ leaper_building_jump()
 
 	if ( isdefined( self.spawn_point.script_string ) && self.spawn_point.script_string != "find_flesh" )
 	{
-		self animscripted( self.spawn_point.origin, self.spawn_point.angles, "zm_building_leap", self.spawn_point.script_string );
+		self sys::animscripted( self.spawn_point.origin, self.spawn_point.angles, "zm_building_leap", self.spawn_point.script_string );
 		self maps\mp\animscripts\zm_shared::donotetracks( "building_leap_anim" );
 	}
 
@@ -387,12 +387,12 @@ leaper_check_wall()
 	self endon( "death" );
 
 	if ( !isdefined( self.next_leap_time ) )
-		self.next_leap_time = gettime() + 500;
+		self.next_leap_time = sys::gettime() + 500;
 
 	if ( is_true( self.sliding_on_goo ) || is_true( self.is_leaping ) )
 		return;
 
-	if ( gettime() > self.next_leap_time && !is_true( self.no_jump ) )
+	if ( sys::gettime() > self.next_leap_time && !is_true( self.no_jump ) )
 	{
 		wall_anim = [];
 
@@ -420,13 +420,13 @@ leaper_check_wall()
 			self.is_leaping = 1;
 			self notify( "stop_find_flesh" );
 			self notify( "zombie_acquire_enemy" );
-			self animcustom( ::leaper_play_anim );
+			self sys::animcustom( ::leaper_play_anim );
 			self waittill( "leap_anim_done" );
 			self leaper_stop_trail_fx();
 			self.ignoreall = 0;
 			self.is_leaping = 0;
 			self thread maps\mp\zombies\_zm_ai_basic::find_flesh();
-			self.next_leap_time = gettime() + 500;
+			self.next_leap_time = sys::gettime() + 500;
 		}
 	}
 }
@@ -471,7 +471,7 @@ leaper_check_no_jump()
 
 		foreach ( trigger in level.no_jump_triggers )
 		{
-			if ( self istouching( trigger ) )
+			if ( self sys::istouching( trigger ) )
 			{
 				self.no_jump = 1;
 				break;
@@ -484,17 +484,17 @@ leaper_check_no_jump()
 
 melee_anim_func()
 {
-	self.next_leap_time = gettime() + 1500;
-	self animmode( "gravity" );
+	self.next_leap_time = sys::gettime() + 1500;
+	self sys::animmode( "gravity" );
 }
 
 leaper_start_trail_fx()
 {
 	self endon( "death" );
 	self leaper_stop_trail_fx();
-	self.trail_fx = spawn( "script_model", self.origin );
+	self.trail_fx = sys::spawn( "script_model", self.origin );
 	self.trail_fx setmodel( "tag_origin" );
-	self.trail_fx linkto( self );
+	self.trail_fx sys::linkto( self );
 	wait 0.1;
 	playfxontag( level._effect["leaper_trail"], self.trail_fx, "tag_origin" );
 }
@@ -508,11 +508,11 @@ leaper_stop_trail_fx()
 leaper_play_anim()
 {
 	self endon( "death" );
-	self animmode( "nogravity" );
-	self setanimstatefromasd( self.leap_anim );
+	self sys::animmode( "nogravity" );
+	self sys::setanimstatefromasd( self.leap_anim );
 	self thread leaper_handle_fx_notetracks( "wall_anim" );
 	maps\mp\animscripts\zm_shared::donotetracks( "wall_anim" );
-	self animmode( "normal" );
+	self sys::animmode( "normal" );
 	self notify( "leap_anim_done" );
 }
 
@@ -533,7 +533,7 @@ leaper_notetracks( animname )
 	self endon( "death" );
 	self endon( "leap_anim_done" );
 	self waittillmatch( animname, "gravity on" );
-	self animmode( "normal" );
+	self sys::animmode( "normal" );
 }
 
 enable_leaper_rounds()
@@ -579,7 +579,7 @@ leaper_round_spawning()
 {
 	level endon( "intermission" );
 	level endon( "leaper_round_ending" );
-	level.leaper_targets = getplayers();
+	level.leaper_targets = sys::getplayers();
 
 	for ( i = 0; i < level.leaper_targets.size; i++ )
 		level.leaper_targets[i].hunted_by = 0;
@@ -597,7 +597,7 @@ leaper_round_spawning()
 	level.leaper_intermission = 1;
 	level thread leaper_round_accuracy_tracking();
 	level thread leaper_round_aftermath();
-	players = get_players();
+	players = sys::getplayers();
 	wait 1;
 	playsoundatposition( "vox_zmba_event_dogstart_0", ( 0, 0, 0 ) );
 	wait 1;
@@ -648,7 +648,7 @@ leaper_round_spawning()
 			num_player_valid = get_number_of_valid_players();
 		}
 
-		players = get_players();
+		players = sys::getplayers();
 		favorite_enemy = get_favorite_enemy();
 		spawn_point = leaper_spawn_logic( level.enemy_dog_spawns, favorite_enemy );
 		ai = spawn_zombie( level.leaper_spawners[0] );
@@ -668,7 +668,7 @@ leaper_round_spawning()
 
 leaper_round_accuracy_tracking()
 {
-	players = getplayers();
+	players = sys::getplayers();
 	level.leaper_round_accurate_players = 0;
 
 	for ( i = 0; i < players.size; i++ )
@@ -678,7 +678,7 @@ leaper_round_accuracy_tracking()
 	}
 
 	level waittill( "last_leaper_down" );
-	players = getplayers();
+	players = sys::getplayers();
 
 	for ( i = 0; i < players.size; i++ )
 	{
@@ -723,7 +723,7 @@ leaper_round_wait()
 
 leaper_health_increase()
 {
-	players = getplayers();
+	players = sys::getplayers();
 
 	if ( level.leaper_round_count == 1 )
 		level.leaper_health = 400;
@@ -740,7 +740,7 @@ leaper_health_increase()
 
 get_favorite_enemy()
 {
-	leaper_targets = getplayers();
+	leaper_targets = sys::getplayers();
 	least_hunted = leaper_targets[0];
 
 	for ( i = 0; i < leaper_targets.size; i++ )
@@ -775,9 +775,9 @@ leaper_watch_enemy()
 	}
 }
 
-leaper_combat_animmode()
+leaper_combat_sys::animmode()
 {
-	self animmode( "gravity", 0 );
+	self sys::animmode( "gravity", 0 );
 }
 
 leaper_spawn_logic_old( leaper_array, favorite_enemy )
@@ -793,7 +793,7 @@ leaper_spawn_logic_old( leaper_array, favorite_enemy )
 				continue;
 		}
 
-		dist_squared = distancesquared( leaper_locs[i].origin, favorite_enemy.origin );
+		dist_squared = sys::distancesquared( leaper_locs[i].origin, favorite_enemy.origin );
 
 		if ( dist_squared > 160000 && dist_squared < 1000000 )
 		{
@@ -849,14 +849,14 @@ leaper_spawn_logic( leaper_array, favorite_enemy )
 /#
 	if ( getdvarint( #"scr_zombie_spawn_in_view" ) )
 	{
-		player = get_players()[0];
+		player = sys::getplayers()[0];
 		a_spawn_points_in_view = [];
 
 		for ( i = 0; i < a_leaper_spawn_points.size; i++ )
 		{
-			player_vec = vectornormalize( anglestoforward( player.angles ) );
-			player_spawn = vectornormalize( a_leaper_spawn_points[i].origin - player.origin );
-			dot = vectordot( player_vec, player_spawn );
+			player_vec = sys::vectornormalize( anglestoforward( player.angles ) );
+			player_spawn = sys::vectornormalize( a_leaper_spawn_points[i].origin - player.origin );
+			dot = sys::vectordot( player_vec, player_spawn );
 
 			if ( dot > 0.707 )
 			{
@@ -931,15 +931,15 @@ get_valid_spawner_array( a_spawn_points )
 
 leaper_spawn_fx( ai, ent )
 {
-	ai setfreecameralockonallowed( 0 );
-	ai show();
-	ai setfreecameralockonallowed( 1 );
+	ai sys::setfreecameralockonallowed( 0 );
+	ai sys::show();
+	ai sys::setfreecameralockonallowed( 1 );
 	v_fx_origin = ai.spawn_point.origin;
 
 	if ( isdefined( ai.spawn_point.script_string ) && ai.spawn_point.script_string != "find_flesh" )
 	{
 		wait 0.1;
-		v_fx_origin = ai gettagorigin( "J_SpineLower" );
+		v_fx_origin = ai sys::gettagorigin( "J_SpineLower" );
 	}
 
 	playfx( level._effect["leaper_spawn"], v_fx_origin );
@@ -1011,7 +1011,7 @@ leaper_traverse_watcher()
 		{
 			self.elevator_parent = undefined;
 
-			object_is_on_elevator_func = getFunction( "maps\mp\zm_highrise_elevators", "object_is_on_elevator" );
+			object_is_on_elevator_func = pluto_sys::getfunction( "maps\mp\zm_highrise_elevators", "object_is_on_elevator" );
 			if ( isDefined( object_is_on_elevator_func ) && is_true( self [[ object_is_on_elevator_func ]]() ) )
 			{
 				if ( isdefined( self.elevator_parent ) )
@@ -1034,8 +1034,8 @@ leaper_traverse_watcher()
 leaper_playable_area_failsafe()
 {
 	self endon( "death" );
-	self.leaper_failsafe_start_time = gettime();
-	playable_area = getentarray( "player_volume", "script_noteworthy" );
+	self.leaper_failsafe_start_time = sys::gettime();
+	playable_area = sys::getentarray( "player_volume", "script_noteworthy" );
 	b_outside_playable_space_this_frame = 0;
 	self.leaper_outside_playable_space_time = -2;
 
@@ -1043,7 +1043,7 @@ leaper_playable_area_failsafe()
 	{
 		b_outside_playable_last_check = b_outside_playable_space_this_frame;
 		b_outside_playable_space_this_frame = is_leaper_outside_playable_space( playable_area );
-		n_current_time = gettime();
+		n_current_time = sys::gettime();
 
 		if ( b_outside_playable_space_this_frame && !b_outside_playable_last_check )
 			self.leaper_outside_playable_space_time = n_current_time;
@@ -1081,7 +1081,7 @@ is_leaper_outside_playable_space( playable_area )
 
 	foreach ( area in playable_area )
 	{
-		if ( self istouching( area ) )
+		if ( self sys::istouching( area ) )
 			b_outside_play_space = 0;
 	}
 
@@ -1112,7 +1112,7 @@ leaper_spawn_failsafe()
 				dist_sq = dist_sq + 576;
 
 			wait 1;
-			dist_sq = dist_sq + distancesquared( self.origin, prevorigin );
+			dist_sq = dist_sq + sys::distancesquared( self.origin, prevorigin );
 			prevorigin = self.origin;
 		}
 
@@ -1153,7 +1153,7 @@ do_leaper_emerge( spot )
 	spot.is_spawning = 1;
 	anim_org = spot.origin;
 	anim_ang = spot.angles;
-	self ghost();
+	self sys::ghost();
 	self thread maps\mp\zombies\_zm_spawner::hide_pop();
 	self thread leaper_death_wait( "spawn_anim" );
 
@@ -1185,9 +1185,9 @@ leaper_emerge()
 	self endon( "death" );
 
 	if ( self.spawn_point.script_parameters == "emerge_bottom" )
-		self animscripted( self.spawn_point.origin, self.spawn_point.angles, "zm_spawn_elevator_from_floor" );
+		self sys::animscripted( self.spawn_point.origin, self.spawn_point.angles, "zm_spawn_elevator_from_floor" );
 	else
-		self animscripted( self.spawn_point.origin, self.spawn_point.angles, "zm_spawn_elevator_from_ceiling" );
+		self sys::animscripted( self.spawn_point.origin, self.spawn_point.angles, "zm_spawn_elevator_from_ceiling" );
 
 	self maps\mp\animscripts\zm_shared::donotetracks( "spawn_anim" );
 	self.deathfunction = maps\mp\zombies\_zm_spawner::zombie_death_animscript;
@@ -1197,7 +1197,7 @@ leaper_emerge()
 leaper_round_start_audio()
 {
 	wait 2.5;
-	players = get_players();
+	players = sys::getplayers();
 	num = randomintrange( 0, players.size );
 	players[num] maps\mp\zombies\_zm_audio::create_and_play_dialog( "general", "leaper_round" );
 	array_thread( players, ::wait_for_player_to_see_leaper );
@@ -1215,9 +1215,9 @@ wait_for_player_to_see_leaper()
 
 		foreach ( leaper in leapers )
 		{
-			player_vec = vectornormalize( anglestoforward( self.angles ) );
-			player_leaper = vectornormalize( leaper.origin - self.origin );
-			dot = vectordot( player_vec, player_leaper );
+			player_vec = sys::vectornormalize( anglestoforward( self.angles ) );
+			player_leaper = sys::vectornormalize( leaper.origin - self.origin );
+			dot = sys::vectordot( player_vec, player_leaper );
 
 			if ( dot > 0.707 )
 			{

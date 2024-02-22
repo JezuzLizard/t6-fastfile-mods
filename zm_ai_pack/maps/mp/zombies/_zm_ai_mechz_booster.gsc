@@ -25,7 +25,7 @@ mechz_in_range_for_jump()
 		return false;
 	}
 
-	dist = distancesquared( self.origin, self.jump_pos.origin );
+	dist = sys::distancesquared( self.origin, self.jump_pos.origin );
 
 	if ( dist <= 100 )
 		return true;
@@ -39,7 +39,7 @@ mechz_jump_think( spawn_pos )
 	self endon( "stop_jump_think" );
 	self.closest_jump_point = spawn_pos;
 	self.goal_pos = self.origin;
-	self setgoalpos( self.goal_pos );
+	self sys::setgoalpos( self.goal_pos );
 	self thread mechz_jump_stuck_watcher();
 
 	while ( true )
@@ -114,7 +114,7 @@ watch_for_valid_melee()
 	{
 		self waittillmatch( "melee_anim", "end" );
 
-		if ( isdefined( self.favoriteenemy ) && distancesquared( self.origin, self.favoriteenemy.origin ) < 16384 )
+		if ( isdefined( self.favoriteenemy ) && sys::distancesquared( self.origin, self.favoriteenemy.origin ) < 16384 )
 		{
 /#
 			if ( getdvarint( #"_id_E7121222" ) > 1 )
@@ -202,7 +202,7 @@ mechz_should_jump()
 		return false;
 	}
 
-	dist = distancesquared( self.origin, self.favoriteenemy.origin );
+	dist = sys::distancesquared( self.origin, self.favoriteenemy.origin );
 
 	if ( dist >= level.mechz_jump_dist_threshold )
 	{
@@ -238,28 +238,28 @@ mechz_do_jump( wait_for_stationary_tank )
 		println( "\\nMZ: Jump setting not interruptable\\n" );
 #/
 	self.not_interruptable = 1;
-	self setfreecameralockonallowed( 0 );
+	self sys::setfreecameralockonallowed( 0 );
 	self thread mechz_jump_vo();
-	self animscripted( self.origin, self.angles, "zm_fly_out" );
+	self sys::animscripted( self.origin, self.angles, "zm_fly_out" );
 	self maps\mp\animscripts\zm_shared::donotetracks( "jump_anim" );
-	self ghost();
+	self sys::ghost();
 	self.mechz_hidden = 1;
 
 	if ( isdefined( self.m_claw ) )
-		self.m_claw ghost();
+		self.m_claw sys::ghost();
 
 	if ( self.fx_field )
 		self.fx_field_old = self.fx_field;
 
 	self thread maps\mp\zombies\_zm_spawner::zombie_eye_glow_stop();
 	self fx_cleanup();
-	self animscripted( self.origin, self.angles, "zm_fly_hover" );
+	self sys::animscripted( self.origin, self.angles, "zm_fly_hover" );
 	wait( level.mechz_jump_delay );
 
 	if ( isdefined( wait_for_stationary_tank ) && wait_for_stationary_tank )
 		level.vh_tank ent_flag_waitopen( "tank_moving" );
 
-	self notsolid();
+	self sys::notsolid();
 	closest_jump_point = get_best_mechz_spawn_pos( 1 );
 
 	if ( isdefined( closest_jump_point ) )
@@ -268,10 +268,10 @@ mechz_do_jump( wait_for_stationary_tank )
 	if ( !isdefined( self.closest_jump_point.angles ) )
 		self.closest_jump_point.angles = ( 0, 0, 0 );
 
-	self animscripted( self.closest_jump_point.origin, self.closest_jump_point.angles, "zm_fly_in" );
-	self solid();
+	self sys::animscripted( self.closest_jump_point.origin, self.closest_jump_point.angles, "zm_fly_in" );
+	self sys::solid();
 	self.mechz_hidden = 0;
-	self show();
+	self sys::show();
 	self.fx_field = self.fx_field_old;
 	self.fx_field_old = undefined;
 	if ( level.script == "zm_tomb" )
@@ -285,11 +285,11 @@ mechz_do_jump( wait_for_stationary_tank )
 	self thread maps\mp\zombies\_zm_spawner::zombie_eye_glow();
 
 	if ( isdefined( self.m_claw ) )
-		self.m_claw show();
+		self.m_claw sys::show();
 
 	self maps\mp\animscripts\zm_shared::donotetracks( "jump_anim" );
 	self.not_interruptable = 0;
-	self setfreecameralockonallowed( 1 );
+	self sys::setfreecameralockonallowed( 1 );
 /#
 	if ( getdvarint( #"_id_E7121222" ) > 1 )
 		println( "\\nMZ: Jump clearing not interruptable\\n" );

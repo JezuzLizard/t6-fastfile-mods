@@ -183,20 +183,20 @@ main()
     self.team = "axis";
     self.type = "zombie";
     self.weapon = "";
-    self setengagementmindist( 0.0, 0.0 );
-    self setengagementmaxdist( 100.0, 300.0 );
+    self sys::setengagementmindist( 0.0, 0.0 );
+    self sys::setengagementmaxdist( 100.0, 300.0 );
     character\c_zom_leaper::main();
-    self setcharacterindex( 0 );
+    self sys::setcharacterindex( 0 );
 }
 
 spawner()
 {
-    self setspawnerteam( "axis" );
+    self sys::setspawnerteam( "axis" );
 }
 
 precache( ai_index )
 {
     level thread reference_anims_from_animtree();
-    precacheanimstatedef( ai_index, #animtree, "zm_highrise_leaper" );
+    sys::precacheanimstatedef( ai_index, #animtree, "zm_highrise_leaper" );
     character\c_zom_leaper::precache();
 }

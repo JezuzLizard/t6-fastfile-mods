@@ -15,7 +15,7 @@
 
 precache()
 {
-	precacheshellshock( "electrocution" );
+	sys::precacheshellshock( "electrocution" );
 /#
 	precachemodel( "fx_axis_createfx" );
 #/
@@ -24,15 +24,15 @@ precache()
 
 precache_fx()
 {
-	level._effect["avogadro_bolt"] = loadfx( "maps/zombie/fx_zombie_tesla_bolt_secondary" );
-	level._effect["avogadro_ascend"] = loadfx( "maps/zombie/fx_zmb_avog_ascend" );
-	level._effect["avogadro_ascend_aerial"] = loadfx( "maps/zombie/fx_zmb_avog_ascend_aerial" );
-	level._effect["avogadro_descend"] = loadfx( "maps/zombie/fx_zmb_avog_descend" );
-	level._effect["avogadro_phase_trail"] = loadfx( "maps/zombie/fx_zmb_avog_phase_trail" );
-	level._effect["avogadro_phasing"] = loadfx( "maps/zombie/fx_zmb_avog_phasing" );
-	level._effect["avogadro_health_full"] = loadfx( "maps/zombie/fx_zmb_avog_health_full" );
-	level._effect["avogadro_health_half"] = loadfx( "maps/zombie/fx_zmb_avog_health_half" );
-	level._effect["avogadro_health_low"] = loadfx( "maps/zombie/fx_zmb_avog_health_low" );
+	level._effect["avogadro_bolt"] = sys::loadfx( "maps/zombie/fx_zombie_tesla_bolt_secondary" );
+	level._effect["avogadro_ascend"] = sys::loadfx( "maps/zombie/fx_zmb_avog_ascend" );
+	level._effect["avogadro_ascend_aerial"] = sys::loadfx( "maps/zombie/fx_zmb_avog_ascend_aerial" );
+	level._effect["avogadro_descend"] = sys::loadfx( "maps/zombie/fx_zmb_avog_descend" );
+	level._effect["avogadro_phase_trail"] = sys::loadfx( "maps/zombie/fx_zmb_avog_phase_trail" );
+	level._effect["avogadro_phasing"] = sys::loadfx( "maps/zombie/fx_zmb_avog_phasing" );
+	level._effect["avogadro_health_full"] = sys::loadfx( "maps/zombie/fx_zmb_avog_health_full" );
+	level._effect["avogadro_health_half"] = sys::loadfx( "maps/zombie/fx_zmb_avog_health_half" );
+	level._effect["avogadro_health_low"] = sys::loadfx( "maps/zombie/fx_zmb_avog_health_low" );
 }
 
 main()
@@ -44,7 +44,7 @@ init()
 {
 	init_phase_anims();
 	init_regions();
-	level.avogadro_spawners = getentarray( "avogadro_zombie_spawner", "script_noteworthy" );
+	level.avogadro_spawners = sys::getentarray( "avogadro_zombie_spawner", "script_noteworthy" );
 	array_thread( level.avogadro_spawners, ::add_spawn_function, maps\mp\zombies\_zm_ai_avogadro::avogadro_prespawn );
 	level.zombie_ai_limit_avogadro = 1;
 
@@ -59,25 +59,25 @@ init()
 init_phase_anims()
 {
 	level.avogadro_phase = [];
-	level.avogadro_phase[0] = spawnstruct();
+	level.avogadro_phase[0] = sys::spawnstruct();
 	level.avogadro_phase[0].animstate = "zm_teleport_forward";
-	level.avogadro_phase[1] = spawnstruct();
+	level.avogadro_phase[1] = sys::spawnstruct();
 	level.avogadro_phase[1].animstate = "zm_teleport_left";
-	level.avogadro_phase[2] = spawnstruct();
+	level.avogadro_phase[2] = sys::spawnstruct();
 	level.avogadro_phase[2].animstate = "zm_teleport_right";
-	level.avogadro_phase[3] = spawnstruct();
+	level.avogadro_phase[3] = sys::spawnstruct();
 	level.avogadro_phase[3].animstate = "zm_teleport_back";
 }
 
 init_regions()
 {
 	level.transit_region = [];
-	level.transit_region["bus"] = spawnstruct();
-	level.transit_region["diner"] = spawnstruct();
-	level.transit_region["farm"] = spawnstruct();
-	level.transit_region["cornfield"] = spawnstruct();
-	level.transit_region["power"] = spawnstruct();
-	level.transit_region["town"] = spawnstruct();
+	level.transit_region["bus"] = sys::spawnstruct();
+	level.transit_region["diner"] = sys::spawnstruct();
+	level.transit_region["farm"] = sys::spawnstruct();
+	level.transit_region["cornfield"] = sys::spawnstruct();
+	level.transit_region["power"] = sys::spawnstruct();
+	level.transit_region["town"] = sys::spawnstruct();
 	level.transit_region["bus"].zones = [];
 	level.transit_region["bus"].zones[0] = "zone_pri";
 	level.transit_region["bus"].zones[1] = "zone_station_ext";
@@ -148,7 +148,7 @@ avogadro_prespawn()
 	self.ignore_solo_last_stand = 1;
 	self.ignore_riotshield = 1;
 	self.allowpain = 0;
-	self.core_model = getent( "core_model", "targetname" );
+	self.core_model = sys::getent( "core_model", "targetname" );
 
 	if ( isdefined( self.core_model ) )
 	{
@@ -159,20 +159,20 @@ avogadro_prespawn()
 	}
 
 	self set_zombie_run_cycle( "walk" );
-	self animmode( "normal" );
-	self orientmode( "face enemy" );
+	self sys::animmode( "normal" );
+	self sys::orientmode( "face enemy" );
 	self maps\mp\zombies\_zm_spawner::zombie_setup_attack_properties();
 	self maps\mp\zombies\_zm_spawner::zombie_complete_emerging_into_playable_area();
-	self setfreecameralockonallowed( 0 );
+	self sys::setfreecameralockonallowed( 0 );
 	self.zmb_vocals_attack = "zmb_vocals_zombie_attack";
 	self.meleedamage = 5;
 	self.actor_damage_func = ::avogadro_damage_func;
 	self.non_attacker_func = ::avogadro_non_attacker;
-	self.anchor = spawn( "script_origin", self.origin );
+	self.anchor = sys::spawn( "script_origin", self.origin );
 	self.anchor.angles = self.angles;
 	self.phase_time = 0;
-	self.audio_loop_ent = spawn( "script_origin", self.origin );
-	self.audio_loop_ent linkto( self, "tag_origin" );
+	self.audio_loop_ent = sys::spawn( "script_origin", self.origin );
+	self.audio_loop_ent sys::linkto( self, "tag_origin" );
 	self.hit_by_melee = 0;
 	self.damage_absorbed = 0;
 	self.ignoreall = 1;
@@ -183,7 +183,7 @@ avogadro_prespawn()
 	self.jetgun_drag_func = ::drag_avogadro;
 	self.depot_lava_pit = ::busplowkillzombie;
 	self.busplowkillzombie = ::busplowkillzombie;
-	self.region_timer = gettime() + 500;
+	self.region_timer = sys::gettime() + 500;
 	self.shield = 1;
 }
 
@@ -198,7 +198,7 @@ avogadro_spawning_logic()
 	if ( getdvarint( #"_id_FA81816F" ) == 2 || getdvarint( #"_id_FA81816F" ) >= 4 )
 		return;
 #/
-	spawner = getent( "avogadro_zombie_spawner", "script_noteworthy" );
+	spawner = sys::getent( "avogadro_zombie_spawner", "script_noteworthy" );
 
 	if ( !isdefined( spawner ) )
 	{
@@ -219,10 +219,10 @@ avogadro_spawning_logic()
 	}
 
 	ai waittill( "zombie_init_done" );
-	core_mover = getent( "core_mover", "targetname" );
-	ai linkto( core_mover, "tag_origin" );
+	core_mover = sys::getent( "core_mover", "targetname" );
+	ai sys::linkto( core_mover, "tag_origin" );
 	ai.state = "chamber";
-	ai setanimstatefromasd( "zm_chamber_idle" );
+	ai sys::setanimstatefromasd( "zm_chamber_idle" );
 	ai thread avogadro_think();
 	ai thread avogadro_bus_watcher();
 }
@@ -268,7 +268,7 @@ avogadro_think()
 
 avogadro_bus_watcher()
 {
-	plow_trigger = getent( "trigger_plow", "targetname" );
+	plow_trigger = sys::getent( "trigger_plow", "targetname" );
 
 	while ( true )
 	{
@@ -278,11 +278,11 @@ avogadro_bus_watcher()
 			continue;
 		}
 
-		if ( isdefined( level.the_bus ) && ( isdefined( level.the_bus.ismoving ) && level.the_bus.ismoving ) && level.the_bus getspeedmph() > 5 )
+		if ( isdefined( level.the_bus ) && ( isdefined( level.the_bus.ismoving ) && level.the_bus.ismoving ) && level.the_bus sys::getspeedmph() > 5 )
 		{
-			if ( self istouching( plow_trigger ) )
+			if ( self sys::istouching( plow_trigger ) )
 			{
-				phase_node = getnode( "back_door_node", "targetname" );
+				phase_node = sys::getnode( "back_door_node", "targetname" );
 				self avogadro_teleport( phase_node.origin, phase_node.angles, 1 );
 			}
 		}
@@ -296,17 +296,17 @@ busplowkillzombie()
 	if ( isdefined( self.is_teleport ) && self.is_teleport )
 		return;
 
-	phase_node = getnode( "back_door_node", "targetname" );
+	phase_node = sys::getnode( "back_door_node", "targetname" );
 	self avogadro_teleport( phase_node.origin, phase_node.angles, 1 );
 }
 
 phase_from_bus()
 {
-	self ghost();
-	self notsolid();
+	self sys::ghost();
+	self sys::notsolid();
 	wait 3;
-	self show();
-	self solid();
+	self sys::show();
+	self sys::solid();
 	self notify( "phase_from_bus_done" );
 }
 
@@ -316,28 +316,28 @@ wait_idle()
 	if ( getdvarint( #"_id_CFA4158E" ) )
 	{
 		self.state = "wait_for_player";
-		self unlink();
+		self sys::unlink();
 	}
 #/
 
 	if ( flag( "power_on" ) )
 	{
 		self.state = "wait_for_player";
-		self unlink();
+		self sys::unlink();
 	}
 }
 
 player_look()
 {
-	players = get_players();
+	players = sys::getplayers();
 
 	foreach ( player in players )
 	{
 		vec_enemy = self.origin - player.origin;
 		vec_facing = anglestoforward( player.angles );
-		norm_facing = vectornormalize( vec_facing );
-		norm_enemy = vectornormalize( vec_enemy );
-		dot = vectordot( norm_facing, norm_enemy );
+		norm_facing = sys::vectornormalize( vec_facing );
+		norm_enemy = sys::vectornormalize( vec_enemy );
+		dot = sys::vectordot( norm_facing, norm_enemy );
 
 		if ( dot > 0.707 )
 		{
@@ -397,11 +397,11 @@ chase_bus()
 		if ( !isdefined( self.chase_bus_entry ) )
 		{
 			self.chase_bus_entry = opening;
-			dist_curr = distance2dsquared( self.origin, level.the_bus gettagorigin( self.chase_bus_entry.tagname ) );
+			dist_curr = sys::distance2dsquared( self.origin, level.the_bus sys::gettagorigin( self.chase_bus_entry.tagname ) );
 			continue;
 		}
 
-		dist_next = distance2dsquared( self.origin, level.the_bus gettagorigin( opening.tagname ) );
+		dist_next = sys::distance2dsquared( self.origin, level.the_bus sys::gettagorigin( opening.tagname ) );
 
 		if ( dist_next < dist_curr )
 		{
@@ -424,26 +424,26 @@ chase_bus_update()
 		return;
 	}
 
-	tag_pos = level.the_bus gettagorigin( self.chase_bus_entry.tagname );
-	self setgoalpos( tag_pos );
+	tag_pos = level.the_bus sys::gettagorigin( self.chase_bus_entry.tagname );
+	self sys::setgoalpos( tag_pos );
 
-	if ( bus getspeedmph() > 5 )
+	if ( bus sys::getspeedmph() > 5 )
 	{
 		self.phase_state = level.avogadro_phase[0].animstate;
 		self.phase_substate = 0;
-		self setfreecameralockonallowed( 0 );
+		self sys::setfreecameralockonallowed( 0 );
 		self.ignoreall = 1;
 		self thread phase_failsafe();
-		self animcustom( ::play_phase_anim );
+		self sys::animcustom( ::play_phase_anim );
 /#
 		avogadro_print( "long phase after bus" );
 #/
 		self waittill( "phase_anim_done" );
 		self.ignoreall = 0;
-		self setfreecameralockonallowed( 1 );
+		self sys::setfreecameralockonallowed( 1 );
 	}
 
-	dist_sq = distancesquared( self.origin, tag_pos );
+	dist_sq = sys::distancesquared( self.origin, tag_pos );
 
 	if ( dist_sq < 14400 )
 		self bus_attack();
@@ -454,16 +454,16 @@ bus_attack()
 	self endon( "stunned" );
 	self endon( "stop_bus_attack" );
 	bus_attack_struct = [];
-	bus_attack_struct[0] = spawnstruct();
+	bus_attack_struct[0] = sys::spawnstruct();
 	bus_attack_struct[0].window_tag = "window_left_rear_jnt";
 	bus_attack_struct[0].substate = "bus_attack_back";
-	bus_attack_struct[1] = spawnstruct();
+	bus_attack_struct[1] = sys::spawnstruct();
 	bus_attack_struct[1].window_tag = "window_right_front_jnt";
 	bus_attack_struct[1].substate = "bus_attack_front";
-	bus_attack_struct[2] = spawnstruct();
+	bus_attack_struct[2] = sys::spawnstruct();
 	bus_attack_struct[2].window_tag = "window_left_2_jnt";
 	bus_attack_struct[2].substate = "bus_attack_left";
-	bus_attack_struct[3] = spawnstruct();
+	bus_attack_struct[3] = sys::spawnstruct();
 	bus_attack_struct[3].window_tag = "window_right_3_jnt";
 	bus_attack_struct[3].substate = "bus_attack_right";
 	random_attack_struct = array_randomize( bus_attack_struct );
@@ -493,12 +493,12 @@ bus_attack()
 	if ( !self.bus_disabled )
 	{
 		self.shield = 1;
-		self unlink();
+		self sys::unlink();
 		self avogadro_exit( "bus" );
 	}
 	else
 	{
-		func = getFunction( "maps/mp/zm_transit_bus", "bus_disabled_by_emp" );
+		func = pluto_sys::getfunction( "maps/mp/zm_transit_bus", "bus_disabled_by_emp" );
 		if ( isDefined( func ) )
 		{
 			level.the_bus thread [[ func ]]( 30 );
@@ -517,11 +517,11 @@ attach_to_bus()
 /#
 		avogadro_print( "stay_attached " + self.bus_attack_struct.substate );
 #/
-		origin = level.the_bus gettagorigin( self.bus_attack_struct.window_tag );
-		angles = level.the_bus gettagangles( self.bus_attack_struct.window_tag );
-		self show();
+		origin = level.the_bus sys::gettagorigin( self.bus_attack_struct.window_tag );
+		angles = level.the_bus sys::gettagangles( self.bus_attack_struct.window_tag );
+		self sys::show();
 		self.shield = 0;
-		self animscripted( origin, angles, "zm_bus_attack", self.bus_attack_struct.substate );
+		self sys::animscripted( origin, angles, "zm_bus_attack", self.bus_attack_struct.substate );
 		self.bus_shock_time = 0;
 		self.state = "stay_attached";
 		return;
@@ -540,7 +540,7 @@ attach_update()
 		if ( self.bus_shock_time >= 2 )
 		{
 			self.bus_shock_time = 0;
-			players = get_players();
+			players = sys::getplayers();
 
 			foreach ( player in players )
 			{
@@ -561,11 +561,11 @@ attach_update()
 
 detach_from_bus()
 {
-	self unlink();
+	self sys::unlink();
 /#
 	avogadro_print( "unlinking from bus window" );
 #/
-	bus_forward = vectornormalize( anglestoforward( level.the_bus.angles ) );
+	bus_forward = sys::vectornormalize( anglestoforward( level.the_bus.angles ) );
 	unlink_pos = level.the_bus.origin + vectorscale( bus_forward, -144 );
 	unlink_pos = groundpos_ignore_water_new( unlink_pos + vectorscale( ( 0, 0, 1 ), 60.0 ) );
 	self.shield = 1;
@@ -579,28 +579,28 @@ bus_disable_show( time )
 	self endon( "death" );
 	wait( time );
 	self.shield = 0;
-	self show();
+	self sys::show();
 }
 
 bus_disable( bus_attack_struct )
 {
 	self endon( "melee_pain" );
 	self.bus_attack_struct = bus_attack_struct;
-	origin = level.the_bus gettagorigin( bus_attack_struct.window_tag );
-	angles = level.the_bus gettagangles( bus_attack_struct.window_tag );
+	origin = level.the_bus sys::gettagorigin( bus_attack_struct.window_tag );
+	angles = level.the_bus sys::gettagangles( bus_attack_struct.window_tag );
 	self avogadro_teleport( origin, angles, 0.5, bus_attack_struct.window_tag );
-	self linkto( level.the_bus, bus_attack_struct.window_tag );
+	self sys::linkto( level.the_bus, bus_attack_struct.window_tag );
 	bus_disable_show( 0.1 );
-	origin = level.the_bus gettagorigin( bus_attack_struct.window_tag );
-	angles = level.the_bus gettagangles( bus_attack_struct.window_tag );
-	self animscripted( origin, angles, "zm_bus_attack", bus_attack_struct.substate );
+	origin = level.the_bus sys::gettagorigin( bus_attack_struct.window_tag );
+	angles = level.the_bus sys::gettagangles( bus_attack_struct.window_tag );
+	self sys::animscripted( origin, angles, "zm_bus_attack", bus_attack_struct.substate );
 /#
 	avogadro_print( "bus_disable " + bus_attack_struct.substate );
 #/
 	success = 0;
 	self.mod_melee = 0;
 	self.bus_shock_time = 0;
-	func = getFunction( "maps/mp/zm_transit_bus", "do_player_bus_zombie_vox" );
+	func = pluto_sys::getfunction( "maps/mp/zm_transit_bus", "do_player_bus_zombie_vox" );
 	if ( isDefined( func ) )
 	{
 		level thread [[ func ]]( "avogadro_onbus", 45 );
@@ -614,7 +614,7 @@ bus_disable( bus_attack_struct )
 		if ( self.bus_attack_time >= 20 )
 		{
 			self.bus_disabled = 1;
-			func = getFunction( "maps/mp/zm_transit_bus", "do_player_bus_zombie_vox" );
+			func = pluto_sys::getfunction( "maps/mp/zm_transit_bus", "do_player_bus_zombie_vox" );
 			level thread [[ func ]]( "avogadro_stopbus", 45 );
 			break;
 		}
@@ -624,7 +624,7 @@ bus_disable( bus_attack_struct )
 		if ( self.bus_shock_time >= 2 )
 		{
 			self.bus_shock_time = 0;
-			players = get_players();
+			players = sys::getplayers();
 
 			foreach ( player in players )
 			{
@@ -651,13 +651,13 @@ avogadro_exit( from )
 	self.state = "exiting";
 	self notify( "stop_find_flesh" );
 	self notify( "zombie_acquire_enemy" );
-	self setfreecameralockonallowed( 0 );
+	self sys::setfreecameralockonallowed( 0 );
 	self.audio_loop_ent stoploopsound( 0.5 );
 	self notify( "stop_health" );
 
 	if ( isdefined( self.health_fx ) )
 	{
-		self.health_fx unlink();
+		self.health_fx sys::unlink();
 		self.health_fx delete();
 	}
 
@@ -667,23 +667,23 @@ avogadro_exit( from )
 		{
 			self playsound( "zmb_avogadro_death_short" );
 			playfx( level._effect["avogadro_ascend_aerial"], self.origin );
-			self animscripted( self.origin, self.angles, "zm_bus_win" );
+			self sys::animscripted( self.origin, self.angles, "zm_bus_win" );
 			maps\mp\animscripts\zm_shared::donotetracks( "bus_win_anim" );
 		}
 		else if ( from == "chamber" )
 		{
 			self playsound( "zmb_avogadro_death_short" );
 			playfx( level._effect["avogadro_ascend"], self.origin );
-			self animscripted( self.origin, self.angles, "zm_chamber_out" );
+			self sys::animscripted( self.origin, self.angles, "zm_chamber_out" );
 			wait 0.4;
-			self ghost();
+			self sys::ghost();
 			stop_exploder( 500 );
 		}
 		else
 		{
 			self playsound( "zmb_avogadro_death" );
 			playfx( level._effect["avogadro_ascend"], self.origin );
-			self animscripted( self.origin, self.angles, "zm_exit" );
+			self sys::animscripted( self.origin, self.angles, "zm_exit" );
 			maps\mp\animscripts\zm_shared::donotetracks( "exit_anim" );
 		}
 	}
@@ -691,18 +691,18 @@ avogadro_exit( from )
 	{
 		self playsound( "zmb_avogadro_death" );
 		playfx( level._effect["avogadro_ascend"], self.origin );
-		self animscripted( self.origin, self.angles, "zm_exit" );
+		self sys::animscripted( self.origin, self.angles, "zm_exit" );
 		maps\mp\animscripts\zm_shared::donotetracks( "exit_anim" );
 	}
 
 	if ( !isdefined( from ) || from != "chamber" )
 		level thread do_avogadro_flee_vo( self );
 
-	self ghost();
+	self sys::ghost();
 	self.hit_by_melee = 0;
 	self.anchor.origin = self.origin;
 	self.anchor.angles = self.angles;
-	self linkto( self.anchor );
+	self sys::linkto( self.anchor );
 
 	if ( isdefined( from ) && from == "exit_idle" )
 		self.return_round = level.round_number + 1;
@@ -729,15 +729,15 @@ cloud_update_fx()
 
 	if ( !isdefined( self.sndent ) )
 	{
-		self.sndent = spawn( "script_origin", ( 0, 0, 0 ) );
+		self.sndent = sys::spawn( "script_origin", ( 0, 0, 0 ) );
 		self.sndent playloopsound( "zmb_avogadro_thunder_overhead" );
 	}
 
-	cloud_time = gettime();
+	cloud_time = sys::gettime();
 
 	for ( vo_counter = 0; 1; vo_counter++ )
 	{
-		if ( gettime() >= cloud_time )
+		if ( sys::gettime() >= cloud_time )
 		{
 			if ( isdefined( self.current_region ) )
 			{
@@ -763,7 +763,7 @@ cloud_update_fx()
 			exploder_num = level.transit_region[region_str].exploder;
 			exploder( exploder_num );
 			self.sndent moveto( level.transit_region[region_str].sndorigin, 3 );
-			cloud_time = gettime() + 30000;
+			cloud_time = sys::gettime() + 30000;
 		}
 
 		if ( vo_counter > 50 )
@@ -824,17 +824,17 @@ cloud_update()
 			self thread avogadro_update_health();
 			playsoundatposition( "zmb_avogadro_spawn_3d", new_origin );
 			self.audio_loop_ent playloopsound( "zmb_avogadro_loop", 0.5 );
-			self unlink();
+			self sys::unlink();
 			ground_pos = groundpos_ignore_water_new( new_origin + vectorscale( ( 0, 0, 1 ), 60.0 ) );
 			playfx( level._effect["avogadro_descend"], ground_pos );
-			self animscripted( ground_pos, self.anchor.angles, "zm_arrival" );
+			self sys::animscripted( ground_pos, self.anchor.angles, "zm_arrival" );
 			maps\mp\animscripts\zm_shared::donotetracks( "arrival_anim" );
-			self setfreecameralockonallowed( 1 );
-			time_to_leave = gettime() + 30000;
+			self sys::setfreecameralockonallowed( 1 );
+			time_to_leave = sys::gettime() + 30000;
 
 			while ( true )
 			{
-				if ( gettime() > time_to_leave )
+				if ( sys::gettime() > time_to_leave )
 				{
 /#
 					avogadro_print( "enemy never showed - leaving" );
@@ -875,7 +875,7 @@ enemy_in_region()
 
 get_player_in_region()
 {
-	players = get_players();
+	players = sys::getplayers();
 	players = array_randomize( players );
 	zones = level.transit_region[self.current_region].zones;
 
@@ -936,17 +936,17 @@ cloud_find_spawn()
 avogadro_reveal( show_time )
 {
 	self endon( "death" );
-	self show();
+	self sys::show();
 	wait( show_time );
-	self ghost();
+	self sys::ghost();
 }
 
 avogadro_teleport( dest_pos, dest_angles, lerp_time, tag_override )
 {
 	self.is_teleport = 1;
-	self.phase_fx = spawn( "script_model", self.origin );
+	self.phase_fx = sys::spawn( "script_model", self.origin );
 	self.phase_fx setmodel( "tag_origin" );
-	self.phase_fx linkto( self );
+	self.phase_fx sys::linkto( self );
 	wait 0.1;
 	playfxontag( level._effect["avogadro_phase_trail"], self.phase_fx, "tag_origin" );
 	playfx( level._effect["avogadro_phasing"], self.origin );
@@ -954,18 +954,18 @@ avogadro_teleport( dest_pos, dest_angles, lerp_time, tag_override )
 	self playsound( "zmb_avogadro_warp_out" );
 	self.anchor.origin = self.origin;
 	self.anchor.angles = self.angles;
-	self linkto( self.anchor );
+	self sys::linkto( self.anchor );
 	self.anchor moveto( dest_pos, lerp_time );
 	self.anchor waittill( "movedone" );
 	self.anchor.origin = dest_pos;
 	self.anchor.angles = dest_angles;
-	self unlink();
+	self sys::unlink();
 	wait 0.1;
 
 	if ( isdefined( tag_override ) )
 	{
-		dest_pos = level.the_bus gettagorigin( tag_override );
-		dest_angles = level.the_bus gettagangles( tag_override );
+		dest_pos = level.the_bus sys::gettagorigin( tag_override );
+		dest_angles = level.the_bus sys::gettagangles( tag_override );
 	}
 
 	self forceteleport( dest_pos, dest_angles );
@@ -995,9 +995,9 @@ check_range_attack()
 		if ( dist_sq > 14400 && dist_sq < 360000 )
 		{
 			vec_facing = anglestoforward( self.angles );
-			norm_facing = vectornormalize( vec_facing );
-			norm_enemy = vectornormalize( vec_enemy );
-			dot = vectordot( norm_facing, norm_enemy );
+			norm_facing = sys::vectornormalize( vec_facing );
+			norm_enemy = sys::vectornormalize( vec_enemy );
+			dot = sys::vectordot( norm_facing, norm_enemy );
 
 			if ( dot > 0.99 )
 			{
@@ -1022,16 +1022,16 @@ range_attack()
 	if ( isdefined( enemy ) )
 	{
 		self thread shoot_bolt_wait( "ranged_attack", enemy );
-		self show();
-		self animscripted( self.origin, self.angles, "zm_ranged_attack_in" );
+		self sys::show();
+		self sys::animscripted( self.origin, self.angles, "zm_ranged_attack_in" );
 		maps\mp\animscripts\zm_shared::donotetracks( "ranged_attack" );
-		self animscripted( self.origin, self.angles, "zm_ranged_attack_loop" );
+		self sys::animscripted( self.origin, self.angles, "zm_ranged_attack_loop" );
 		maps\mp\animscripts\zm_shared::donotetracks( "ranged_attack" );
-		self animscripted( self.origin, self.angles, "zm_ranged_attack_out" );
+		self sys::animscripted( self.origin, self.angles, "zm_ranged_attack_out" );
 		maps\mp\animscripts\zm_shared::donotetracks( "ranged_attack" );
 		self.shield = 1;
 		self thread avogadro_update_health();
-		self ghost();
+		self sys::ghost();
 	}
 }
 
@@ -1044,7 +1044,7 @@ shoot_bolt_wait( animname, enemy )
 
 	if ( isdefined( self.health_fx ) )
 	{
-		self.health_fx unlink();
+		self.health_fx sys::unlink();
 		self.health_fx delete();
 	}
 
@@ -1053,9 +1053,9 @@ shoot_bolt_wait( animname, enemy )
 
 shoot_bolt( enemy )
 {
-	source_pos = self gettagorigin( "tag_weapon_right" );
+	source_pos = self sys::gettagorigin( "tag_weapon_right" );
 	target_pos = enemy geteye();
-	bolt = spawn( "script_model", source_pos );
+	bolt = sys::spawn( "script_model", source_pos );
 	bolt setmodel( "tag_origin" );
 	wait 0.1;
 	self playsound( "zmb_avogadro_attack" );
@@ -1072,7 +1072,7 @@ check_bolt_impact( enemy )
 	if ( is_player_valid( enemy ) )
 	{
 		enemy_eye_pos = enemy geteye();
-		dist_sq = distancesquared( self.origin, enemy_eye_pos );
+		dist_sq = sys::distancesquared( self.origin, enemy_eye_pos );
 
 		if ( dist_sq < 4096 )
 		{
@@ -1092,39 +1092,39 @@ check_bolt_impact( enemy )
 
 region_empty()
 {
-	if ( gettime() >= self.region_timer )
+	if ( sys::gettime() >= self.region_timer )
 	{
 		player = self get_player_in_region();
 
 		if ( isdefined( player ) )
 		{
-			self.region_timer = gettime() + 500;
+			self.region_timer = sys::gettime() + 500;
 			return false;
 		}
 
 /#
 		debug_dist_sq = 0;
 #/
-		players = getplayers();
+		players = sys::getplayers();
 
 		foreach ( player in players )
 		{
 			if ( player maps\mp\zombies\_zm_laststand::player_is_in_laststand() )
 				continue;
 
-			dist_sq = distancesquared( self.origin, player.origin );
+			dist_sq = sys::distancesquared( self.origin, player.origin );
 /#
 			debug_dist_sq = distance( self.origin, player.origin );
 #/
 
 			if ( dist_sq < 9000000 )
 			{
-				self.region_timer = gettime() + 500;
+				self.region_timer = sys::gettime() + 500;
 				return false;
 			}
 		}
 
-		self.region_timer = gettime() + 500;
+		self.region_timer = sys::gettime() + 500;
 /#
 		avogadro_print( "no one left to kill " + debug_dist_sq );
 #/
@@ -1148,11 +1148,11 @@ check_phase()
 		return false;
 #/
 
-	if ( gettime() > self.phase_time )
+	if ( sys::gettime() > self.phase_time )
 	{
 		if ( isdefined( self.is_traversing ) && self.is_traversing )
 		{
-			self.phase_time = gettime() + 2000;
+			self.phase_time = sys::gettime() + 2000;
 			return false;
 		}
 
@@ -1173,13 +1173,13 @@ do_phase()
 	self.state = "phasing";
 	self notify( "stop_find_flesh" );
 	self notify( "zombie_acquire_enemy" );
-	self setfreecameralockonallowed( 0 );
+	self sys::setfreecameralockonallowed( 0 );
 	self.ignoreall = 1;
 	self thread phase_failsafe();
-	self animcustom( ::play_phase_anim );
+	self sys::animcustom( ::play_phase_anim );
 	self waittill( "phase_anim_done" );
 	self.ignoreall = 0;
-	self setfreecameralockonallowed( 1 );
+	self sys::setfreecameralockonallowed( 1 );
 	self.state = "idle";
 }
 
@@ -1187,23 +1187,23 @@ play_phase_anim()
 {
 	self endon( "death" );
 	self endon( "phase_anim_done" );
-	self.phase_fx = spawn( "script_model", self.origin );
+	self.phase_fx = sys::spawn( "script_model", self.origin );
 	self.phase_fx setmodel( "tag_origin" );
-	self.phase_fx linkto( self );
+	self.phase_fx sys::linkto( self );
 	wait 0.05;
 	playfxontag( level._effect["avogadro_phase_trail"], self.phase_fx, "tag_origin" );
 	playfx( level._effect["avogadro_phasing"], self.origin );
 	self avogadro_reveal( 0.1 );
 	self playsound( "zmb_avogadro_warp_out" );
-	self orientmode( "face enemy" );
-	self setanimstatefromasd( self.phase_state, self.phase_substate );
+	self sys::orientmode( "face enemy" );
+	self sys::setanimstatefromasd( self.phase_state, self.phase_substate );
 	maps\mp\animscripts\zm_shared::donotetracks( "teleport_anim" );
 	self.phase_fx delete();
 	playfx( level._effect["avogadro_phasing"], self.origin );
 	self avogadro_reveal( 0.1 );
-	self orientmode( "face default" );
+	self sys::orientmode( "face default" );
 	self playsound( "zmb_avogadro_warp_in" );
-	self.phase_time = gettime() + 2000;
+	self.phase_time = sys::gettime() + 2000;
 	self notify( "phase_anim_done" );
 }
 
@@ -1223,9 +1223,9 @@ phase_failsafe()
 
 		playfx( level._effect["avogadro_phasing"], self.origin );
 		self avogadro_reveal( 0.1 );
-		self orientmode( "face default" );
+		self sys::orientmode( "face default" );
 		self playsound( "zmb_avogadro_warp_in" );
-		self.phase_time = gettime() + 2000;
+		self.phase_time = sys::gettime() + 2000;
 		self notify( "phase_anim_done" );
 	}
 }
@@ -1281,17 +1281,17 @@ avogadro_pain( einflictor )
 		else
 			animstate = "zm_bus_pain";
 
-		origin = level.the_bus gettagorigin( tag );
-		angles = level.the_bus gettagangles( tag );
+		origin = level.the_bus sys::gettagorigin( tag );
+		angles = level.the_bus sys::gettagangles( tag );
 	}
 
 	if ( self.hit_by_melee < 4 )
 	{
 		self thread avogadro_update_health();
-		self animscripted( origin, angles, animstate, substate );
+		self sys::animscripted( origin, angles, animstate, substate );
 		maps\mp\animscripts\zm_shared::donotetracks( "pain_anim" );
-		self ghost();
-		self.phase_time = gettime() - 1;
+		self sys::ghost();
+		self.phase_time = sys::gettime() - 1;
 
 		if ( self.state == "stay_attached" )
 			self attach_to_bus();
@@ -1312,22 +1312,22 @@ avogadro_pain( einflictor )
 /#
 			avogadro_print( "come back on power" );
 #/
-			self show();
+			self sys::show();
 			self.in_pain = 0;
 /#
 			avogadro_print( "pain cleared from zone_prr" );
 #/
 			self notify( "stop_pain_watcher" );
 			self avogadro_teleport( self.core_model.origin, self.core_model.angles, 1 );
-			core_mover = getent( "core_mover", "targetname" );
-			self linkto( core_mover, "tag_origin" );
+			core_mover = sys::getent( "core_mover", "targetname" );
+			self sys::linkto( core_mover, "tag_origin" );
 
 			while ( flag( "power_on" ) )
 				wait 0.1;
 
-			self show();
+			self sys::show();
 			self.state = "chamber";
-			self setanimstatefromasd( "zm_chamber_idle" );
+			self sys::setanimstatefromasd( "zm_chamber_idle" );
 		}
 		else
 		{
@@ -1341,7 +1341,7 @@ avogadro_pain( einflictor )
 			if ( !self maps\mp\zombies\_zm_zonemgr::entity_in_zone( "zone_prr" ) )
 				avogadro_print( "no zone" );
 #/
-			self show();
+			self sys::show();
 			self avogadro_exit();
 		}
 	}
@@ -1372,12 +1372,12 @@ avogadro_update_health_fx()
 
 	if ( !isdefined( self.health_fx ) )
 	{
-		tag_origin = self gettagorigin( "J_SpineUpper" );
-		tag_angles = self gettagangles( "J_SpineUpper" );
-		self.health_fx = spawn( "script_model", tag_origin );
+		tag_origin = self sys::gettagorigin( "J_SpineUpper" );
+		tag_angles = self sys::gettagangles( "J_SpineUpper" );
+		self.health_fx = sys::spawn( "script_model", tag_origin );
 		self.health_fx.angles = tag_angles;
 		self.health_fx setmodel( "tag_origin" );
-		self.health_fx linkto( self );
+		self.health_fx sys::linkto( self );
 		wait 0.1;
 	}
 
@@ -1405,7 +1405,7 @@ avogadro_damage_func( einflictor, eattacker, idamage, idflags, smeansofdeath, sw
 
 			if ( self.shield )
 			{
-				einflictor.avogadro_melee_time = gettime();
+				einflictor.avogadro_melee_time = sys::gettime();
 				maps\mp\_visionset_mgr::vsmgr_activate( "overlay", "zm_ai_avogadro_electrified", einflictor, 0.25, 1 );
 				einflictor shellshock( "electrocution", 0.25 );
 				einflictor notify( "avogadro_damage_taken" );
@@ -1414,7 +1414,7 @@ avogadro_damage_func( einflictor, eattacker, idamage, idflags, smeansofdeath, sw
 			if ( sweapon == "riotshield_zm" )
 			{
 				shield_damage = level.zombie_vars["riotshield_fling_damage_shield"];
-				func = getFunction( "maps/mp/zombies/_zm_weap_riotshield", "player_damage_shield" );
+				func = pluto_sys::getfunction( "maps/mp/zombies/_zm_weap_riotshield", "player_damage_shield" );
 				if ( isDefined( func ) )
 				{
 					einflictor [[ func ]]( shield_damage, 0 );
@@ -1528,7 +1528,7 @@ avogadro_debug_axis()
 	{
 		if ( !isdefined( self.debug_axis ) )
 		{
-			self.debug_axis = spawn( "script_model", self.origin );
+			self.debug_axis = sys::spawn( "script_model", self.origin );
 			self.debug_axis setmodel( "fx_axis_createfx" );
 		}
 		else
@@ -1567,11 +1567,11 @@ avogadro_print( str )
 
 do_avogadro_flee_vo( avogadro )
 {
-	players = get_players();
+	players = sys::getplayers();
 
 	foreach ( player in players )
 	{
-		if ( distancesquared( player.origin, avogadro.origin ) < 250000 )
+		if ( sys::distancesquared( player.origin, avogadro.origin ) < 250000 )
 		{
 			player thread do_player_general_vox( "general", "avogadro_flee", 30, 45 );
 			return;
@@ -1585,7 +1585,7 @@ avogadro_storm_vox()
 		return;
 
 	level.checking_avogadro_storm_vox = 1;
-	players = get_players();
+	players = sys::getplayers();
 	players = array_randomize( players );
 
 	foreach ( player in players )

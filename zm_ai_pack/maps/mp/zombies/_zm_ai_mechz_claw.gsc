@@ -28,7 +28,7 @@ mechz_claw_detach()
 		if ( isdefined( self.m_claw.fx_ent ) )
 			self.m_claw.fx_ent delete();
 
-		self.m_claw unlink();
+		self.m_claw sys::unlink();
 		self.m_claw physicslaunch( self.m_claw.origin, ( 0, 0, -1 ) );
 		self.m_claw thread mechz_delayed_item_delete();
 		self.m_claw = undefined;
@@ -36,7 +36,7 @@ mechz_claw_detach()
 
 	if ( isdefined( self.m_claw_damage_trigger ) )
 	{
-		self.m_claw_damage_trigger unlink();
+		self.m_claw_damage_trigger sys::unlink();
 		self.m_claw_damage_trigger delete();
 		self.m_claw_damage_trigger = undefined;
 	}
@@ -67,7 +67,7 @@ mechz_claw_release( bopenclaw )
 			trace_start = self.e_grabbed.origin + vectorscale( ( 0, 0, 1 ), 70.0 );
 			trace_end = self.e_grabbed.origin + vectorscale( ( 0, 0, -1 ), 500.0 );
 			drop_trace = playerphysicstrace( trace_start, trace_end ) + vectorscale( ( 0, 0, 1 ), 24.0 );
-			self.e_grabbed unlink();
+			self.e_grabbed sys::unlink();
 			self.e_grabbed setorigin( drop_trace );
 		}
 
@@ -81,7 +81,7 @@ mechz_claw_release( bopenclaw )
 mechz_claw_shot_pain_reaction()
 {
 	self mechz_interrupt();
-	self animscripted( self.origin, self.angles, "zm_head_pain" );
+	self sys::animscripted( self.origin, self.angles, "zm_head_pain" );
 	self maps\mp\animscripts\zm_shared::donotetracks( "head_pain_anim" );
 }
 
@@ -110,13 +110,13 @@ mechz_claw_aim( target_pos )
 	self endon( "kill_claw" );
 	self endon( "claw_complete" );
 	aim_anim = mechz_get_aim_anim( "zm_grapple", target_pos );
-	self animscripted( self.origin, self.angles, "zm_grapple_aim_start" );
+	self sys::animscripted( self.origin, self.angles, "zm_grapple_aim_start" );
 	self thread mechz_claw_notetracks();
 	self maps\mp\animscripts\zm_shared::donotetracks( "grapple_anim" );
 
 	while ( flag( "mechz_launching_claw" ) )
 	{
-		self animscripted( self.origin, self.angles, aim_anim );
+		self sys::animscripted( self.origin, self.angles, aim_anim );
 		self maps\mp\animscripts\zm_shared::donotetracks( "grapple_anim" );
 		self clearanim( %root, 0.0 );
 	}
@@ -169,7 +169,7 @@ claw_grapple()
 	if ( !isdefined( self.favoriteenemy ) )
 		return;
 
-	v_claw_origin = self gettagorigin( "tag_claw" );
+	v_claw_origin = self sys::gettagorigin( "tag_claw" );
 	v_claw_angles = vectortoangles( self.origin - self.favoriteenemy.origin );
 	self.fx_field = self.fx_field | 256;
 	if ( level.script == "zm_tomb" )
@@ -181,11 +181,11 @@ claw_grapple()
 		set_clientfield_alt_allplayers( "mechz_fx", self, self.fx_field );
 	}
 	self.m_claw setanim( %ai_zombie_mech_grapple_arm_open_idle, 1, 0, 1 );
-	self.m_claw unlink();
-	self.m_claw.fx_ent = spawn( "script_model", self.m_claw gettagorigin( "tag_claw" ) );
-	self.m_claw.fx_ent.angles = self.m_claw gettagangles( "tag_claw" );
+	self.m_claw sys::unlink();
+	self.m_claw.fx_ent = sys::spawn( "script_model", self.m_claw sys::gettagorigin( "tag_claw" ) );
+	self.m_claw.fx_ent.angles = self.m_claw sys::gettagangles( "tag_claw" );
 	self.m_claw.fx_ent setmodel( "tag_origin" );
-	self.m_claw.fx_ent linkto( self.m_claw, "tag_claw" );
+	self.m_claw.fx_ent sys::linkto( self.m_claw, "tag_claw" );
 	network_safe_play_fx_on_tag( "mech_claw", 1, level._effect["mechz_claw"], self.m_claw.fx_ent, "tag_origin" );
 	v_enemy_origin = self.favoriteenemy.origin + vectorscale( ( 0, 0, 1 ), 36.0 );
 	n_dist = distance( v_claw_origin, v_enemy_origin );
@@ -198,21 +198,21 @@ claw_grapple()
 
 	do
 	{
-		a_players = getplayers();
+		a_players = sys::getplayers();
 
 		foreach ( player in a_players )
 		{
 			if ( !is_player_valid( player, 1, 1 ) || !player player_can_be_grabbed() )
 				continue;
 
-			n_dist_sq = distancesquared( player.origin + vectorscale( ( 0, 0, 1 ), 36.0 ), self.m_claw.origin );
+			n_dist_sq = sys::distancesquared( player.origin + vectorscale( ( 0, 0, 1 ), 36.0 ), self.m_claw.origin );
 
 			if ( n_dist_sq < 2304 )
 			{
 				if ( isdefined( player.hasriotshield ) && player.hasriotshield && player getcurrentweapon() == level.riotshield_name )
 				{
 					shield_dmg = level.zombie_vars["riotshield_hit_points"];
-					func = getFunction( "maps/mp/zombies/_zm_weap_riotshield_tomb", "player_damage_shield" );
+					func = pluto_sys::getfunction( "maps/mp/zombies/_zm_weap_riotshield_tomb", "player_damage_shield" );
 					if ( isDefined( func ) )
 					{
 						player [[ func ]]( shield_dmg - 1, 1 );
@@ -235,7 +235,7 @@ claw_grapple()
 					{
 						self.e_grabbed set_clientfield_alt_toplayer( "mechz_grab", self.e_grabbed, 1 );
 					}
-					self.e_grabbed playerlinktodelta( self.m_claw, "tag_attach_player" );
+					self.e_grabbed playersys::linktodelta( self.m_claw, "tag_attach_player" );
 					self.e_grabbed setplayerangles( vectortoangles( self.origin - self.e_grabbed.origin ) );
 					self.e_grabbed playsound( "zmb_ai_mechz_claw_grab" );
 					self.e_grabbed setstance( "stand" );
@@ -264,14 +264,14 @@ claw_grapple()
 			if ( !isalive( ai_zombie ) || isdefined( ai_zombie.is_giant_robot ) && ai_zombie.is_giant_robot || isdefined( ai_zombie.is_mechz ) && ai_zombie.is_mechz )
 				continue;
 
-			n_dist_sq = distancesquared( ai_zombie.origin + vectorscale( ( 0, 0, 1 ), 36.0 ), self.m_claw.origin );
+			n_dist_sq = sys::distancesquared( ai_zombie.origin + vectorscale( ( 0, 0, 1 ), 36.0 ), self.m_claw.origin );
 
 			if ( n_dist_sq < 2304 )
 			{
 				self.e_grabbed = ai_zombie;
-				self.e_grabbed linkto( self.m_claw, "tag_attach_player", ( 0, 0, 0 ) );
+				self.e_grabbed sys::linkto( self.m_claw, "tag_attach_player", ( 0, 0, 0 ) );
 				self.e_grabbed.mechz_grabbed_by = self;
-				self.e_grabbed animcustom( ::zombie_grabbed_by_mechz_claw );
+				self.e_grabbed sys::animcustom( ::zombie_grabbed_by_mechz_claw );
 				break;
 			}
 		}
@@ -287,13 +287,13 @@ claw_grapple()
 		n_time = n_dist / 1000;
 
 	self mechz_claw_explosive_watcher();
-	v_claw_origin = self gettagorigin( "tag_claw" );
-	v_claw_angles = self gettagangles( "tag_claw" );
+	v_claw_origin = self sys::gettagorigin( "tag_claw" );
+	v_claw_angles = self sys::gettagangles( "tag_claw" );
 	self.m_claw moveto( v_claw_origin, max( 0.05, n_time ) );
 	self.m_claw playloopsound( "zmb_ai_mechz_claw_loop_in", 0.1 );
 	self.m_claw waittill( "movedone" );
-	v_claw_origin = self gettagorigin( "tag_claw" );
-	v_claw_angles = self gettagangles( "tag_claw" );
+	v_claw_origin = self sys::gettagorigin( "tag_claw" );
+	v_claw_angles = self sys::gettagangles( "tag_claw" );
 	self.m_claw playsound( "zmb_ai_mechz_claw_back" );
 	self.m_claw stoploopsound( 1 );
 
@@ -303,7 +303,7 @@ claw_grapple()
 	self.m_claw.origin = v_claw_origin;
 	self.m_claw.angles = v_claw_angles;
 	self.m_claw clearanim( %root, 0.2 );
-	self.m_claw linkto( self, "tag_claw", ( 0, 0, 0 ) );
+	self.m_claw sys::linkto( self, "tag_claw", ( 0, 0, 0 ) );
 	self.m_claw setanim( %ai_zombie_mech_grapple_arm_closed_idle, 1, 0.2, 1 );
 	self.m_claw.fx_ent delete();
 	self.m_claw.fx_ent = undefined;
@@ -329,7 +329,7 @@ claw_grapple()
 			self.e_grabbed thread mechz_zombie_flamethrower_gib( self );
 
 		self thread check_for_claw_damaged( self.e_grabbed );
-		self animscripted( self.origin, self.angles, "zm_flamethrower_claw_victim" );
+		self sys::animscripted( self.origin, self.angles, "zm_flamethrower_claw_victim" );
 		self maps\mp\animscripts\zm_shared::donotetracks( "flamethrower_anim" );
 	}
 
@@ -339,7 +339,7 @@ claw_grapple()
 zombie_grabbed_by_mechz_claw()
 {
 	self endon( "death" );
-	self setanimstatefromasd( "zm_grabbed_by_mech" );
+	self sys::setanimstatefromasd( "zm_grabbed_by_mech" );
 	self.mechz_grabbed_by waittill_any( "death", "claw_complete", "kill_claw" );
 }
 
@@ -397,14 +397,14 @@ check_for_players_mid_grapple()
 
 	while ( true )
 	{
-		a_players = getplayers();
+		a_players = sys::getplayers();
 
 		foreach ( player in a_players )
 		{
 			if ( !is_player_valid( player, 1, 1 ) || !player player_can_be_grabbed() )
 				continue;
 
-			n_dist_sq = distancesquared( player.origin + vectorscale( ( 0, 0, 1 ), 36.0 ), self.origin );
+			n_dist_sq = sys::distancesquared( player.origin + vectorscale( ( 0, 0, 1 ), 36.0 ), self.origin );
 
 			if ( n_dist_sq < 2304 )
 			{
@@ -436,7 +436,7 @@ zombie_gib_all()
 	a_gib_ref = [];
 	a_gib_ref[0] = level._zombie_gib_piece_index_all;
 	self gib( "normal", a_gib_ref );
-	self ghost();
+	self sys::ghost();
 	wait 0.4;
 
 	if ( isdefined( self ) )
@@ -489,7 +489,7 @@ should_do_claw_attack()
 		return false;
 	}
 
-	if ( isdefined( self.last_claw_time ) && gettime() - self.last_claw_time < level.mechz_claw_cooldown_time )
+	if ( isdefined( self.last_claw_time ) && sys::gettime() - self.last_claw_time < level.mechz_claw_cooldown_time )
 	{
 /#
 		if ( getdvarint( #"_id_E7121222" ) > 1 )
@@ -507,7 +507,7 @@ should_do_claw_attack()
 		return false;
 	}
 
-	n_dist_sq = distancesquared( self.origin, self.favoriteenemy.origin );
+	n_dist_sq = sys::distancesquared( self.origin, self.favoriteenemy.origin );
 
 	if ( n_dist_sq < 90000 || n_dist_sq > 1000000 )
 	{
@@ -565,13 +565,13 @@ mechz_do_claw_grab()
 #/
 	assert( isdefined( self.favoriteenemy ) );
 	self thread mechz_kill_claw_watcher();
-	self.last_claw_time = gettime();
+	self.last_claw_time = sys::gettime();
 	target_pos = self.favoriteenemy.origin + vectorscale( ( 0, 0, 1 ), 30.0 );
 	self thread mechz_stop_basic_find_flesh();
 	self.ai_state = "grapple_attempt";
 	flag_set( "mechz_launching_claw" );
 	self thread mechz_claw_aim( target_pos );
-	self orientmode( "face enemy" );
+	self sys::orientmode( "face enemy" );
 	self waittillmatch( "grapple_anim", "muzzleflash" );
 	self claw_grapple();
 	self mechz_claw_cleanup();
@@ -617,21 +617,21 @@ mechz_claw_cleanup()
 		{
 			if ( !self.m_claw islinkedto( self ) )
 			{
-				v_claw_origin = self gettagorigin( "tag_claw" );
-				v_claw_angles = self gettagangles( "tag_claw" );
+				v_claw_origin = self sys::gettagorigin( "tag_claw" );
+				v_claw_angles = self sys::gettagangles( "tag_claw" );
 				n_dist = distance( self.m_claw.origin, v_claw_origin );
 				n_time = n_dist / 1000;
 				self.m_claw moveto( v_claw_origin, max( 0.05, n_time ) );
 				self.m_claw playloopsound( "zmb_ai_mechz_claw_loop_in", 0.1 );
 				self.m_claw waittill( "movedone" );
-				v_claw_origin = self gettagorigin( "tag_claw" );
-				v_claw_angles = self gettagangles( "tag_claw" );
+				v_claw_origin = self sys::gettagorigin( "tag_claw" );
+				v_claw_angles = self sys::gettagangles( "tag_claw" );
 				self.m_claw playsound( "zmb_ai_mechz_claw_back" );
 				self.m_claw stoploopsound( 1 );
 				self.m_claw.origin = v_claw_origin;
 				self.m_claw.angles = v_claw_angles;
 				self.m_claw clearanim( %root, 0.2 );
-				self.m_claw linkto( self, "tag_claw", ( 0, 0, 0 ) );
+				self.m_claw sys::linkto( self, "tag_claw", ( 0, 0, 0 ) );
 			}
 
 			self.m_claw setanim( %ai_zombie_mech_grapple_arm_closed_idle, 1, 0.2, 1 );

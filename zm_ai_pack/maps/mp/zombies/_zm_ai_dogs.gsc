@@ -21,7 +21,7 @@ init()
 	level.enemy_dog_locations = [];
 	flag_init( "dog_clips" );
 	precacherumble( "explosion_generic" );
-	precacheshellshock( "dog_bite" );
+	sys::precacheshellshock( "dog_bite" );
 
 	if ( getdvar( #"zombie_dog_animset" ) == "" )
 		setdvar( "zombie_dog_animset", "zombie" );
@@ -37,11 +37,11 @@ init()
 	level.melee_height_sav = getdvar( #"ai_meleeHeight" );
 	setdvar( "dog_MeleeDamage", "100" );
 	set_zombie_var( "dog_fire_trail_percent", 50 );
-	level._effect["lightning_dog_spawn"] = loadfx( "maps/zombie/fx_zombie_dog_lightning_buildup" );
-	level._effect["dog_eye_glow"] = loadfx( "maps/zombie/fx_zombie_dog_eyes" );
-	level._effect["dog_gib"] = loadfx( "maps/zombie/fx_zombie_dog_explosion" );
-	level._effect["dog_trail_fire"] = loadfx( "maps/zombie/fx_zombie_dog_fire_trail" );
-	level._effect["dog_trail_ash"] = loadfx( "maps/zombie/fx_zombie_dog_ash_trail" );
+	level._effect["lightning_dog_spawn"] = sys::loadfx( "maps/zombie/fx_zombie_dog_lightning_buildup" );
+	level._effect["dog_eye_glow"] = sys::loadfx( "maps/zombie/fx_zombie_dog_eyes" );
+	level._effect["dog_gib"] = sys::loadfx( "maps/zombie/fx_zombie_dog_explosion" );
+	level._effect["dog_trail_fire"] = sys::loadfx( "maps/zombie/fx_zombie_dog_fire_trail" );
+	level._effect["dog_trail_ash"] = sys::loadfx( "maps/zombie/fx_zombie_dog_ash_trail" );
 	dog_spawner_init();
 	level thread dog_clip_monitor();
 }
@@ -58,8 +58,8 @@ enable_dog_rounds()
 
 dog_spawner_init()
 {
-	level.dog_spawners = getentarray( "zombie_dog_spawner", "script_noteworthy" );
-	later_dogs = getentarray( "later_round_dog_spawners", "script_noteworthy" );
+	level.dog_spawners = sys::getentarray( "zombie_dog_spawner", "script_noteworthy" );
+	later_dogs = sys::getentarray( "later_round_dog_spawners", "script_noteworthy" );
 	level.dog_spawners = arraycombine( level.dog_spawners, later_dogs, 1, 0 );
 
 	if ( level.dog_spawners.size == 0 )
@@ -80,13 +80,13 @@ dog_spawner_init()
 	assert( level.dog_spawners.size > 0 );
 	level.dog_health = 100;
 	array_thread( level.dog_spawners, ::add_spawn_function, ::dog_init );
-	level.enemy_dog_spawns = getentarray( "zombie_spawner_dog_init", "targetname" );
+	level.enemy_dog_spawns = sys::getentarray( "zombie_spawner_dog_init", "targetname" );
 }
 
 dog_round_spawning()
 {
 	level endon( "intermission" );
-	level.dog_targets = getplayers();
+	level.dog_targets = sys::getplayers();
 
 	for ( i = 0; i < level.dog_targets.size; i++ )
 		level.dog_targets[i].hunted_by = 0;
@@ -103,7 +103,7 @@ dog_round_spawning()
 
 	level.dog_intermission = 1;
 	level thread dog_round_aftermath();
-	players = get_players();
+	players = sys::getplayers();
 	array_thread( players, ::play_dog_round );
 	wait 1;
 	playsoundatposition( "vox_zmba_event_dogstart_0", ( 0, 0, 0 ) );
@@ -127,7 +127,7 @@ dog_round_spawning()
 		for ( num_player_valid = get_number_of_valid_players(); get_current_zombie_count() >= num_player_valid * 2; num_player_valid = get_number_of_valid_players() )
 			wait 2;
 
-		players = get_players();
+		players = sys::getplayers();
 		favorite_enemy = get_favorite_enemy();
 
 		if ( isdefined( level.dog_spawn_func ) )
@@ -197,7 +197,7 @@ dog_round_aftermath()
 dog_spawn_fx( ai, ent )
 {
 	ai endon( "death" );
-	ai setfreecameralockonallowed( 0 );
+	ai sys::setfreecameralockonallowed( 0 );
 	playfx( level._effect["lightning_dog_spawn"], ent.origin );
 	playsoundatposition( "zmb_hellhound_prespawn", ent.origin );
 	wait 1.5;
@@ -215,8 +215,8 @@ dog_spawn_fx( ai, ent )
 	ai zombie_setup_attack_properties_dog();
 	ai stop_magic_bullet_shield();
 	wait 0.1;
-	ai show();
-	ai setfreecameralockonallowed( 1 );
+	ai sys::show();
+	ai sys::setfreecameralockonallowed( 1 );
 	ai.ignoreme = 0;
 	ai notify( "visible" );
 }
@@ -231,9 +231,9 @@ dog_spawn_sumpf_logic( dog_array, favorite_enemy )
 		if ( isdefined( level.old_dog_spawn ) && level.old_dog_spawn == dog_array[i] )
 			continue;
 
-		if ( distancesquared( dog_array[i].origin, favorite_enemy.origin ) > 160000 && distancesquared( dog_array[i].origin, favorite_enemy.origin ) < 640000 )
+		if ( sys::distancesquared( dog_array[i].origin, favorite_enemy.origin ) > 160000 && sys::distancesquared( dog_array[i].origin, favorite_enemy.origin ) < 640000 )
 		{
-			if ( distancesquared( ( 0, 0, dog_array[i].origin[2] ), ( 0, 0, favorite_enemy.origin[2] ) ) > 10000 )
+			if ( sys::distancesquared( ( 0, 0, dog_array[i].origin[2] ), ( 0, 0, favorite_enemy.origin[2] ) ) > 10000 )
 				continue;
 			else
 			{
@@ -255,7 +255,7 @@ dog_spawn_factory_logic( dog_array, favorite_enemy )
 		if ( isdefined( level.old_dog_spawn ) && level.old_dog_spawn == dog_locs[i] )
 			continue;
 
-		dist_squared = distancesquared( dog_locs[i].origin, favorite_enemy.origin );
+		dist_squared = sys::distancesquared( dog_locs[i].origin, favorite_enemy.origin );
 
 		if ( dist_squared > 160000 && dist_squared < 1000000 )
 		{
@@ -269,7 +269,7 @@ dog_spawn_factory_logic( dog_array, favorite_enemy )
 
 get_favorite_enemy()
 {
-	dog_targets = getplayers();
+	dog_targets = sys::getplayers();
 	least_hunted = dog_targets[0];
 
 	for ( i = 0; i < dog_targets.size; i++ )
@@ -293,7 +293,7 @@ get_favorite_enemy()
 
 dog_health_increase()
 {
-	players = getplayers();
+	players = sys::getplayers();
 
 	if ( level.dog_round_count == 1 )
 		level.dog_health = 400;
@@ -332,7 +332,7 @@ dog_round_tracker()
 			level.round_spawn_func = ::dog_round_spawning;
 			level.next_dog_round = level.round_number + randomintrange( 4, 6 );
 /#
-			get_players()[0] iprintln( "Next dog round: " + level.next_dog_round );
+			sys::getplayers()[0] iprintln( "Next dog round: " + level.next_dog_round );
 #/
 		}
 		else if ( flag( "dog_round" ) )
@@ -386,7 +386,7 @@ play_dog_round()
 	self playlocalsound( "zmb_dog_round_start" );
 	variation_count = 5;
 	wait 4.5;
-	players = getplayers();
+	players = sys::getplayers();
 	num = randomintrange( 0, players.size );
 	players[num] maps\mp\zombies\_zm_audio::create_and_play_dialog( "general", "dog_spawn" );
 }
@@ -433,7 +433,7 @@ dog_init()
 	self thread dog_run_think();
 	self thread dog_stalk_audio();
 	self thread maps\mp\zombies\_zm::round_spawn_failsafe();
-	self ghost();
+	self sys::ghost();
 	self thread magic_bullet_shield();
 	self dog_fx_eye_glow();
 	self dog_fx_trail();
@@ -455,11 +455,11 @@ dog_init()
 
 dog_fx_eye_glow()
 {
-	self.fx_dog_eye = spawn( "script_model", self gettagorigin( "J_EyeBall_LE" ) );
+	self.fx_dog_eye = sys::spawn( "script_model", self sys::gettagorigin( "J_EyeBall_LE" ) );
 	assert( isdefined( self.fx_dog_eye ) );
-	self.fx_dog_eye.angles = self gettagangles( "J_EyeBall_LE" );
+	self.fx_dog_eye.angles = self sys::gettagangles( "J_EyeBall_LE" );
 	self.fx_dog_eye setmodel( "tag_origin" );
-	self.fx_dog_eye linkto( self, "J_EyeBall_LE" );
+	self.fx_dog_eye sys::linkto( self, "J_EyeBall_LE" );
 }
 
 dog_fx_trail()
@@ -476,11 +476,11 @@ dog_fx_trail()
 		self.fx_dog_trail_sound = "zmb_hellhound_loop_fire";
 	}
 
-	self.fx_dog_trail = spawn( "script_model", self gettagorigin( "tag_origin" ) );
+	self.fx_dog_trail = sys::spawn( "script_model", self sys::gettagorigin( "tag_origin" ) );
 	assert( isdefined( self.fx_dog_trail ) );
-	self.fx_dog_trail.angles = self gettagangles( "tag_origin" );
+	self.fx_dog_trail.angles = self sys::gettagangles( "tag_origin" );
 	self.fx_dog_trail setmodel( "tag_origin" );
-	self.fx_dog_trail linkto( self, "tag_origin" );
+	self.fx_dog_trail sys::linkto( self, "tag_origin" );
 }
 
 dog_death()
@@ -520,7 +520,7 @@ dog_death()
 
 	if ( isdefined( self.a.nodeath ) )
 	{
-		level thread dog_explode_fx( self.origin );
+		dog_explode_fx( self.origin );
 		self delete();
 	}
 	else
@@ -560,7 +560,7 @@ dog_behind_audio()
 
 	while ( true )
 	{
-		players = get_players();
+		players = sys::getplayers();
 
 		for ( i = 0; i < players.size; i++ )
 		{
@@ -583,7 +583,7 @@ dog_behind_audio()
 dog_clip_monitor()
 {
 	clips_on = 0;
-	level.dog_clips = getentarray( "dog_clips", "targetname" );
+	level.dog_clips = sys::getentarray( "dog_clips", "targetname" );
 
 	while ( true )
 	{
@@ -610,7 +610,7 @@ dog_clip_monitor()
 		while ( dog_is_alive || flag( "dog_round" ) )
 		{
 			dog_is_alive = 0;
-			dogs = getentarray( "zombie_dog", "targetname" );
+			dogs = sys::getentarray( "zombie_dog", "targetname" );
 
 			for ( i = 0; i < dogs.size; i++ )
 			{
@@ -641,7 +641,7 @@ special_dog_spawn( spawners, num_to_spawn )
 
 	while ( count < num_to_spawn )
 	{
-		players = get_players();
+		players = sys::getplayers();
 		favorite_enemy = get_favorite_enemy();
 
 		if ( isdefined( spawners ) )

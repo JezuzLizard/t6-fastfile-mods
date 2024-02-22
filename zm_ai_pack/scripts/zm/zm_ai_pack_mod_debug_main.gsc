@@ -466,7 +466,7 @@ print_ent_field( message, field )
 
 print_entities()
 {
-	ents = getEntArray();
+	ents = sys::getentarray();
 
 	print( "******SERVER ENTITIES******" );
 	print( "Listing " + ents.size + " entities" );
