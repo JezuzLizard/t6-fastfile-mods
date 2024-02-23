@@ -665,14 +665,14 @@ avogadro_exit( from )
 	{
 		if ( from == "bus" )
 		{
-			self playsound( "zmb_avogadro_death_short" );
+			self sys::playsound( "zmb_avogadro_death_short" );
 			playfx( level._effect["avogadro_ascend_aerial"], self.origin );
 			self sys::animscripted( self.origin, self.angles, "zm_bus_win" );
 			maps\mp\animscripts\zm_shared::donotetracks( "bus_win_anim" );
 		}
 		else if ( from == "chamber" )
 		{
-			self playsound( "zmb_avogadro_death_short" );
+			self sys::playsound( "zmb_avogadro_death_short" );
 			playfx( level._effect["avogadro_ascend"], self.origin );
 			self sys::animscripted( self.origin, self.angles, "zm_chamber_out" );
 			wait 0.4;
@@ -681,7 +681,7 @@ avogadro_exit( from )
 		}
 		else
 		{
-			self playsound( "zmb_avogadro_death" );
+			self sys::playsound( "zmb_avogadro_death" );
 			playfx( level._effect["avogadro_ascend"], self.origin );
 			self sys::animscripted( self.origin, self.angles, "zm_exit" );
 			maps\mp\animscripts\zm_shared::donotetracks( "exit_anim" );
@@ -689,7 +689,7 @@ avogadro_exit( from )
 	}
 	else
 	{
-		self playsound( "zmb_avogadro_death" );
+		self sys::playsound( "zmb_avogadro_death" );
 		playfx( level._effect["avogadro_ascend"], self.origin );
 		self sys::animscripted( self.origin, self.angles, "zm_exit" );
 		maps\mp\animscripts\zm_shared::donotetracks( "exit_anim" );
@@ -951,7 +951,7 @@ avogadro_teleport( dest_pos, dest_angles, lerp_time, tag_override )
 	playfxontag( level._effect["avogadro_phase_trail"], self.phase_fx, "tag_origin" );
 	playfx( level._effect["avogadro_phasing"], self.origin );
 	self avogadro_reveal( 0.1 );
-	self playsound( "zmb_avogadro_warp_out" );
+	self sys::playsound( "zmb_avogadro_warp_out" );
 	self.anchor.origin = self.origin;
 	self.anchor.angles = self.angles;
 	self sys::linkto( self.anchor );
@@ -975,7 +975,7 @@ avogadro_teleport( dest_pos, dest_angles, lerp_time, tag_override )
 		self.phase_fx delete();
 
 	self avogadro_reveal( 0.1 );
-	self playsound( "zmb_avogadro_warp_in" );
+	self sys::playsound( "zmb_avogadro_warp_in" );
 	self.is_teleport = 0;
 }
 
@@ -1058,7 +1058,7 @@ shoot_bolt( enemy )
 	bolt = sys::spawn( "script_model", source_pos );
 	bolt setmodel( "tag_origin" );
 	wait 0.1;
-	self playsound( "zmb_avogadro_attack" );
+	self sys::playsound( "zmb_avogadro_attack" );
 	fx = playfxontag( level._effect["avogadro_bolt"], bolt, "tag_origin" );
 	bolt moveto( target_pos, 0.2 );
 	bolt waittill( "movedone" );
@@ -1194,7 +1194,7 @@ play_phase_anim()
 	playfxontag( level._effect["avogadro_phase_trail"], self.phase_fx, "tag_origin" );
 	playfx( level._effect["avogadro_phasing"], self.origin );
 	self avogadro_reveal( 0.1 );
-	self playsound( "zmb_avogadro_warp_out" );
+	self sys::playsound( "zmb_avogadro_warp_out" );
 	self sys::orientmode( "face enemy" );
 	self sys::setanimstatefromasd( self.phase_state, self.phase_substate );
 	maps\mp\animscripts\zm_shared::donotetracks( "teleport_anim" );
@@ -1202,7 +1202,7 @@ play_phase_anim()
 	playfx( level._effect["avogadro_phasing"], self.origin );
 	self avogadro_reveal( 0.1 );
 	self sys::orientmode( "face default" );
-	self playsound( "zmb_avogadro_warp_in" );
+	self sys::playsound( "zmb_avogadro_warp_in" );
 	self.phase_time = sys::gettime() + 2000;
 	self notify( "phase_anim_done" );
 }
@@ -1224,7 +1224,7 @@ phase_failsafe()
 		playfx( level._effect["avogadro_phasing"], self.origin );
 		self avogadro_reveal( 0.1 );
 		self sys::orientmode( "face default" );
-		self playsound( "zmb_avogadro_warp_in" );
+		self sys::playsound( "zmb_avogadro_warp_in" );
 		self.phase_time = sys::gettime() + 2000;
 		self notify( "phase_anim_done" );
 	}
@@ -1265,7 +1265,7 @@ avogadro_pain( einflictor )
 {
 	self endon( "melee_pain" );
 	self.in_pain = 1;
-	self playsound( "zmb_avogadro_pain" );
+	self sys::playsound( "zmb_avogadro_pain" );
 	self thread avogadro_pain_watcher();
 	substate = 0;
 	origin = self.origin;

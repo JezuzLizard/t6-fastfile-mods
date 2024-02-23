@@ -440,3 +440,33 @@ animscripted( origin, angles, statename, substate_value, mode )
 		self animscripted( origin, angles, statename, substate_value, mode );
 	}
 }
+
+/@
+	[DESCRIPTION]: Spawns a temp entity at CALLER's location which plays <sound_name>.
+	If sound is invalid sound will simply fail to play with no error.;
+	[CALL_TYPE]: method;
+	[USAGE]: self playsound( <sound_name> );
+	[PARAMS]: CALLER:<entity> ARG1:<string>;
+	[PARAMS_NOTES]: NONE;
+	[RETURNS]: NONE;
+@/
+playsound( sound_alias )
+{
+	self playsound( sound_alias );
+}
+
+/@
+	[DESCRIPTION]: Spawns a temp entity at CALLER's location which plays <sound_name>.
+	If sound is invalid sound will simply fail to play with no error.;
+	[CALL_TYPE]: method;
+	[USAGE]: playback_time = playsound( <sound_alias> );
+	[PARAMS]: ARG1:<string>;
+	[PARAMS_NOTES]: NONE;
+	[RETURNS]: <int>;
+	[RETURNS_NOTES]: Returns -1 if it fails to hash <sound_alias> or doesn't find <sound_alias> in the loaded sound banks.;
+@/
+soundgetplaybacktime( sound_alias )
+{
+	return soundgetplaybacktime( sound_alias )
+}
+

@@ -800,7 +800,7 @@ ghost_death_func()
 		level.ghost_round_last_ghost_origin = self.origin;
 
 	self stoploopsound( 1 );
-	self playsound( "zmb_ai_ghost_death" );
+	self sys::playsound( "zmb_ai_ghost_death" );
 	self setclientfield( "ghost_impact_fx", 1 );
 	self setclientfield( "ghost_fx", 1 );
 	self thread prepare_to_die();
@@ -2017,7 +2017,7 @@ sndghostroundmus()
 	level.sndroundwait = 1;
 	ent thread sndghostroundmus_end();
 	ent endon( "sndGhostRoundEnd" );
-	ent playsound( "mus_ghost_round_start" );
+	ent sys::playsound( "mus_ghost_round_start" );
 	wait 11;
 	ent playloopsound( "mus_ghost_round_loop", 3 );
 }

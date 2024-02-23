@@ -8,8 +8,8 @@
 
 main()
 {
-	replaceFunc( maps\mp\zm_highrise_classic::squashed_death_init, ::squashed_death_init_override );
-	replaceFunc( maps\mp\zm_highrise::elevator_traverse_watcher, ::elevator_traverse_watcher_override );
+	pluto_sys::replacefunc( maps\mp\zm_highrise_classic::squashed_death_init, ::squashed_death_init_override );
+	pluto_sys::replacefunc( maps\mp\zm_highrise::elevator_traverse_watcher, ::elevator_traverse_watcher_override );
 }
 
 squashed_death_init_override( kill_if_falling )

@@ -190,7 +190,7 @@ claw_grapple()
 	v_enemy_origin = self.favoriteenemy.origin + vectorscale( ( 0, 0, 1 ), 36.0 );
 	n_dist = distance( v_claw_origin, v_enemy_origin );
 	n_time = n_dist / 1200;
-	self playsound( "zmb_ai_mechz_claw_fire" );
+	self sys::playsound( "zmb_ai_mechz_claw_fire" );
 	self.m_claw moveto( v_enemy_origin, n_time );
 	self.m_claw thread check_for_claw_move_complete();
 	self.m_claw playloopsound( "zmb_ai_mechz_claw_loop_out", 0.1 );
@@ -237,7 +237,7 @@ claw_grapple()
 					}
 					self.e_grabbed playersys::linktodelta( self.m_claw, "tag_attach_player" );
 					self.e_grabbed setplayerangles( vectortoangles( self.origin - self.e_grabbed.origin ) );
-					self.e_grabbed playsound( "zmb_ai_mechz_claw_grab" );
+					self.e_grabbed sys::playsound( "zmb_ai_mechz_claw_grab" );
 					self.e_grabbed setstance( "stand" );
 					self.e_grabbed allowcrouch( 0 );
 					self.e_grabbed allowprone( 0 );
@@ -294,11 +294,11 @@ claw_grapple()
 	self.m_claw waittill( "movedone" );
 	v_claw_origin = self sys::gettagorigin( "tag_claw" );
 	v_claw_angles = self sys::gettagangles( "tag_claw" );
-	self.m_claw playsound( "zmb_ai_mechz_claw_back" );
+	self.m_claw sys::playsound( "zmb_ai_mechz_claw_back" );
 	self.m_claw stoploopsound( 1 );
 
 	if ( maps\mp\zombies\_zm_ai_mechz::sndmechzisnetworksafe( "angry" ) )
-		self playsound( "zmb_ai_mechz_vox_angry" );
+		self sys::playsound( "zmb_ai_mechz_vox_angry" );
 
 	self.m_claw.origin = v_claw_origin;
 	self.m_claw.angles = v_claw_angles;
@@ -626,7 +626,7 @@ mechz_claw_cleanup()
 				self.m_claw waittill( "movedone" );
 				v_claw_origin = self sys::gettagorigin( "tag_claw" );
 				v_claw_angles = self sys::gettagangles( "tag_claw" );
-				self.m_claw playsound( "zmb_ai_mechz_claw_back" );
+				self.m_claw sys::playsound( "zmb_ai_mechz_claw_back" );
 				self.m_claw stoploopsound( 1 );
 				self.m_claw.origin = v_claw_origin;
 				self.m_claw.angles = v_claw_angles;

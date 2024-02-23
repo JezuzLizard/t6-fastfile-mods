@@ -4,7 +4,7 @@
 
 main()
 {
-	replaceFunc( maps\mp\zm_transit_power::killzombiesinpowerstation, ::killzombiesinpowerstation_override );
+	pluto_sys::replacefunc( maps\mp\zm_transit_power::killzombiesinpowerstation, ::killzombiesinpowerstation_override );
 }
 
 killzombiesinpowerstation_override()

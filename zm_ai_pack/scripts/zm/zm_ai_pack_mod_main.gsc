@@ -12,8 +12,8 @@
 
 main()
 {
-	replaceFunc( maps\mp\_visionset_mgr::init, ::visionset_mgr_init_override );
-	replaceFunc( maps\mp\animscripts\traverse\zm_shared::dotraverse, ::dotraverse_override );
+	pluto_sys::replacefunc( maps\mp\_visionset_mgr::init, ::visionset_mgr_init_override );
+	pluto_sys::replacefunc( maps\mp\animscripts\traverse\zm_shared::dotraverse, ::dotraverse_override );
 
 	replace_single_function( "maps/mp/zm_nuked_perks", "perk_machine_knockdown_zombie", ::perk_machine_knockdown_zombie_override );
 	replace_single_function( "maps/mp/zombies/_zm_weap_slowgun", "can_be_paralyzed", ::can_be_paralyzed_override );
@@ -317,7 +317,7 @@ replace_single_function( path, func_name, func_override )
 
 	if ( isDefined( func ) )
 	{
-		replaceFunc( func, func_override );
+		pluto_sys::replacefunc( func, func_override );
 	}	
 }
 

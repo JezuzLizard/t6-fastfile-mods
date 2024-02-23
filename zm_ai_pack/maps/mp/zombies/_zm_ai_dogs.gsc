@@ -524,7 +524,7 @@ dog_death()
 		self delete();
 	}
 	else
-		self playsound( "zmb_hellhound_vocals_death" );
+		self sys::playsound( "zmb_hellhound_vocals_death" );
 }
 
 dog_explode_fx( origin )
@@ -555,7 +555,7 @@ dog_behind_audio()
 	self thread stop_dog_sound_on_death();
 	self endon( "death" );
 	self waittill_any( "dog_running", "dog_combat" );
-	self playsound( "zmb_hellhound_vocals_close" );
+	self sys::playsound( "zmb_hellhound_vocals_close" );
 	wait 3;
 
 	while ( true )
@@ -570,7 +570,7 @@ dog_behind_audio()
 			{
 				if ( abs( dogangle ) > 90 && distance2d( self.origin, players[i].origin ) > 100 )
 				{
-					self playsound( "zmb_hellhound_vocals_close" );
+					self sys::playsound( "zmb_hellhound_vocals_close" );
 					wait 3;
 				}
 			}
@@ -724,7 +724,7 @@ dog_stalk_audio()
 
 	while ( true )
 	{
-		self playsound( "zmb_hellhound_vocals_amb" );
+		self sys::playsound( "zmb_hellhound_vocals_amb" );
 		wait( randomfloatrange( 3, 6 ) );
 	}
 }

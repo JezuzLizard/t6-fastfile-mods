@@ -2,12 +2,12 @@
 
 /@
 	[DESCRIPTION]: Returns a function pointer based on <path> and <func_name>;
-	Does not trigger compilation or resolving of the script, therefore if the script isn't referenced by an include or far call at least once it will fail
+	Does not trigger compilation or resolving of the script, therefore if the script isn't referenced by an include or far call by any other script at least once it will fail
 	to find the function and return undefined.;
 	[CALL_TYPE]: function;
 	[USAGE]: func = getfunction( <path>, <func_name> );
 	[PARAMS]: ARG1:<string> ARG2:<string>;
-	[PARAMS_NOTES]: Path must use forward slashes to denote the path;
+	[PARAMS_NOTES]: Path must use forward slashes.;
 	[RETURNS]: <function_pointer> or <undefined>;
 @/
 getfunction( path, func_name )
@@ -23,9 +23,9 @@ getfunction( path, func_name )
 	[PARAMS_NOTES]: NONE;
 	[RETURNS]: <string> or <undefined>;
 @/
-getfunction( path, func_name )
+getfunctionname( path, func_name )
 {
-	return getfunction( path, func_name );
+	return getfunctionname( path, func_name );
 }
 
 /@
@@ -63,7 +63,7 @@ getdetour( func )
 	[USAGE]: self getlinkednodes();
 	[PARAMS]: CALLER:<node>;
 	[PARAMS_NOTES]: NONE;
-	[RETURNS]: <array>;
+	[RETURNS]: <number_indexed_array>;
 @/
 getlinkednodes()
 {
@@ -113,7 +113,7 @@ cmdexec( cmd_string )
 
 // The following are bot specifc builtins
 /@
-	[BOT_BUTTON_TYPES]: 
+	[BOT_BUTTON_TYPES] =
 	{
 		"attack",
 		"sprint",
@@ -147,7 +147,7 @@ cmdexec( cmd_string )
 		"actionslot 3",
 		"actionslot 4"
 	};
-	[BOT_BUTTON_VALUES]:
+	[BOT_BUTTON_VALUES] =
 	{
 		"enable",
 		"disable"

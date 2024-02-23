@@ -535,7 +535,7 @@ brutus_spawn_zone_locked( zone_name )
 
 	if ( isdefined( ai ) )
 	{
-		ai playsound( "zmb_ai_brutus_spawn_2d" );
+		ai sys::playsound( "zmb_ai_brutus_spawn_2d" );
 		return ai;
 	}
 }
@@ -551,7 +551,7 @@ brutus_spawn_in_zone( zone_name, zone_locked )
 
 		if ( isdefined( ai ) )
 		{
-			ai playsound( "zmb_ai_brutus_spawn_2d" );
+			ai sys::playsound( "zmb_ai_brutus_spawn_2d" );
 			return ai;
 		}
 	}
@@ -718,7 +718,7 @@ play_ambient_brutus_vocals()
 
 			}
 			else
-				self playsound( "zmb_vocals_brutus_ambience" );
+				self sys::playsound( "zmb_vocals_brutus_ambience" );
 		}
 
 		wait( randomfloatrange( 1, 1.5 ) );
@@ -970,7 +970,7 @@ brutus_spawning_logic()
 		}
 
 		if ( isdefined( ai ) )
-			ai playsound( "zmb_ai_brutus_spawn_2d" );
+			ai sys::playsound( "zmb_ai_brutus_spawn_2d" );
 	}
 }
 
@@ -1763,7 +1763,7 @@ brutus_fire_teargas_when_possible()
 		wait 0.05;
 
 	self.not_interruptable = 1;
-	self playsound( "vox_brutus_enraged" );
+	self sys::playsound( "vox_brutus_enraged" );
 	self sys::animscripted( self.origin, self.angles, "zm_teargas_attack" );
 	self thread maps\mp\animscripts\zm_shared::donotetracks( "teargas_anim" );
 	self waittillmatch( "teargas_anim", "grenade_drop" );
@@ -1806,7 +1806,7 @@ brutus_remove_helmet( vdir )
 {
 	self.has_helmet = 0;
 	self detach( "c_zom_cellbreaker_helmet" );
-	self playsound( "evt_brutus_helmet" );
+	self sys::playsound( "evt_brutus_helmet" );
 	launch_pos = self.origin + vectorscale( ( 0, 0, 1 ), 85.0 );
 	createdynentandlaunch( "c_zom_cellbreaker_helmet", launch_pos, self.angles, launch_pos, vdir );
 
@@ -1818,7 +1818,7 @@ brutus_remove_helmet( vdir )
 			return;
 
 		self.not_interruptable = 1;
-		self playsound( "vox_brutus_exert" );
+		self sys::playsound( "vox_brutus_exert" );
 		self sys::animscripted( self.origin, self.angles, "zm_pain" );
 		self maps\mp\animscripts\zm_shared::donotetracks( "pain_anim" );
 		self.not_interruptable = 0;
@@ -1890,7 +1890,7 @@ magic_box_lock()
 		return;
 
 	magic_box.zbarrier set_magic_box_zbarrier_state( "locking" );
-	self playsound( "zmb_ai_brutus_clang" );
+	self sys::playsound( "zmb_ai_brutus_clang" );
 	magic_box.locked_cost = get_scaling_lock_cost( "magic_box", magic_box );
 	level.lockdown_track["magic_box"] = 1;
 	level notify( "brutus_locked_object" );
@@ -1917,7 +1917,7 @@ perk_machine_lock()
 	perk_machine.lock_fx = offset_fx_struct( int_struct, perk_machine.lock_fx );
 	perk_machine.lock_fx setmodel( "tag_origin" );
 	playfxontag( lock_fx, perk_machine.lock_fx, "tag_origin" );
-	perk_machine.lock_fx playsound( "zmb_ai_brutus_clang" );
+	perk_machine.lock_fx sys::playsound( "zmb_ai_brutus_clang" );
 	perk_machine.is_locked = 1;
 	perk_machine.locked_cost = get_scaling_lock_cost( "perk_machine", perk_machine );
 	perk_machine sethintstring( &"ZOMBIE_LOCKED_COST", perk_machine.locked_cost );
@@ -1941,7 +1941,7 @@ craftable_table_lock()
 	craftable_table.lock_fx = offset_fx_struct( int_struct, craftable_table.lock_fx );
 	craftable_table.lock_fx setmodel( "tag_origin" );
 	playfxontag( level._effect["brutus_lockdown_lg"], craftable_table.lock_fx, "tag_origin" );
-	craftable_table.lock_fx playsound( "zmb_ai_brutus_clang" );
+	craftable_table.lock_fx sys::playsound( "zmb_ai_brutus_clang" );
 	craftable_table.is_locked = 1;
 	craftable_table.locked_cost = get_scaling_lock_cost( "craftable_table", craftable_table );
 	craftable_table.hint_string = get_lock_hint_string( craftable_table.locked_cost );
@@ -1974,7 +1974,7 @@ trap_smash()
 	else if ( trap.targetname == "tower_trap_activate_trigger" )
 		trap notify( "tower_trap_off" );
 
-	trap playsound( "zmb_ai_brutus_clang" );
+	trap sys::playsound( "zmb_ai_brutus_clang" );
 	self.priority_item = undefined;
 }
 
@@ -1991,7 +1991,7 @@ plane_ramp_lock()
 	plane_ramp.lock_fx.angles = plane_ramp.angles;
 	plane_ramp.lock_fx = offset_fx_struct( int_struct, plane_ramp.lock_fx );
 	plane_ramp.lock_fx setmodel( "tag_origin" );
-	plane_ramp.lock_fx playsound( "zmb_ai_brutus_clang" );
+	plane_ramp.lock_fx sys::playsound( "zmb_ai_brutus_clang" );
 	playfxontag( level._effect["brutus_lockdown"], plane_ramp.lock_fx, "tag_origin" );
 	plane_ramp.is_locked = 1;
 	plane_ramp.locked_cost = get_scaling_lock_cost( "plane_ramp", plane_ramp );
@@ -2007,10 +2007,10 @@ plane_ramp_lock()
 blocker_smash()
 {
 	self endon( "death" );
-	self playsound( "vox_brutus_enraged" );
-	self playsound( "zmb_ai_brutus_window_teardown" );
+	self sys::playsound( "vox_brutus_enraged" );
+	self sys::playsound( "zmb_ai_brutus_window_teardown" );
 	blocker = self.priority_item;
-	self playsound( "zmb_ai_brutus_clang" );
+	self sys::playsound( "zmb_ai_brutus_clang" );
 
 	if ( !isdefined( blocker ) )
 		return;
@@ -2181,7 +2181,7 @@ brutus_damage_override( inflictor, attacker, damage, flags, meansofdeath, weapon
 
 	if ( isdefined( weapon ) && weapon == "bouncing_tomahawk_zm" && isdefined( inflictor ) )
 	{
-		self playsound( "wpn_tomahawk_imp_zombie" );
+		self sys::playsound( "wpn_tomahawk_imp_zombie" );
 
 		if ( self.has_helmet )
 		{
@@ -2282,7 +2282,7 @@ brutus_nuke_override()
 	self endon( "death" );
 	wait( randomfloatrange( 0.1, 0.7 ) );
 	self thread maps\mp\animscripts\zm_death::flame_death_fx();
-	self playsound( "evt_nuked" );
+	self sys::playsound( "evt_nuked" );
 	self dodamage( level.brutus_health * 0.25, self.origin );
 }
 

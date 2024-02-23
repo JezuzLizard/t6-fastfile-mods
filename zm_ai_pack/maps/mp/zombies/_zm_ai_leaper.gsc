@@ -154,7 +154,7 @@ leaper_init()
 		self forceteleport( spot.origin, spot.angles );
 	}
 
-	self playsound( "zmb_vocals_leaper_spawn" );
+	self sys::playsound( "zmb_vocals_leaper_spawn" );
 	self set_zombie_run_cycle( "run" );
 	self.state = "init";
 	self thread leaper_think();
@@ -200,7 +200,7 @@ play_ambient_leaper_vocals()
 
 			}
 			else
-				self playsound( "zmb_vocals_leaper_ambience" );
+				self sys::playsound( "zmb_vocals_leaper_ambience" );
 		}
 
 		wait( randomfloatrange( 1, 1.5 ) );
@@ -212,7 +212,7 @@ leaper_death()
 	self endon( "leaper_cleanup" );
 	self waittill( "death" );
 	self leaper_stop_trail_fx();
-	self playsound( "zmb_vocals_leaper_death" );
+	self sys::playsound( "zmb_vocals_leaper_death" );
 	playfx( level._effect["leaper_death"], self.origin );
 
 	if ( get_current_zombie_count() == 0 && level.zombie_total == 0 )

@@ -246,13 +246,13 @@ traversal_booster_fx_watcher()
 		if ( notetrack == "booster_on" )
 		{
 			self.fx_field = self.fx_field | 128;
-			self.sndloopent playsound( "zmb_ai_mechz_rocket_start" );
+			self.sndloopent sys::playsound( "zmb_ai_mechz_rocket_start" );
 			self.sndloopent playloopsound( "zmb_ai_mechz_rocket_loop", 0.75 );
 		}
 		else if ( notetrack == "booster_off" )
 		{
 			self.fx_field = self.fx_field & ~128;
-			self.sndloopent playsound( "zmb_ai_mechz_rocket_stop" );
+			self.sndloopent sys::playsound( "zmb_ai_mechz_rocket_stop" );
 			self.sndloopent stoploopsound( 1 );
 		}
 		if ( level.script == "zm_tomb" )
@@ -281,13 +281,13 @@ booster_fx_watcher()
 		if ( notetrack == "booster_on" )
 		{
 			self.fx_field = self.fx_field | 128;
-			self.sndloopent playsound( "zmb_ai_mechz_rocket_start" );
+			self.sndloopent sys::playsound( "zmb_ai_mechz_rocket_start" );
 			self.sndloopent playloopsound( "zmb_ai_mechz_rocket_loop", 0.75 );
 		}
 		else if ( notetrack == "booster_off" )
 		{
 			self.fx_field = self.fx_field & ~128;
-			self.sndloopent playsound( "zmb_ai_mechz_rocket_stop" );
+			self.sndloopent sys::playsound( "zmb_ai_mechz_rocket_stop" );
 			self.sndloopent stoploopsound( 1 );
 		}
 		else if ( notetrack == "impact" )
@@ -382,7 +382,7 @@ play_ambient_mechz_vocals()
 
 			}
 			else
-				self playsound( "zmb_ai_mechz_vox_ambient" );
+				self sys::playsound( "zmb_ai_mechz_vox_ambient" );
 		}
 
 		wait( randomfloatrange( 3, 6 ) );
@@ -679,7 +679,7 @@ mechz_spawn()
 
 	self thread mechz_death();
 	self forceteleport( spawn_pos.origin, spawn_pos.angles );
-	self playsound( "zmb_ai_mechz_incoming_alarm" );
+	self sys::playsound( "zmb_ai_mechz_incoming_alarm" );
 
 	if ( !isdefined( spawn_pos.angles ) )
 		spawn_pos.angles = ( 0, 0, 0 );
@@ -1580,7 +1580,7 @@ mechz_launch_armor_piece()
 	}
 
 	if ( sndmechzisnetworksafe( "destruction" ) )
-		self playsound( "zmb_ai_mechz_destruction" );
+		self sys::playsound( "zmb_ai_mechz_destruction" );
 
 	self.next_armor_piece++;
 }
@@ -1700,10 +1700,10 @@ mechz_damage_override( inflictor, attacker, damage, flags, meansofdeath, weapon,
 		self detach( "c_zom_mech_faceplate", "J_Helmet" );
 
 		if ( sndmechzisnetworksafe( "destruction" ) )
-			self playsound( "zmb_ai_mechz_destruction" );
+			self sys::playsound( "zmb_ai_mechz_destruction" );
 
 		if ( sndmechzisnetworksafe( "angry" ) )
-			self playsound( "zmb_ai_mechz_vox_angry" );
+			self sys::playsound( "zmb_ai_mechz_vox_angry" );
 
 		self.fx_field = self.fx_field | 1024;
 		self.fx_field = self.fx_field & ~2048;
@@ -1737,7 +1737,7 @@ mechz_damage_override( inflictor, attacker, damage, flags, meansofdeath, weapon,
 		cap_model thread mechz_delayed_item_delete();
 
 		if ( sndmechzisnetworksafe( "destruction" ) )
-			self playsound( "zmb_ai_mechz_destruction" );
+			self sys::playsound( "zmb_ai_mechz_destruction" );
 
 		if ( !( isdefined( self.not_interruptable ) && self.not_interruptable ) && !( isdefined( self.is_traversing ) && self.is_traversing ) )
 		{
@@ -1752,7 +1752,7 @@ mechz_damage_override( inflictor, attacker, damage, flags, meansofdeath, weapon,
 		self thread mechz_stun( level.mechz_powerplant_stun_time );
 
 		if ( sndmechzisnetworksafe( "destruction" ) )
-			self playsound( "zmb_ai_mechz_destruction" );
+			self sys::playsound( "zmb_ai_mechz_destruction" );
 	}
 
 /#
@@ -1784,7 +1784,7 @@ mechz_nuke_override()
 {
 	self endon( "death" );
 	wait( randomfloatrange( 0.1, 0.7 ) );
-	self playsound( "evt_nuked" );
+	self sys::playsound( "evt_nuked" );
 	self dodamage( self.health * 0.25, self.origin );
 }
 

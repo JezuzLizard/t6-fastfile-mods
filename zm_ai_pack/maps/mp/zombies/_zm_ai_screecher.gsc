@@ -331,7 +331,7 @@ zombie_pathing_home()
 	self.no_powerups = 1;
 	self sys::setfreecameralockonallowed( 0 );
 	self sys::animscripted( self.origin, self.angles, "zm_burrow" );
-	self playsound( "zmb_screecher_dig" );
+	self sys::playsound( "zmb_screecher_dig" );
 	maps\mp\animscripts\zm_shared::donotetracks( "burrow_anim" );
 	self delete();
 }
@@ -415,7 +415,7 @@ screecher_prespawn()
 	self maps\mp\zombies\_zm_spawner::zombie_complete_emerging_into_playable_area();
 	self sys::setfreecameralockonallowed( 0 );
 	self.startinglocation = self.origin;
-	self playsound( "zmb_vocals_screecher_spawn" );
+	self sys::playsound( "zmb_vocals_screecher_spawn" );
 	self thread play_screecher_fx();
 	self thread play_screecher_damaged_yelps();
 	self thread screecher_rise();
@@ -456,7 +456,7 @@ play_screecher_damaged_yelps()
 		self waittill( "damage", damage, attacker, dir, point, mod );
 
 		if ( isdefined( attacker ) && isplayer( attacker ) )
-			self playsound( "zmb_vocals_screecher_pain" );
+			self sys::playsound( "zmb_vocals_screecher_pain" );
 	}
 }
 
@@ -561,7 +561,7 @@ screecher_attack()
 	self notify( "stop_find_flesh" );
 	self notify( "zombie_acquire_enemy" );
 	self sys::animmode( "nogravity" );
-	self playsound( "zmb_vocals_screecher_jump" );
+	self sys::playsound( "zmb_vocals_screecher_jump" );
 
 	if ( isdefined( self.loopsoundent ) )
 	{
@@ -773,7 +773,7 @@ screecher_attacking()
 			self.attack_delay = self.attack_delay_base + randomint( self.attack_delay_offset );
 			self.attack_time = sys::gettime() + self.attack_delay;
 			self thread claw_fx( player, self.attack_delay * 0.001 );
-			self playsound( "zmb_vocals_screecher_attack" );
+			self sys::playsound( "zmb_vocals_screecher_attack" );
 			player playsoundtoplayer( "zmb_screecher_scratch", player );
 			player thread do_player_general_vox( "general", "screecher_attack" );
 			players = sys::getplayers();
@@ -809,7 +809,7 @@ screecher_runaway()
 	self.no_powerups = 1;
 	self sys::setfreecameralockonallowed( 0 );
 	self sys::animscripted( self.origin, self.angles, "zm_burrow" );
-	self playsound( "zmb_screecher_dig" );
+	self sys::playsound( "zmb_screecher_dig" );
 	maps\mp\animscripts\zm_shared::donotetracks( "burrow_anim" );
 	self delete();
 }
@@ -951,7 +951,7 @@ screecher_cleanup()
 
 	if ( isdefined( player ) )
 	{
-		player playsound( "zmb_vocals_screecher_death" );
+		player sys::playsound( "zmb_vocals_screecher_death" );
 		player setmovespeedscale( 1 );
 		maps\mp\_visionset_mgr::vsmgr_deactivate( "overlay", "zm_ai_screecher_blur", player );
 
@@ -1110,7 +1110,7 @@ screecher_melee_damage( player )
 			self.player_score = self.player_score + extra_score;
 	}
 
-	self playsound( "zmb_vocals_screecher_pain" );
+	self sys::playsound( "zmb_vocals_screecher_pain" );
 
 	if ( level.zombie_vars[player.team]["zombie_insta_kill"] )
 		self.player_score = 30;
