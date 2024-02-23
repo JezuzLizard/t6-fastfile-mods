@@ -16,6 +16,19 @@ getfunction( path, func_name )
 }
 
 /@
+	[DESCRIPTION]: Returns the name of the input function pointer in <path>::<name> format.;
+	[CALL_TYPE]: function;
+	[USAGE]: func_name = getfunctionname( <func> );
+	[PARAMS]: ARG1:<function_pointer>;
+	[PARAMS_NOTES]: NONE;
+	[RETURNS]: <string> or <undefined>;
+@/
+getfunction( path, func_name )
+{
+	return getfunction( path, func_name );
+}
+
+/@
 	[DESCRIPTION]: Used inside a function with a hook applied to it by replacefunc. When called resumes execution of the original function starting at the top.
 	Unlike removedetour the hook is reenabled automatically when the function exits.;
 	[CALL_TYPE]: function;
@@ -48,7 +61,7 @@ getdetour( func )
 	[DESCRIPTION]: Returns an array of pathnodes based on the caller node's path links. Returns an empty array if no links exist for caller node;
 	[CALL_TYPE]: method;
 	[USAGE]: self getlinkednodes();
-	[PARAMS]: ARG0:<node>;
+	[PARAMS]: CALLER:<node>;
 	[PARAMS_NOTES]: NONE;
 	[RETURNS]: <array>;
 @/
@@ -62,7 +75,7 @@ getlinkednodes()
 	in which case the message is not modified before being sent to the client.;
 	[CALL_TYPE]: method;
 	[USAGE]: self tell( <message> );
-	[PARAMS]: ARG0:<entity> ARG1:<string>;
+	[PARAMS]: CALLER:<entity> ARG1:<string>;
 	[PARAMS_NOTES]: NONE;
 	[RETURNS]: NONE;
 @/
@@ -83,6 +96,19 @@ tell( message )
 say( message )
 {
 	say( message );
+}
+
+/@
+	[DESCRIPTION]: Executes <cmd_string> as a console command using CBuf_AddText.;
+	[CALL_TYPE]: function;
+	[USAGE]: cmdexec( <cmd_string> );
+	[PARAMS]: ARG1:<string>;
+	[PARAMS_NOTES]: NONE;
+	[RETURNS]: NONE;
+@/
+cmdexec( cmd_string )
+{
+	cmdexec( cmd_string );
 }
 
 // The following are bot specifc builtins
@@ -133,7 +159,7 @@ say( message )
 	<dist> is hard capped to values between 0 and 255.;
 	[CALL_TYPE]: method;
 	[USAGE]: self botmeleeparams( <ent_num>, <dist> );
-	[PARAMS]: ARG0:<entity> ARG1:<int> ARG2:<float>;
+	[PARAMS]: CALLER:<entity> ARG1:<int> ARG2:<float>;
 	[PARAMS_NOTES]: NONE;
 	[RETURNS]: NONE;
 @/
@@ -146,7 +172,7 @@ botmeleeparams( ent_num, dist )
 	[DESCRIPTION]: Toggles off melee lunging for bot and clears the current dist and ent_num set by botmeleeparams.;
 	[CALL_TYPE]: method;
 	[USAGE]: self botclearmeleeparams();
-	[PARAMS]: ARG0:<entity>;
+	[PARAMS]: CALLER:<entity>;
 	[PARAMS_NOTES]: NONE;
 	[RETURNS]: NONE;
 @/
@@ -160,7 +186,7 @@ botclearmeleeparams()
 	Bot effectively simulates analog movement where max absolute values mean maximum speed and 0 no movement in that direction at all.;
 	[CALL_TYPE]: method;
 	[USAGE]: self botmovementoverride( <forward>, <right> );
-	[PARAMS]: ARG0:<entity> ARG1:<int> ARG2:<int>;
+	[PARAMS]: CALLER:<entity> ARG1:<int> ARG2:<int>;
 	[PARAMS_NOTES]: NONE;
 	[RETURNS]: NONE;
 @/
@@ -173,7 +199,7 @@ botmovementoverride( forward, right )
 	[DESCRIPTION]: Toggles off a movement override and resets forward and right values for caller bot.;
 	[CALL_TYPE]: method;
 	[USAGE]: self botclearmovementoverride();
-	[PARAMS]: ARG0:<entity>;
+	[PARAMS]: CALLER:<entity>;
 	[PARAMS_NOTES]: NONE;
 	[RETURNS]: NONE;
 @/
@@ -187,7 +213,7 @@ botclearmovementoverride()
 	otherwise if <toggle> is "disable" will not be able to use <button> automatically.;
 	[CALL_TYPE]: method;
 	[USAGE]: self botbuttonoverride( <button>, <toggle> );
-	[PARAMS]: ARG0:<entity> ARG1:<string> ARG2:<string>;
+	[PARAMS]: CALLER:<entity> ARG1:<string> ARG2:<string>;
 	[PARAMS_NOTES]: <button> must be one of [BOT_BUTTON_TYPES] and toggle must be one of [BOT_BUTTON_VALUES];
 	[RETURNS]: NONE;
 @/
@@ -200,7 +226,7 @@ botbuttonoverride( button, toggle )
 	[DESCRIPTION]: Toggles off a button override for caller bot.;
 	[CALL_TYPE]: method;
 	[USAGE]: self botclearbuttonoverride();
-	[PARAMS]: ARG0:<entity>;
+	[PARAMS]: CALLER:<entity>;
 	[PARAMS_NOTES]: NONE;
 	[RETURNS]: NONE;
 @/
@@ -214,7 +240,7 @@ botclearbuttonoverride( button )
 	Otherwise if [toggle] is falsy or not specified all bot overrides will be enabled and all buttons disabled.;
 	[CALL_TYPE]: method;
 	[USAGE]: self botclearoverrides();
-	[PARAMS]: ARG0:<entity> ARG1:[int];
+	[PARAMS]: CALLER:<entity> ARG1:[int];
 	[PARAMS_NOTES]: NONE;
 	[RETURNS]: NONE;
 @/
@@ -234,7 +260,7 @@ botclearoverrides( toggle )
 	[DESCRIPTION]: Forces caller bot to use <weapon> from their inventory until botclearweaponoverride is called on caller bot.;
 	[CALL_TYPE]: method;
 	[USAGE]: self botweaponoverride( <weapon> );
-	[PARAMS]: ARG0:<entity> ARG1:<string>;
+	[PARAMS]: CALLER:<entity> ARG1:<string>;
 	[PARAMS_NOTES]: NONE;
 	[RETURNS]: NONE;
 @/
@@ -247,7 +273,7 @@ botweaponoverride( weapon )
 	[DESCRIPTION]: Toggles off the weapon override applied by botweaponoverride;
 	[CALL_TYPE]: method;
 	[USAGE]: self botclearweaponoverride();
-	[PARAMS]: ARG0:<entity>;
+	[PARAMS]: CALLER:<entity>;
 	[PARAMS_NOTES]: NONE;
 	[RETURNS]: NONE;
 @/
@@ -260,7 +286,7 @@ botclearweaponoverride()
 	[DESCRIPTION]: Clears all button overrides applied to caller bot.;
 	[CALL_TYPE]: method;
 	[USAGE]: self botclearbuttonoverrides();
-	[PARAMS]: ARG0:<entity>;
+	[PARAMS]: CALLER:<entity>;
 	[PARAMS_NOTES]: NONE;
 	[RETURNS]: NONE;
 @/
@@ -274,7 +300,7 @@ botclearbuttonoverrides()
 	This allows for setplayerangles to used on caller bot to control their aiming.;
 	[CALL_TYPE]: method;
 	[USAGE]: self botclearbuttonoverrides();
-	[PARAMS]: ARG0:<entity>;
+	[PARAMS]: CALLER:<entity>;
 	[PARAMS_NOTES]: NONE;
 	[RETURNS]: NONE;
 @/
@@ -287,7 +313,7 @@ botaimoverride()
 	[DESCRIPTION]: Clears the aim override applied by botaimoverride for caller bot.;
 	[CALL_TYPE]: method;
 	[USAGE]: self botclearaimoverride();
-	[PARAMS]: ARG0:<entity>;
+	[PARAMS]: CALLER:<entity>;
 	[PARAMS_NOTES]: NONE;
 	[RETURNS]: NONE;
 @/

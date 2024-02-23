@@ -8,6 +8,7 @@
 	[CALL_TYPE]: function;
 	[USAGE]: level._effect[ <effect_alias> ] = loadfx( <fx_name> );
 	[PARAMS]: ARG1:<string>;
+	[PARAMS_NOTES]: Expects <fx_name> to start with fx/
 	[RETURNS]: <undefined>;
 	[ERRORS]: 1. Will script error if called after the first frame of script execution.;
 @/
@@ -55,8 +56,9 @@ setcharacterindex( index )
 	Sets the team on the actor so it can be used by getspawnerteamarray().
 	This is its only purpose.;
 	[CALL_TYPE]: method;
-	[USAGE]: <actor_spawner> setspawnerteam( <team_str> );
-	[PARAMS]: ENT:<actor_spawner> ARG1:<string>;
+	[USAGE]: <entity> setspawnerteam( <team_str> );
+	[PARAMS]: CALLER:<entity> ARG1:<string>;
+	[PARAMS_NOTES]: Expects the caller entity to be an actor spawner type entity.;
 	[RETURNS]: NONE;
 	[ERRORS]: 1. Must be called on an actor spawner type entity.;
 @/
