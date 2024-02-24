@@ -1,5 +1,60 @@
 // Plutonium T6 Exclusive Builtins
 
+// Base Types
+/@
+	ENT_TYPES =
+	{
+		"general",
+		"player",
+		"player_corpse",
+		"item",
+		"missile",
+		"invisible",
+		"scriptmover",
+		"sound_blend",
+		"fx",
+		"loop_fx",
+		"primary_light",
+		"turret",
+		"helicopter",
+		"plane",
+		"vehicle",
+		"vehicle_corpse",
+		"actor",
+		"actor_spawner",
+		"actor_corpse",
+		"streamer_hint",
+		"zbarrier"
+	};
+
+	VAR_TYPES = 
+	{
+		"undefined",
+		"pointer",
+		"string",
+		"istring",
+		"vector",
+		"hash",
+		"float",
+		"int",
+		"codepos",
+		"precodepos",
+		"function",
+		"stack",
+		"animation",
+		"developer_codepos",
+		"thread",
+		"notify_thread",
+		"time_thread",
+		"child_thread",
+		"object",
+		"entity",
+		"dead_entity",
+		"array",
+		"dead_thread"
+	};
+@/
+
 /@
 	[DESCRIPTION]: Returns a function pointer based on <path> and <func_name>;
 	Does not trigger compilation or resolving of the script, therefore if the script isn't referenced by an include or far call by any other script at least once it will fail
@@ -23,24 +78,42 @@ getfunction( path, func_name )
 	[PARAMS_NOTES]: NONE;
 	[RETURNS]: <string> or <undefined>;
 @/
-getfunctionname( path, func_name )
+getfunctionname( func )
 {
-	return getfunctionname( path, func_name );
+	return getfunctionname( func );
 }
 
 /@
-	[DESCRIPTION]: Used inside a function with a hook applied to it by replacefunc. When called resumes execution of the original function starting at the top.
-	Unlike removedetour the hook is reenabled automatically when the function exits.;
+	[DESCRIPTION]: ;
 	[CALL_TYPE]: function;
-	[USAGE]: disabledetouronce();
+	[USAGE]: ;
+	[PARAMS]: ;
+	[PARAMS_NOTES]: ;
+	[RETURNS]: Original function pointer;
+@/
+replacefunc( from_func, to_func, priority )
+{
+	if ( !isDefined( priority ) )
+	{
+		return replacefunc( from_func, to_func );
+	}
+	else
+	{
+		return replacefunc( from_func, to_func, priority );
+	}
+}
+
+/@
+	[DESCRIPTION]: Disables func's detour until func runs again.;
+	[CALL_TYPE]: function;
+	[USAGE]: disabledetouronce( <func> );
 	[PARAMS]: NONE;
 	[PARAMS_NOTES]: NONE;
 	[RETURNS]: NONE;
-	[ERRORS]: 1. Must be called inside a function that had a hook applied to it by replacefunc.;
 @/
-disabledetouronce()
+disabledetouronce( func )
 {
-	disabledetouronce();
+	disabledetouronce( func );
 }
 
 /@
@@ -113,7 +186,7 @@ cmdexec( cmd_string )
 
 // The following are bot specifc builtins
 /@
-	[BOT_BUTTON_TYPES] =
+	BOT_BUTTON_TYPES =
 	{
 		"attack",
 		"sprint",
@@ -147,7 +220,7 @@ cmdexec( cmd_string )
 		"actionslot 3",
 		"actionslot 4"
 	};
-	[BOT_BUTTON_VALUES] =
+	BOT_BUTTON_VALUES =
 	{
 		"enable",
 		"disable"
@@ -214,7 +287,7 @@ botclearmovementoverride()
 	[CALL_TYPE]: method;
 	[USAGE]: self botbuttonoverride( <button>, <toggle> );
 	[PARAMS]: CALLER:<entity> ARG1:<string> ARG2:<string>;
-	[PARAMS_NOTES]: <button> must be one of [BOT_BUTTON_TYPES] and toggle must be one of [BOT_BUTTON_VALUES];
+	[PARAMS_NOTES]: <button> must be one of BOT_BUTTON_TYPES and toggle must be one of BOT_BUTTON_VALUES;
 	[RETURNS]: NONE;
 @/
 botbuttonoverride( button, toggle )
@@ -248,7 +321,7 @@ botclearoverrides( toggle )
 {
 	if ( !isDefined( toggle ) )
 	{
-		self botclearoverrides();
+		//self botclearoverrides(); //Needs to be fixed in Plutonium
 	}
 	else
 	{

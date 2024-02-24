@@ -180,7 +180,7 @@ leaper_init()
 	self thread leaper_check_zone();
 	self thread leaper_check_no_jump();
 	self thread leaper_watch_enemy();
-	self.combat_sys::animmode = ::leaper_combat_sys::animmode;
+	self.combat_animmode = ::leaper_combat_animmode;
 	level thread maps\mp\zombies\_zm_spawner::zombie_death_event( self );
 	self thread maps\mp\zombies\_zm_spawner::enemy_death_detection();
 	self thread leaper_elevator_failsafe();
@@ -387,12 +387,12 @@ leaper_check_wall()
 	self endon( "death" );
 
 	if ( !isdefined( self.next_leap_time ) )
-		self.next_leap_time = sys::gettime() + 500;
+		self.next_leap_time = gettime() + 500;
 
 	if ( is_true( self.sliding_on_goo ) || is_true( self.is_leaping ) )
 		return;
 
-	if ( sys::gettime() > self.next_leap_time && !is_true( self.no_jump ) )
+	if ( gettime() > self.next_leap_time && !is_true( self.no_jump ) )
 	{
 		wall_anim = [];
 
@@ -426,7 +426,7 @@ leaper_check_wall()
 			self.ignoreall = 0;
 			self.is_leaping = 0;
 			self thread maps\mp\zombies\_zm_ai_basic::find_flesh();
-			self.next_leap_time = sys::gettime() + 500;
+			self.next_leap_time = gettime() + 500;
 		}
 	}
 }
@@ -484,7 +484,7 @@ leaper_check_no_jump()
 
 melee_anim_func()
 {
-	self.next_leap_time = sys::gettime() + 1500;
+	self.next_leap_time = gettime() + 1500;
 	self sys::animmode( "gravity" );
 }
 
@@ -775,7 +775,7 @@ leaper_watch_enemy()
 	}
 }
 
-leaper_combat_sys::animmode()
+leaper_combat_animmode()
 {
 	self sys::animmode( "gravity", 0 );
 }
@@ -1034,7 +1034,7 @@ leaper_traverse_watcher()
 leaper_playable_area_failsafe()
 {
 	self endon( "death" );
-	self.leaper_failsafe_start_time = sys::gettime();
+	self.leaper_failsafe_start_time = gettime();
 	playable_area = sys::getentarray( "player_volume", "script_noteworthy" );
 	b_outside_playable_space_this_frame = 0;
 	self.leaper_outside_playable_space_time = -2;
@@ -1043,7 +1043,7 @@ leaper_playable_area_failsafe()
 	{
 		b_outside_playable_last_check = b_outside_playable_space_this_frame;
 		b_outside_playable_space_this_frame = is_leaper_outside_playable_space( playable_area );
-		n_current_time = sys::gettime();
+		n_current_time = gettime();
 
 		if ( b_outside_playable_space_this_frame && !b_outside_playable_last_check )
 			self.leaper_outside_playable_space_time = n_current_time;

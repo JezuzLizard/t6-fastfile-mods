@@ -183,7 +183,7 @@ avogadro_prespawn()
 	self.jetgun_drag_func = ::drag_avogadro;
 	self.depot_lava_pit = ::busplowkillzombie;
 	self.busplowkillzombie = ::busplowkillzombie;
-	self.region_timer = sys::gettime() + 500;
+	self.region_timer = gettime() + 500;
 	self.shield = 1;
 }
 
@@ -730,14 +730,14 @@ cloud_update_fx()
 	if ( !isdefined( self.sndent ) )
 	{
 		self.sndent = sys::spawn( "script_origin", ( 0, 0, 0 ) );
-		self.sndent playloopsound( "zmb_avogadro_thunder_overhead" );
+		self.sndent sys::playloopsound( "zmb_avogadro_thunder_overhead" );
 	}
 
-	cloud_time = sys::gettime();
+	cloud_time = gettime();
 
 	for ( vo_counter = 0; 1; vo_counter++ )
 	{
-		if ( sys::gettime() >= cloud_time )
+		if ( gettime() >= cloud_time )
 		{
 			if ( isdefined( self.current_region ) )
 			{
@@ -763,7 +763,7 @@ cloud_update_fx()
 			exploder_num = level.transit_region[region_str].exploder;
 			exploder( exploder_num );
 			self.sndent moveto( level.transit_region[region_str].sndorigin, 3 );
-			cloud_time = sys::gettime() + 30000;
+			cloud_time = gettime() + 30000;
 		}
 
 		if ( vo_counter > 50 )
@@ -823,18 +823,18 @@ cloud_update()
 		{
 			self thread avogadro_update_health();
 			playsoundatposition( "zmb_avogadro_spawn_3d", new_origin );
-			self.audio_loop_ent playloopsound( "zmb_avogadro_loop", 0.5 );
+			self.audio_loop_ent sys::playloopsound( "zmb_avogadro_loop", 0.5 );
 			self sys::unlink();
 			ground_pos = groundpos_ignore_water_new( new_origin + vectorscale( ( 0, 0, 1 ), 60.0 ) );
 			playfx( level._effect["avogadro_descend"], ground_pos );
 			self sys::animscripted( ground_pos, self.anchor.angles, "zm_arrival" );
 			maps\mp\animscripts\zm_shared::donotetracks( "arrival_anim" );
 			self sys::setfreecameralockonallowed( 1 );
-			time_to_leave = sys::gettime() + 30000;
+			time_to_leave = gettime() + 30000;
 
 			while ( true )
 			{
-				if ( sys::gettime() > time_to_leave )
+				if ( gettime() > time_to_leave )
 				{
 /#
 					avogadro_print( "enemy never showed - leaving" );
@@ -1092,13 +1092,13 @@ check_bolt_impact( enemy )
 
 region_empty()
 {
-	if ( sys::gettime() >= self.region_timer )
+	if ( gettime() >= self.region_timer )
 	{
 		player = self get_player_in_region();
 
 		if ( isdefined( player ) )
 		{
-			self.region_timer = sys::gettime() + 500;
+			self.region_timer = gettime() + 500;
 			return false;
 		}
 
@@ -1119,12 +1119,12 @@ region_empty()
 
 			if ( dist_sq < 9000000 )
 			{
-				self.region_timer = sys::gettime() + 500;
+				self.region_timer = gettime() + 500;
 				return false;
 			}
 		}
 
-		self.region_timer = sys::gettime() + 500;
+		self.region_timer = gettime() + 500;
 /#
 		avogadro_print( "no one left to kill " + debug_dist_sq );
 #/
@@ -1148,11 +1148,11 @@ check_phase()
 		return false;
 #/
 
-	if ( sys::gettime() > self.phase_time )
+	if ( gettime() > self.phase_time )
 	{
 		if ( isdefined( self.is_traversing ) && self.is_traversing )
 		{
-			self.phase_time = sys::gettime() + 2000;
+			self.phase_time = gettime() + 2000;
 			return false;
 		}
 
@@ -1203,7 +1203,7 @@ play_phase_anim()
 	self avogadro_reveal( 0.1 );
 	self sys::orientmode( "face default" );
 	self sys::playsound( "zmb_avogadro_warp_in" );
-	self.phase_time = sys::gettime() + 2000;
+	self.phase_time = gettime() + 2000;
 	self notify( "phase_anim_done" );
 }
 
@@ -1225,7 +1225,7 @@ phase_failsafe()
 		self avogadro_reveal( 0.1 );
 		self sys::orientmode( "face default" );
 		self sys::playsound( "zmb_avogadro_warp_in" );
-		self.phase_time = sys::gettime() + 2000;
+		self.phase_time = gettime() + 2000;
 		self notify( "phase_anim_done" );
 	}
 }
@@ -1291,7 +1291,7 @@ avogadro_pain( einflictor )
 		self sys::animscripted( origin, angles, animstate, substate );
 		maps\mp\animscripts\zm_shared::donotetracks( "pain_anim" );
 		self sys::ghost();
-		self.phase_time = sys::gettime() - 1;
+		self.phase_time = gettime() - 1;
 
 		if ( self.state == "stay_attached" )
 			self attach_to_bus();
@@ -1405,7 +1405,7 @@ avogadro_damage_func( einflictor, eattacker, idamage, idflags, smeansofdeath, sw
 
 			if ( self.shield )
 			{
-				einflictor.avogadro_melee_time = sys::gettime();
+				einflictor.avogadro_melee_time = gettime();
 				maps\mp\_visionset_mgr::vsmgr_activate( "overlay", "zm_ai_avogadro_electrified", einflictor, 0.25, 1 );
 				einflictor shellshock( "electrocution", 0.25 );
 				einflictor notify( "avogadro_damage_taken" );

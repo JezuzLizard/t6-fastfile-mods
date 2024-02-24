@@ -193,7 +193,7 @@ claw_grapple()
 	self sys::playsound( "zmb_ai_mechz_claw_fire" );
 	self.m_claw moveto( v_enemy_origin, n_time );
 	self.m_claw thread check_for_claw_move_complete();
-	self.m_claw playloopsound( "zmb_ai_mechz_claw_loop_out", 0.1 );
+	self.m_claw sys::playloopsound( "zmb_ai_mechz_claw_loop_out", 0.1 );
 	self.e_grabbed = undefined;
 
 	do
@@ -235,7 +235,7 @@ claw_grapple()
 					{
 						self.e_grabbed set_clientfield_alt_toplayer( "mechz_grab", self.e_grabbed, 1 );
 					}
-					self.e_grabbed playersys::linktodelta( self.m_claw, "tag_attach_player" );
+					self.e_grabbed playerlinktodelta( self.m_claw, "tag_attach_player" );
 					self.e_grabbed setplayerangles( vectortoangles( self.origin - self.e_grabbed.origin ) );
 					self.e_grabbed sys::playsound( "zmb_ai_mechz_claw_grab" );
 					self.e_grabbed setstance( "stand" );
@@ -290,7 +290,7 @@ claw_grapple()
 	v_claw_origin = self sys::gettagorigin( "tag_claw" );
 	v_claw_angles = self sys::gettagangles( "tag_claw" );
 	self.m_claw moveto( v_claw_origin, max( 0.05, n_time ) );
-	self.m_claw playloopsound( "zmb_ai_mechz_claw_loop_in", 0.1 );
+	self.m_claw sys::playloopsound( "zmb_ai_mechz_claw_loop_in", 0.1 );
 	self.m_claw waittill( "movedone" );
 	v_claw_origin = self sys::gettagorigin( "tag_claw" );
 	v_claw_angles = self sys::gettagangles( "tag_claw" );
@@ -489,7 +489,7 @@ should_do_claw_attack()
 		return false;
 	}
 
-	if ( isdefined( self.last_claw_time ) && sys::gettime() - self.last_claw_time < level.mechz_claw_cooldown_time )
+	if ( isdefined( self.last_claw_time ) && gettime() - self.last_claw_time < level.mechz_claw_cooldown_time )
 	{
 /#
 		if ( getdvarint( #"_id_E7121222" ) > 1 )
@@ -565,7 +565,7 @@ mechz_do_claw_grab()
 #/
 	assert( isdefined( self.favoriteenemy ) );
 	self thread mechz_kill_claw_watcher();
-	self.last_claw_time = sys::gettime();
+	self.last_claw_time = gettime();
 	target_pos = self.favoriteenemy.origin + vectorscale( ( 0, 0, 1 ), 30.0 );
 	self thread mechz_stop_basic_find_flesh();
 	self.ai_state = "grapple_attempt";
@@ -622,7 +622,7 @@ mechz_claw_cleanup()
 				n_dist = distance( self.m_claw.origin, v_claw_origin );
 				n_time = n_dist / 1000;
 				self.m_claw moveto( v_claw_origin, max( 0.05, n_time ) );
-				self.m_claw playloopsound( "zmb_ai_mechz_claw_loop_in", 0.1 );
+				self.m_claw sys::playloopsound( "zmb_ai_mechz_claw_loop_in", 0.1 );
 				self.m_claw waittill( "movedone" );
 				v_claw_origin = self sys::gettagorigin( "tag_claw" );
 				v_claw_angles = self sys::gettagangles( "tag_claw" );

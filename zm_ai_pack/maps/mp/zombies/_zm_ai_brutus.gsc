@@ -567,7 +567,7 @@ snddelayedmusic()
 		sndentorigin = self sys::gettagorigin( "J_spineupper" );
 		self.sndbrutusmusicent = sys::spawn( "script_origin", sndentorigin );
 		self.sndbrutusmusicent sys::linkto( self, "J_spineupper" );
-		self.sndbrutusmusicent playloopsound( "mus_event_brutus_loop" );
+		self.sndbrutusmusicent sys::playloopsound( "mus_event_brutus_loop" );
 	}
 
 	self thread sndbrutusloopwatcher( self.sndbrutusmusicent );
@@ -2040,7 +2040,7 @@ blocker_smash()
 
 melee_anim_func()
 {
-	self.next_leap_time = sys::gettime() + 1500;
+	self.next_leap_time = gettime() + 1500;
 }
 
 kill_teargas_after_duration( duration )

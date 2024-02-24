@@ -640,7 +640,7 @@ prespawn()
 	self.noplayermeleeblood = 1;
 	self.paralyzer_hit_callback = ::paralyzer_callback;
 	self.paralyzer_slowtime = 0;
-	self.paralyzer_score_time_ms = sys::gettime();
+	self.paralyzer_score_time_ms = gettime();
 	self.ignore_slowgun_anim_rates = undefined;
 	self.reset_anim = ::ghost_reset_anim;
 	self.custom_springpad_fling = ::ghost_springpad_fling;
@@ -972,9 +972,9 @@ find_flesh()
 		else if ( isdefined( self.is_spawned_in_ghost_zone ) && self.is_spawned_in_ghost_zone )
 			self.find_target = 1;
 
-		self.zombie_path_timer = sys::gettime() + randomfloatrange( 1, 3 ) * 1000;
+		self.zombie_path_timer = gettime() + randomfloatrange( 1, 3 ) * 1000;
 
-		while ( sys::gettime() < self.zombie_path_timer )
+		while ( gettime() < self.zombie_path_timer )
 			wait 0.1;
 
 		self notify( "path_timer_done" );
@@ -2019,7 +2019,7 @@ sndghostroundmus()
 	ent endon( "sndGhostRoundEnd" );
 	ent sys::playsound( "mus_ghost_round_start" );
 	wait 11;
-	ent playloopsound( "mus_ghost_round_loop", 3 );
+	ent sys::playloopsound( "mus_ghost_round_loop", 3 );
 }
 
 sndghostroundmus_end()
@@ -2047,7 +2047,7 @@ sndghostroundready()
 		{
 			playsoundatposition( "zmb_ghost_round_srt", mansion );
 			ent = sys::spawn( "script_origin", mansion );
-			ent playloopsound( "zmb_ghost_round_lp", 3 );
+			ent sys::playloopsound( "zmb_ghost_round_lp", 3 );
 			ent thread sndghostroundready_stoplp();
 			break;
 		}
@@ -2464,14 +2464,14 @@ ghost_round_presentation_think()
 			if ( can_start_ghost_round_presentation_stage_2() )
 			{
 				level.zombie_ghost_round_states.presentation_stage_2_started = 1;
-				level.sndmansionent playloopsound( "zmb_ghost_round_lp_quiet", 3 );
+				level.sndmansionent sys::playloopsound( "zmb_ghost_round_lp_quiet", 3 );
 				level setclientfield( "ghost_round_light_state", 1 );
 			}
 
 			if ( can_start_ghost_round_presentation_stage_3() )
 			{
 				level.zombie_ghost_round_states.presentation_stage_3_started = 1;
-				level.sndmansionent playloopsound( "zmb_ghost_round_lp_loud", 3 );
+				level.sndmansionent sys::playloopsound( "zmb_ghost_round_lp_loud", 3 );
 
 				if ( isdefined( level.ghost_round_presentation_ghost ) )
 					level.ghost_round_presentation_ghost thread ghost_round_presentation_sound();
@@ -2605,7 +2605,7 @@ init_time_bomb_ghost_rounds()
 	}
 }
 
-is_sys::ghost()
+is_ghost()
 {
 	return !( isdefined( self.is_ghost ) && self.is_ghost );
 }
@@ -2812,7 +2812,7 @@ devgui_warp_to_mansion()
 #/
 }
 
-devgui_toggle_no_sys::ghost()
+devgui_toggle_no_ghost()
 {
 /#
 	level.force_no_ghost = !level.force_no_ghost;

@@ -148,10 +148,10 @@ screecher_spawning_logic()
 			if ( isdefined( spawn_point ) )
 				playsoundatposition( "zmb_vocals_screecher_spawn", spawn_point.origin );
 
-			delay_time = sys::gettime() + 5000;
+			delay_time = gettime() + 5000;
 			now_zone = sys::getent( "screecher_spawn_now", "targetname" );
 
-			while ( sys::gettime() < delay_time )
+			while ( gettime() < delay_time )
 			{
 				in_zone = 0;
 
@@ -361,9 +361,9 @@ screecher_find_flesh()
 		else
 			self thread screecher_runaway();
 
-		self.zombie_path_timer = sys::gettime() + randomfloatrange( 1, 3 ) * 1000;
+		self.zombie_path_timer = gettime() + randomfloatrange( 1, 3 ) * 1000;
 
-		while ( sys::gettime() < self.zombie_path_timer )
+		while ( gettime() < self.zombie_path_timer )
 			wait 0.1;
 
 		self notify( "path_timer_done" );
@@ -473,7 +473,7 @@ play_screecher_breathing_audio()
 		self.loopsoundent sys::linkto( self, "tag_origin" );
 	}
 
-	self.loopsoundent playloopsound( "zmb_vocals_screecher_breath" );
+	self.loopsoundent sys::playloopsound( "zmb_vocals_screecher_breath" );
 }
 
 screecher_rise()
@@ -499,7 +499,7 @@ screecher_zombie_think()
 	height_tolerance = 32;
 	self.state = "chase_init";
 	self.isattacking = 0;
-	self.nextspecial = sys::gettime();
+	self.nextspecial = gettime();
 
 	for (;;)
 	{
@@ -597,11 +597,11 @@ screecher_fly_to_player( player )
 	self sys::linkto( self.anchor );
 	anim_id_back = self getanimfromasd( "zm_jump_land_success_fromback", 0 );
 	anim_id_front = self getanimfromasd( "zm_jump_land_success_fromfront", 0 );
-	end_time = sys::gettime() + 2500;
+	end_time = gettime() + 2500;
 	dist = undefined;
 	dist_update = undefined;
 
-	while ( end_time > sys::gettime() )
+	while ( end_time > gettime() )
 	{
 		goal_pos_back = getstartorigin( player.origin, player.angles, anim_id_back );
 		goal_pos_front = getstartorigin( player.origin, player.angles, anim_id_front );
@@ -699,7 +699,7 @@ screecher_start_attack()
 		}
 
 		self.state = "attacking";
-		self.attack_time = sys::gettime();
+		self.attack_time = gettime();
 
 		if ( !getdvarint( #"scr_screecher_poison" ) )
 			player startpoisoning();
@@ -761,7 +761,7 @@ screecher_attacking()
 		return;
 	}
 
-	if ( self.attack_time < sys::gettime() )
+	if ( self.attack_time < gettime() )
 	{
 		scratch_score = 5;
 		players = sys::getplayers();
@@ -771,7 +771,7 @@ screecher_attacking()
 		if ( player.health > 0 && !( isdefined( killed_player ) && killed_player ) )
 		{
 			self.attack_delay = self.attack_delay_base + randomint( self.attack_delay_offset );
-			self.attack_time = sys::gettime() + self.attack_delay;
+			self.attack_time = gettime() + self.attack_delay;
 			self thread claw_fx( player, self.attack_delay * 0.001 );
 			self sys::playsound( "zmb_vocals_screecher_attack" );
 			player playsoundtoplayer( "zmb_screecher_scratch", player );

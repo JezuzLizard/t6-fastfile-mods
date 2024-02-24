@@ -247,7 +247,7 @@ traversal_booster_fx_watcher()
 		{
 			self.fx_field = self.fx_field | 128;
 			self.sndloopent sys::playsound( "zmb_ai_mechz_rocket_start" );
-			self.sndloopent playloopsound( "zmb_ai_mechz_rocket_loop", 0.75 );
+			self.sndloopent sys::playloopsound( "zmb_ai_mechz_rocket_loop", 0.75 );
 		}
 		else if ( notetrack == "booster_off" )
 		{
@@ -282,7 +282,7 @@ booster_fx_watcher()
 		{
 			self.fx_field = self.fx_field | 128;
 			self.sndloopent sys::playsound( "zmb_ai_mechz_rocket_start" );
-			self.sndloopent playloopsound( "zmb_ai_mechz_rocket_loop", 0.75 );
+			self.sndloopent sys::playloopsound( "zmb_ai_mechz_rocket_loop", 0.75 );
 		}
 		else if ( notetrack == "booster_off" )
 		{
@@ -565,7 +565,7 @@ mechz_attach_objects()
 	trigger_height = 15;
 	self.m_claw_damage_trigger = sys::spawn( "trigger_damage", org, trigger_spawnflags, trigger_radius, trigger_height );
 	self.m_claw_damage_trigger.angles = ang;
-	self.m_claw_damage_trigger enablesys::linkto();
+	self.m_claw_damage_trigger enablelinkto();
 	self.m_claw_damage_trigger sys::linkto( self, "tag_claw" );
 	self thread mechz_claw_damage_trigger_thread();
 	self attach( "c_zom_mech_faceplate", "J_Helmet", 0 );
@@ -1550,7 +1550,7 @@ damage_prone_players()
 
 melee_anim_func()
 {
-	self.next_leap_time = sys::gettime() + 1500;
+	self.next_leap_time = gettime() + 1500;
 }
 
 mechz_launch_armor_piece()

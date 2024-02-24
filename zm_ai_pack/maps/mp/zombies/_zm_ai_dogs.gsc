@@ -705,7 +705,7 @@ dog_run_think()
 	maps\mp\zombies\_zm_net::network_safe_play_fx_on_tag( "dog_fx", 2, level._effect["dog_eye_glow"], self.fx_dog_eye, "tag_origin" );
 	assert( isdefined( self.fx_dog_trail ) );
 	maps\mp\zombies\_zm_net::network_safe_play_fx_on_tag( "dog_fx", 2, self.fx_dog_trail_type, self.fx_dog_trail, "tag_origin" );
-	self playloopsound( self.fx_dog_trail_sound );
+	self sys::playloopsound( self.fx_dog_trail_sound );
 
 	while ( true )
 	{

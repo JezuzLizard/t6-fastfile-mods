@@ -1,4 +1,33 @@
 // T6 Script Builtins
+
+// Base Types
+/@
+	ENT_TYPES =
+	{
+		"general",
+		"player",
+		"player_corpse",
+		"item",
+		"missile",
+		"invisible",
+		"scriptmover",
+		"sound_blend",
+		"fx",
+		"loop_fx",
+		"primary_light",
+		"turret",
+		"helicopter",
+		"plane",
+		"vehicle",
+		"vehicle_corpse",
+		"actor",
+		"actor_spawner",
+		"actor_corpse",
+		"streamer_hint",
+		"zbarrier"
+	};
+@/
+
 /@
 	[DESCRIPTION]: Adds <fx_name> as a configstring to the fx configstring pool.
 	Returns an index that can be used in many different functions and methods to play an fx.
@@ -230,14 +259,6 @@ linkto( parent, tag_name, origin_offset, angles_offset )
 /@
 
 @/
-gettime()
-{
-	return gettime();
-}
-
-/@
-
-@/
 getent( name, type )
 {
 	return getent( name, type );
@@ -445,14 +466,50 @@ animscripted( origin, angles, statename, substate_value, mode )
 	[DESCRIPTION]: Spawns a temp entity at CALLER's location which plays <sound_name>.
 	If sound is invalid sound will simply fail to play with no error.;
 	[CALL_TYPE]: method;
-	[USAGE]: self playsound( <sound_name> );
+	[USAGE]: self playsound( <sound_alias> );
 	[PARAMS]: CALLER:<entity> ARG1:<string>;
 	[PARAMS_NOTES]: NONE;
 	[RETURNS]: NONE;
 @/
 playsound( sound_alias )
 {
+	if ( isDefined( level.on_sound_played_func ) )
+	{
+		data = spawnStruct();
+		data.alias = sound_alias;
+		data.type = "playsound";
+		self thread [[ level.on_sound_played_func ]]( sound_alias );
+	}
 	self playsound( sound_alias );
+}
+
+/@
+	[DESCRIPTION]: Plays a sound that will loop indefinitely until either CALLER is removed either by dying, or being deleted
+	or by calling stoploopsound on CALLER.;
+	[CALL_TYPE]: method;
+	[USAGE]: self playloopsound( <sound_alias> );
+	[PARAMS]: CALLER:<entity> ARG1:<string>;
+	[PARAMS_NOTES]: NONE;
+	[RETURNS]: NONE;
+@/
+playloopsound( sound_alias, fade_time )
+{
+	if ( isDefined( level.on_sound_played_func ) )
+	{
+		data = spawnStruct();
+		data.alias = sound_alias;
+		data.type = "playloopsound";
+		data.fade_time = fade_time;
+		self thread [[ level.on_sound_played_func ]]( data );
+	}
+	if ( !isDefined( fade_time ) )
+	{
+		self playloopsound( sound_alias );
+	}
+	else
+	{
+		self playloopsound( sound_alias, fade_time );
+	}
 }
 
 /@
@@ -467,6 +524,6 @@ playsound( sound_alias )
 @/
 soundgetplaybacktime( sound_alias )
 {
-	return soundgetplaybacktime( sound_alias )
+	return soundgetplaybacktime( sound_alias );
 }
 

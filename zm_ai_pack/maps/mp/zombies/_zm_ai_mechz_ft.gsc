@@ -25,7 +25,7 @@ init_flamethrower_triggers()
 	assert( isdefined( level.flamethrower_trigger_array ) && level.flamethrower_trigger_array.size >= 4 );
 
 	for ( i = 0; i < level.flamethrower_trigger_array.size; i++ )
-		level.flamethrower_trigger_array[i] enablesys::linkto();
+		level.flamethrower_trigger_array[i] enablelinkto();
 }
 
 mechz_flamethrower_initial_setup()
@@ -381,7 +381,7 @@ zombie_burning_fx()
 
 zombie_burning_audio()
 {
-	self playloopsound( "zmb_fire_loop" );
+	self sys::playloopsound( "zmb_fire_loop" );
 	self waittill_any( "death", "stop_flame_damage" );
 
 	if ( isdefined( self ) && isalive( self ) )
@@ -505,7 +505,7 @@ should_do_flamethrower_attack()
 		return false;
 	}
 
-	if ( isdefined( self.last_flamethrower_time ) && sys::gettime() - self.last_flamethrower_time < level.mechz_flamethrower_cooldown_time )
+	if ( isdefined( self.last_flamethrower_time ) && gettime() - self.last_flamethrower_time < level.mechz_flamethrower_cooldown_time )
 	{
 /#
 		if ( getdvarint( #"_id_E7121222" ) > 1 )
@@ -553,7 +553,7 @@ mechz_do_flamethrower_attack( tank_sweep )
 	self.ai_state = "flamethrower_attack";
 	self sys::setgoalpos( self.origin );
 	self clearanim( %root, 0.2 );
-	self.last_flamethrower_time = sys::gettime();
+	self.last_flamethrower_time = gettime();
 	self thread mechz_kill_flamethrower_watcher();
 
 	if ( !isdefined( self.flamethrower_trigger ) && !isDefined( self.flamethrower_fx ) )
