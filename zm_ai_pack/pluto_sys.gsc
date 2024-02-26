@@ -63,7 +63,7 @@
 	[USAGE]: func = getfunction( <path>, <func_name> );
 	[PARAMS]: ARG1:<string> ARG2:<string>;
 	[PARAMS_NOTES]: Path must use forward slashes.;
-	[RETURNS]: <function_pointer> or <undefined>;
+	[RETURNS]: <function> or <undefined>;
 @/
 getfunction( path, func_name )
 {
@@ -74,7 +74,7 @@ getfunction( path, func_name )
 	[DESCRIPTION]: Returns the name of the input function pointer in <path>::<name> format.;
 	[CALL_TYPE]: function;
 	[USAGE]: func_name = getfunctionname( <func> );
-	[PARAMS]: ARG1:<function_pointer>;
+	[PARAMS]: ARG1:<function>;
 	[PARAMS_NOTES]: NONE;
 	[RETURNS]: <string> or <undefined>;
 @/
@@ -84,10 +84,13 @@ getfunctionname( func )
 }
 
 /@
-	[DESCRIPTION]: ;
+	[DESCRIPTION]: Detours <from_func> to <to_func> causing subsequent calls to <from_func> to instead call <to_func>.
+	Can detour any function except for functions called directly by the engine.
+	If [priority] is not specified defaults to -1 allowing for replacefunc calls with a higher [priority] value to detour already detoured
+	functions.;
 	[CALL_TYPE]: function;
-	[USAGE]: ;
-	[PARAMS]: ;
+	[USAGE]: replacefunc( <from_func>, <to_func>, [priority] );
+	[PARAMS]: <function> <function> <int>;
 	[PARAMS_NOTES]: ;
 	[RETURNS]: Original function pointer;
 @/
@@ -121,9 +124,9 @@ disabledetouronce( func )
 	at the time of calling getdetour.;
 	[CALL_TYPE]: function;
 	[USAGE]: getdetour( <func> );
-	[PARAMS]: ARG1:<function_pointer>;
+	[PARAMS]: ARG1:<function>;
 	[PARAMS_NOTES]: NONE;
-	[RETURNS]: <function_pointer> or <undefined>;
+	[RETURNS]: <function> or <undefined>;
 @/
 getdetour( func )
 {
