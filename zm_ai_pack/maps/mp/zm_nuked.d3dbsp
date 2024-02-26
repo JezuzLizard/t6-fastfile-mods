@@ -11547,6 +11547,196 @@
 "script_noteworthy" "zombie_dog_spawner"
 }
 {
+"targetname" "culdesac_green_zone_spawners"
+"script_noteworthy" "zombie_dog_location"
+"origin" "-384.934 845.987 -63.875"
+"classname" "script_struct"
+"angles" "0 0 0"
+}
+{
+"targetname" "culdesac_yellow_zone_spawners"
+"script_noteworthy" "zombie_dog_location"
+"origin" "563.594 909.484 -103.973"
+"classname" "script_struct"
+"angles" "0 0 0"
+}
+{
+"targetname" "culdesac_yellow_zone_spawners"
+"script_noteworthy" "zombie_dog_location"
+"origin" "317.887 503.854 -60.875"
+"classname" "script_struct"
+"angles" "0 0 0"
+}
+{
+"targetname" "culdesac_yellow_zone_spawners"
+"script_noteworthy" "zombie_dog_location"
+"origin" "394.412 -39.0415 -47.396"
+"classname" "script_struct"
+"angles" "0 0 0"
+}
+{
+"targetname" "culdesac_yellow_zone_spawners"
+"script_noteworthy" "zombie_dog_location"
+"origin" "230.973 -469.761 -60.8377"
+"classname" "script_struct"
+"angles" "0 0 0"
+}
+{
+"targetname" "culdesac_green_zone_spawners"
+"script_noteworthy" "zombie_dog_location"
+"origin" "-494.014 83.4232 -46.875"
+"classname" "script_struct"
+"angles" "0 0 0"
+}
+{
+"targetname" "culdesac_green_zone_spawners"
+"script_noteworthy" "zombie_dog_location"
+"origin" "-254.848 336.21 -50.2869"
+"classname" "script_struct"
+"angles" "0 0 0"
+}
+{
+"targetname" "culdesac_yellow_zone_spawners"
+"script_noteworthy" "zombie_dog_location"
+"origin" "698.789 -164.511 -57.1405"
+"classname" "script_struct"
+"angles" "0 0 0"
+}
+{
+"targetname" "openhouse2_f1_zone_spawners"
+"script_noteworthy" "zombie_dog_location"
+"origin" "836.251 598.238 -56.875"
+"classname" "script_struct"
+"angles" "0 0 0"
+}
+{
+"targetname" "openhouse2_f1_zone_spawners"
+"script_noteworthy" "zombie_dog_location"
+"origin" "679.25 274.623 -56.5105"
+"classname" "script_struct"
+"angles" "0 0 0"
+}
+{
+"targetname" "openhouse2_f1_zone_spawners"
+"script_noteworthy" "zombie_dog_location"
+"origin" "993.575 334.033 -54.2811"
+"classname" "script_struct"
+"angles" "0 0 0"
+}
+{
+"targetname" "openhouse2_f2_zone_spawners"
+"script_noteworthy" "zombie_dog_location"
+"origin" "925.133 295.415 79.125"
+"classname" "script_struct"
+"angles" "0 0 0"
+}
+{
+"targetname" "openhouse2_f2_zone_spawners"
+"script_noteworthy" "zombie_dog_location"
+"origin" "660.95 221.104 79.125"
+"classname" "script_struct"
+"angles" "0 0 0"
+}
+{
+"targetname" "openhouse2_backyard_zone_spawners"
+"script_noteworthy" "zombie_dog_location"
+"origin" "1022.71 899.392 -126.239"
+"classname" "script_struct"
+"angles" "0 0 0"
+}
+{
+"targetname" "openhouse2_backyard_zone_spawners"
+"script_noteworthy" "zombie_dog_location"
+"origin" "1568.58 816.986 -60.6684"
+"classname" "script_struct"
+"angles" "0 0 0"
+}
+{
+"targetname" "openhouse2_backyard_zone_spawners"
+"script_noteworthy" "zombie_dog_location"
+"origin" "1675.88 249.702 -45.769"
+"classname" "script_struct"
+"angles" "0 0 0"
+}
+{
+"targetname" "openhouse2_backyard_zone_spawners"
+"script_noteworthy" "zombie_dog_location"
+"origin" "1304.43 164.747 -54.9502"
+"classname" "script_struct"
+"angles" "0 0 0"
+}
+{
+"targetname" "openhouse2_backyard_zone_spawners"
+"script_noteworthy" "zombie_dog_location"
+"origin" "1903.94 303.476 -52.6843"
+"classname" "script_struct"
+"angles" "0 0 0"
+}
+{
+"targetname" "openhouse1_f1_zone_spawners"
+"script_noteworthy" "zombie_dog_location"
+"origin" "-665.451 413.733 -55.875"
+"classname" "script_struct"
+"angles" "0 0 0"
+}
+{
+"targetname" "openhouse1_f1_zone_spawners"
+"script_noteworthy" "zombie_dog_location"
+"origin" "-916.521 537.634 -55.875"
+"classname" "script_struct"
+"angles" "0 0 0"
+}
+{
+"targetname" "openhouse1_f2_zone_spawners"
+"script_noteworthy" "zombie_dog_location"
+"origin" "-857.697 493.433 80.125"
+"classname" "script_struct"
+"angles" "0 0 0"
+}
+{
+"targetname" "openhouse1_f2_zone_spawners"
+"script_noteworthy" "zombie_dog_location"
+"origin" "-582.218 410.76 80.125"
+"classname" "script_struct"
+"angles" "0 0 0"
+}
+{
+"targetname" "openhouse1_backyard_zone_spawners"
+"script_noteworthy" "zombie_dog_location"
+"origin" "-1223.21 40.3534 -64.0952"
+"classname" "script_struct"
+"angles" "0 0 0"
+}
+{
+"targetname" "openhouse1_backyard_zone_spawners"
+"script_noteworthy" "zombie_dog_location"
+"origin" "-1699.86 346.968 -62.875"
+"classname" "script_struct"
+"angles" "0 0 0"
+}
+{
+"targetname" "openhouse1_backyard_zone_spawners"
+"script_noteworthy" "zombie_dog_location"
+"origin" "-1950.66 458.804 -53.4965"
+"classname" "script_struct"
+"angles" "0 0 0"
+}
+{
+"targetname" "openhouse1_backyard_zone_spawners"
+"script_noteworthy" "zombie_dog_location"
+"origin" "-1583.33 968.953 -63.875"
+"classname" "script_struct"
+"angles" "0 0 0"
+}
+{
+"targetname" "openhouse1_backyard_zone_spawners"
+"script_noteworthy" "zombie_dog_location"
+"origin" "-1131.15 812.042 -56.6833"
+"classname" "script_struct"
+"angles" "0 0 0"
+}
+
+{
 "classname" "actor_zm_transit_avogadro"
 "model" "c_zom_electrician_fb"
 "export" "138"

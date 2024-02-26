@@ -197,6 +197,7 @@ zone_init( zone_name )
 		spots = getstructarray( zone.volumes[0].target, "targetname" );
 		zone.spawn_locations = [];
 		zone.dog_locations = [];
+		zone.zombie_dog_locations = [];
 		zone.screecher_locations = [];
 		zone.avogadro_locations = [];
 		zone.inert_locations = [];
@@ -227,6 +228,12 @@ zone_init( zone_name )
 				if ( token == "dog_location" )
 				{
 					zone.dog_locations[zone.dog_locations.size] = spots[i];
+					continue;
+				}
+
+				if ( token == "zombie_dog_location" )
+				{
+					zone.zombie_dog_locations[zone.zombie_dog_locations.size] = spots[i];
 					continue;
 				}
 
@@ -341,6 +348,7 @@ reinit_zone_spawners()
 			spots = getstructarray( zone.volumes[0].target, "targetname" );
 			zone.spawn_locations = [];
 			zone.dog_locations = [];
+			zone.zombie_dog_locations = [];
 			zone.screecher_locations = [];
 			zone.avogadro_locations = [];
 			zone.quad_locations = [];
@@ -366,6 +374,12 @@ reinit_zone_spawners()
 					if ( token == "dog_location" )
 					{
 						zone.dog_locations[zone.dog_locations.size] = spots[j];
+						continue;
+					}
+
+					if ( token == "zombie_dog_location" )
+					{
+						zone.zombie_dog_locations[zone.zombie_dog_locations.size] = spots[j];
 						continue;
 					}
 
@@ -943,6 +957,7 @@ create_spawner_list( zkeys )
 	level.zombie_spawn_locations = [];
 	level.inert_locations = [];
 	level.enemy_dog_locations = [];
+	level.zombie_dog_locations = [];
 	level.zombie_screecher_locations = [];
 	level.zombie_avogadro_locations = [];
 	level.quad_locations = [];
@@ -974,6 +989,12 @@ create_spawner_list( zkeys )
 			{
 				if ( zone.dog_locations[x].is_enabled )
 					level.enemy_dog_locations[level.enemy_dog_locations.size] = zone.dog_locations[x];
+			}
+
+			for ( x = 0; x < zone.zombie_dog_locations.size; x++ )
+			{
+				if ( zone.zombie_dog_locations[x].is_enabled )
+					level.zombie_dog_locations[level.zombie_dog_locations.size] = zone.zombie_dog_locations[x];
 			}
 
 			for ( x = 0; x < zone.screecher_locations.size; x++ )

@@ -13,6 +13,14 @@
 
 init()
 {
+	if ( !isDefined( level._zm_ai_dogs_init_called ) )
+	{
+		level._zm_ai_dogs_init_called = true;
+	}
+	else
+	{
+		return;
+	}
 	level.dogs_enabled = 1;
 	level.dog_rounds_enabled = 0;
 	level.dog_round_count = 1;
@@ -85,6 +93,7 @@ dog_spawner_init()
 
 dog_round_spawning()
 {
+	level endon( "end_of_round" );
 	level endon( "intermission" );
 	level.dog_targets = sys::getplayers();
 
@@ -106,7 +115,7 @@ dog_round_spawning()
 	players = sys::getplayers();
 	array_thread( players, ::play_dog_round );
 	wait 1;
-	playsoundatposition( "vox_zmba_event_dogstart_0", ( 0, 0, 0 ) );
+	playsoundatposition( game["zmbdialog"]["prefix"] + "_event_dogstart_0", ( 0, 0, 0 ) );
 	wait 6;
 
 	if ( level.dog_round_count < 3 )
@@ -121,9 +130,11 @@ dog_round_spawning()
 	level.zombie_total = max;
 	dog_health_increase();
 	count = 0;
-
-	while ( count < max )
+	while ( true )
 	{
+		while ( get_current_zombie_count() >= level.zombie_ai_limit || level.zombie_total <= 0 )
+			wait 0.1;
+		
 		for ( num_player_valid = get_number_of_valid_players(); get_current_zombie_count() >= num_player_valid * 2; num_player_valid = get_number_of_valid_players() )
 			wait 2;
 
@@ -248,7 +259,7 @@ dog_spawn_sumpf_logic( dog_array, favorite_enemy )
 
 dog_spawn_factory_logic( dog_array, favorite_enemy )
 {
-	dog_locs = array_randomize( level.enemy_dog_locations );
+	dog_locs = array_randomize( level.zombie_dog_locations );
 
 	for ( i = 0; i < dog_locs.size; i++ )
 	{
@@ -483,11 +494,21 @@ dog_fx_trail()
 	self.fx_dog_trail sys::linkto( self, "tag_origin" );
 }
 
+get_zombie_dog_array()
+{
+	return getaispeciesarray( level.zombie_team, "zombie_dog" );
+}
+
+get_zombie_dog_count()
+{
+	return get_zombie_dog_array().size;
+}
+
 dog_death()
 {
 	self waittill( "death" );
 
-	if ( get_current_zombie_count() == 0 && level.zombie_total == 0 )
+	if ( get_zombie_dog_count() <= 0 && level.zombie_total <= 0 )
 	{
 		level.last_dog_origin = self.origin;
 		level notify( "last_dog_down" );
@@ -584,6 +605,11 @@ dog_clip_monitor()
 {
 	clips_on = 0;
 	level.dog_clips = sys::getentarray( "dog_clips", "targetname" );
+
+	if ( !isDefined( level.dog_clips ) || level.dog_clips.size <= 0 )
+	{
+		return;
+	}
 
 	while ( true )
 	{

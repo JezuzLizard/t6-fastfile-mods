@@ -237,6 +237,10 @@ draw_zombie_spawn_location_box( origin, color, vec = ( 20, 20, 40 ) )
 
 draw_zome_spawn_location_info_text( origin, color, zone_name, location_type_name )
 {
+	if ( !level.players[ 0 ] is_player_looking_at( origin, 0.9, false ) )
+	{
+		return;
+	}
 	print3d( origin + ( 0, 0, 49 ), "ZONE:" + zone_name );
 	print3d( origin + ( 0, 0, 37 ), "TYPE:" + location_type_name );
 	print3d( origin + ( 0, 0, 25 ), "ORIGIN:" + origin );
@@ -288,6 +292,11 @@ draw_zombie_spawn_locations()
 
 			draw_specific_zombie_spawn_locations( zone.dog_locations, zkeys[ z ], ( 0.8, 0.8, 0 ), "dog" );
 
+			if ( isDefined( zone.zombie_dog_locations ) )
+			{
+				draw_specific_zombie_spawn_locations( zone.zombie_dog_locations, zkeys[ z ], ( 0.3, 0.8, 0.3 ), "zombie_dog" );
+			}
+			
 			draw_specific_zombie_spawn_locations( zone.screecher_locations, zkeys[ z ], ( 0, 0.8, 0.8 ), "screecher" );
 
 			draw_specific_zombie_spawn_locations( zone.avogadro_locations, zkeys[ z ], ( 0.3, 0.8, 0.8 ), "avogadro" );

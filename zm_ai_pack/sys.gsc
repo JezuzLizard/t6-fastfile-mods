@@ -43,7 +43,7 @@
 @/
 loadfx( fx_name )
 {
-	loadfx( fx_name );
+	return loadfx( fx_name );
 }
 
 /@
