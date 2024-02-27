@@ -85,7 +85,7 @@ getfunctionname( func )
 
 /@
 	[DESCRIPTION]: Detours <from_func> to <to_func> causing subsequent calls to <from_func> to instead call <to_func>.
-	Can detour any function except for functions called directly by the engine.
+	Can detour any function except builtins.
 	If [priority] is not specified defaults to -1 allowing for replacefunc calls with a higher [priority] value to detour already detoured
 	functions.;
 	[CALL_TYPE]: function;
