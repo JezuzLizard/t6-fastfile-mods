@@ -4,105 +4,6 @@
 
 #include maps\mp\zombies\_zm;
 
-default_max_zombie_func( max_num )
-{
-/#
-	count = getdvarint( #"zombie_default_max" );
-
-	if ( count > -1 )
-		return count;
-#/
-	max = max_num;
-
-	if ( level.round_number < 2 )
-		max = int( max_num * 0.25 );
-	else if ( level.round_number < 3 )
-		max = int( max_num * 0.3 );
-	else if ( level.round_number < 4 )
-		max = int( max_num * 0.5 );
-	else if ( level.round_number < 5 )
-		max = int( max_num * 0.7 );
-	else if ( level.round_number < 6 )
-		max = int( max_num * 0.9 );
-
-	return max;
-}
-
-round_max()
-{
-	players = sys::getplayers();
-
-	for ( i = 0; i < players.size; i++ )
-		players[i].zombification_time = 0;
-
-	max = level.zombie_vars["zombie_max_ai"];
-	multiplier = level.round_number / 5;
-
-	if ( multiplier < 1 )
-		multiplier = 1;
-
-	if ( level.round_number >= 10 )
-		multiplier = multiplier * ( level.round_number * 0.15 );
-
-	player_num = get_players().size;
-
-	if ( player_num == 1 )
-		max = max + int( 0.5 * level.zombie_vars["zombie_ai_per_player"] * multiplier );
-	else
-		max = max + int( ( player_num - 1 ) * level.zombie_vars["zombie_ai_per_player"] * multiplier );
-
-	if ( !isdefined( level.max_zombie_func ) )
-		level.max_zombie_func = ::default_max_zombie_func;
-
-	level.zombie_total = [[ level.max_zombie_func ]]( max );
-	level notify( "zombie_total_set" );
-
-	if ( isdefined( level.zombie_total_set_func ) )
-		level thread [[ level.zombie_total_set_func ]]();
-}
-
-round_chance()
-{
-	return false;
-}
-
-round_next()
-{
-	return level.round_number + 1;
-}
-
-round_wait()
-{
-	level endon( "restart_round" );
-/#
-	if ( getdvarint( #"zombie_rise_test" ) )
-		level waittill( "forever" );
-#/
-/#
-	while ( getdvarint( #"zombie_cheat" ) == 2 || getdvarint( #"zombie_cheat" ) >= 4 )
-		wait 1;
-#/
-	wait 1;
-
-	while ( true )
-	{
-		should_wait = 0;
-
-		if ( isdefined( level.is_ghost_round_started ) && [[ level.is_ghost_round_started ]]() )
-			should_wait = 1;
-		else
-			should_wait = get_current_zombie_count() > 0 || level.zombie_total > 0 || level.intermission;
-
-		if ( !should_wait )
-			return;
-
-		if ( flag( "end_round_wait" ) )
-			return;
-
-		wait 1.0;
-	}
-}
-
 round_spawning()
 {
 	level endon( "intermission" );
@@ -129,7 +30,6 @@ round_spawning()
 	}
 
 	ai_calculate_health( level.round_number );
-	count = 0;
 
 	if ( level.round_number < 10 || level.speed_change_max > 0 )
 		level thread zombie_speed_up();
@@ -195,10 +95,118 @@ round_spawning()
 		{
 			level.zombie_total--;
 			ai thread round_spawn_failsafe();
-			count++;
 		}
 
 		wait( level.zombie_vars["zombie_spawn_delay"] );
 		wait_network_frame();
 	}
+}
+
+round_wait()
+{
+	level endon( "restart_round" );
+/#
+	if ( getdvarint( #"zombie_rise_test" ) )
+		level waittill( "forever" );
+#/
+/#
+	while ( getdvarint( #"zombie_cheat" ) == 2 || getdvarint( #"zombie_cheat" ) >= 4 )
+		wait 1;
+#/
+	wait 1;
+
+	while ( true )
+	{
+		should_wait = 0;
+
+		if ( isdefined( level.is_ghost_round_started ) && [[ level.is_ghost_round_started ]]() )
+			should_wait = 1;
+		else
+			should_wait = get_current_zombie_count() > 0 || level.zombie_total > 0 || level.intermission;
+
+		if ( !should_wait )
+			return;
+
+		if ( flag( "end_round_wait" ) )
+			return;
+
+		wait 1.0;
+	}
+}
+
+round_max()
+{
+	players = sys::getplayers();
+
+	for ( i = 0; i < players.size; i++ )
+		players[i].zombification_time = 0;
+
+	max = level.zombie_vars["zombie_max_ai"];
+	multiplier = level.round_number / 5;
+
+	if ( multiplier < 1 )
+		multiplier = 1;
+
+	if ( level.round_number >= 10 )
+		multiplier = multiplier * ( level.round_number * 0.15 );
+
+	player_num = get_players().size;
+
+	if ( player_num == 1 )
+		max = max + int( 0.5 * level.zombie_vars["zombie_ai_per_player"] * multiplier );
+	else
+		max = max + int( ( player_num - 1 ) * level.zombie_vars["zombie_ai_per_player"] * multiplier );
+
+	if ( !isdefined( level.max_zombie_func ) )
+		level.max_zombie_func = ::default_max_zombie_func;
+
+	level.zombie_total = [[ level.max_zombie_func ]]( max );
+	level notify( "zombie_total_set" );
+
+	if ( isdefined( level.zombie_total_set_func ) )
+		level thread [[ level.zombie_total_set_func ]]();
+}
+
+round_start()
+{
+	
+}
+
+round_over()
+{
+
+}
+
+round_chance()
+{
+	return false;
+}
+
+round_next()
+{
+	return level.round_number + 1;
+}
+
+default_max_zombie_func( max_num )
+{
+/#
+	count = getdvarint( #"zombie_default_max" );
+
+	if ( count > -1 )
+		return count;
+#/
+	max = max_num;
+
+	if ( level.round_number < 2 )
+		max = int( max_num * 0.25 );
+	else if ( level.round_number < 3 )
+		max = int( max_num * 0.3 );
+	else if ( level.round_number < 4 )
+		max = int( max_num * 0.5 );
+	else if ( level.round_number < 5 )
+		max = int( max_num * 0.7 );
+	else if ( level.round_number < 6 )
+		max = int( max_num * 0.9 );
+
+	return max;
 }

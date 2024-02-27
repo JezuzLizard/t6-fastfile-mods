@@ -171,11 +171,6 @@ init()
 
 	level thread init_flamethrower_triggers();
 
-	if ( isdefined( level.mechz_spawning_logic_override_func ) )
-		level thread [[ level.mechz_spawning_logic_override_func ]]();
-	else
-		level thread mechz_spawning_logic();
-
 	if ( level.script != "zm_tomb" )
 	{
 		scriptmodelsuseanimtree( #animtree );
@@ -386,133 +381,6 @@ play_ambient_mechz_vocals()
 		}
 
 		wait( randomfloatrange( 3, 6 ) );
-	}
-}
-
-enable_mechz_rounds()
-{
-/#
-	if ( getdvarint( #"_id_FA81816F" ) >= 2 )
-		return;
-#/
-	level.mechz_rounds_enabled = 1;
-	flag_init( "mechz_round" );
-	level thread mechz_round_tracker();
-}
-
-mechz_round_tracker()
-{
-	maps\mp\zombies\_zm_ai_mechz_ffotd::mechz_round_tracker_start();
-	level.num_mechz_spawned = 0;
-	old_spawn_func = level.round_spawn_func;
-	old_wait_func = level.round_wait_func;
-
-	while ( !isdefined( level.zombie_mechz_locations ) )
-		wait 0.05;
-
-	if ( getDvar( "mapname" ) == "zm_tomb" )
-	{
-		flag_wait( "activate_zone_nml" );
-	}
-	
-	mech_start_round_num = 8;
-
-	if ( isdefined( level.is_forever_solo_game ) && level.is_forever_solo_game )
-		mech_start_round_num = 8;
-
-	while ( level.round_number < mech_start_round_num )
-		level waittill( "between_round_over" );
-
-	level.next_mechz_round = level.round_number;
-	level thread debug_print_mechz_round();
-
-	while ( true )
-	{
-		maps\mp\zombies\_zm_ai_mechz_ffotd::mechz_round_tracker_loop_start();
-
-		if ( level.num_mechz_spawned > 0 )
-			level.mechz_should_drop_powerup = 1;
-
-		if ( level.next_mechz_round <= level.round_number )
-		{
-			a_zombies = getaispeciesarray( level.zombie_team, "all" );
-
-			foreach ( zombie in a_zombies )
-			{
-				if ( isdefined( zombie.is_mechz ) && zombie.is_mechz && isalive( zombie ) )
-				{
-					level.next_mechz_round++;
-					break;
-				}
-			}
-		}
-
-		if ( level.mechz_left_to_spawn == 0 && level.next_mechz_round <= level.round_number )
-		{
-			mechz_health_increases();
-
-			if ( isdefined( level.is_forever_solo_game ) && level.is_forever_solo_game )
-				level.mechz_zombie_per_round = 1;
-			else if ( level.mechz_round_count < 2 )
-				level.mechz_zombie_per_round = 1;
-			else if ( level.mechz_round_count < 5 )
-				level.mechz_zombie_per_round = 2;
-			else
-				level.mechz_zombie_per_round = 3;
-
-			level.mechz_left_to_spawn = level.mechz_zombie_per_round;
-			mechz_spawning = level.mechz_left_to_spawn;
-			wait( randomfloatrange( 10.0, 15.0 ) );
-			level notify( "spawn_mechz" );
-
-			if ( isdefined( level.is_forever_solo_game ) && level.is_forever_solo_game )
-				n_round_gap = randomintrange( level.mechz_min_round_fq_solo, level.mechz_max_round_fq_solo );
-			else
-				n_round_gap = randomintrange( level.mechz_min_round_fq, level.mechz_max_round_fq );
-
-			level.next_mechz_round = level.round_number + n_round_gap;
-			level.mechz_round_count++;
-			level thread debug_print_mechz_round();
-			level.num_mechz_spawned = level.num_mechz_spawned + mechz_spawning;
-		}
-
-		maps\mp\zombies\_zm_ai_mechz_ffotd::mechz_round_tracker_loop_end();
-		level waittill( "between_round_over" );
-		mechz_clear_spawns();
-	}
-}
-
-debug_print_mechz_round()
-{
-	flag_wait( "start_zombie_round_logic" );
-/#
-	iprintln( "Next mechz Round = " + level.next_mechz_round );
-#/
-}
-
-mechz_spawning_logic()
-{
-	level thread enable_mechz_rounds();
-
-	while ( true )
-	{
-		level waittill( "spawn_mechz" );
-
-		while ( level.mechz_left_to_spawn )
-		{
-			while ( level.zombie_mechz_locations.size < 1 )
-				wait( randomfloatrange( 5.0, 10.0 ) );
-
-			ai = spawn_zombie( level.mechz_spawners[0] );
-			ai thread mechz_spawn();
-			level.mechz_left_to_spawn--;
-
-			if ( level.mechz_left_to_spawn == 0 )
-				level thread response_to_air_raid_siren_vo();
-
-			ai thread mechz_hint_vo();
-			wait( randomfloatrange( 3.0, 6.0 ) );
-		}
 	}
 }
 
@@ -736,10 +604,10 @@ get_best_mechz_spawn_pos( ignore_used_positions )
 
 	for ( i = 0; i < level.zombie_mechz_locations.size; i++ )
 	{
-		if ( level.script == "zm_tomb" && !ignore_used_positions && ( isdefined( level.zombie_mechz_locations[i].has_been_used ) && level.zombie_mechz_locations[i].has_been_used ) )
+		if ( !ignore_used_positions && ( isdefined( level.zombie_mechz_locations[i].has_been_used ) && level.zombie_mechz_locations[i].has_been_used ) )
 			continue;
 
-		if ( level.script == "zm_tomb" && ignore_used_positions == 1 && ( isdefined( level.zombie_mechz_locations[i].used_cooldown ) && level.zombie_mechz_locations[i].used_cooldown ) )
+		if ( ignore_used_positions == 1 && ( isdefined( level.zombie_mechz_locations[i].used_cooldown ) && level.zombie_mechz_locations[i].used_cooldown ) )
 			continue;
 
 		for ( j = 0; j < players.size; j++ )

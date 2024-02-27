@@ -9,6 +9,16 @@
 main()
 {
 	set_dvar_if_unset( "rm_dog_round_chance", 40 );
+
+	set_dvar_if_unset( "rm_dog_rush_min_round", 20 );
+	set_dvar_if_unset( "rm_dog_rush_round_chance", 10 );
+	set_dvar_if_unset( "rm_dog_rush_max_dogs_alive", 24 );
+	set_dvar_if_unset( "rm_dog_rush_max_dogs_round", 128 );
+	set_dvar_if_unset( "rm_dog_rush_max_dogs_round_per_player", 8 );
+	set_dvar_if_unset( "rm_dog_rush_max_dogs_round_base", 24 );
+	set_dvar_if_unset( "rm_dog_rush_max_dogs_round_number_multiplier", 0.1 );
+	set_dvar_if_unset( "rm_dog_rush_max_spawn_wait", 0.5 );
+	set_dvar_if_unset( "rm_dog_rush_min_spawn_wait", 0.1 );
 }
 
 round_spawning()
@@ -30,58 +40,17 @@ round_spawning()
 	if ( level.intermission )
 		return;
 
-	level.music_round_override = 1;
-	maps\mp\zombies\_zm_ai_dogs::dog_round_start();
-
-	level.dog_intermission = 1;
-	level thread maps\mp\zombies\_zm_ai_dogs::dog_round_aftermath();
-	players = sys::getplayers();
-	array_thread( players, maps\mp\zombies\_zm_ai_dogs::play_dog_round );
-	wait 1;
-	playsoundatposition( game["zmbdialog"]["prefix"] + "_event_dogstart_0", ( 0, 0, 0 ) );
-	wait 6;
-
-	dog_health_increase();
 	count = 0;
+	max = level.zombie_total;
 	while ( true )
 	{
-		while ( get_current_zombie_count() >= level.zombie_ai_limit || level.zombie_total <= 0 )
+		while ( get_zombie_dog_count() >= level.zombie_ai_limit || level.zombie_total <= 0 )
 			wait 0.1;
 		
 		for ( num_player_valid = get_number_of_valid_players(); get_zombie_dog_count() >= num_player_valid * 2; num_player_valid = get_number_of_valid_players() )
 			wait 2;
-
-		players = sys::getplayers();
-		favorite_enemy = maps\mp\zombies\_zm_ai_dogs::get_favorite_enemy();
-
-		if ( isdefined( level.dog_spawn_func ) )
-		{
-			spawn_loc = [[ level.dog_spawn_func ]]( level.dog_spawners, favorite_enemy );
-			ai = spawn_zombie( level.dog_spawners[0] );
-
-			if ( isdefined( ai ) )
-			{
-				ai.favoriteenemy = favorite_enemy;
-				spawn_loc thread maps\mp\zombies\_zm_ai_dogs::dog_spawn_fx( ai, spawn_loc );
-				level.zombie_total--;
-				count++;
-			}
-		}
-		else
-		{
-			spawn_point = dog_spawn_factory_logic( level.enemy_dog_spawns, favorite_enemy );
-			ai = spawn_zombie( level.dog_spawners[0] );
-
-			if ( isdefined( ai ) )
-			{
-				ai.favoriteenemy = favorite_enemy;
-				spawn_point thread maps\mp\zombies\_zm_ai_dogs::dog_spawn_fx( ai, spawn_point );
-				level.zombie_total--;
-				count++;
-				flag_set( "dog_clips" );
-			}
-		}
-
+			
+		count = spawn_zombie_dog( count );
 		waiting_for_next_dog_spawn( count, max );
 	}
 }
@@ -95,7 +64,9 @@ round_wait()
 		wait 0.5;
 	}
 
-	increment_dog_round_stat( "finished" );
+	maps\mp\zombies\_zm::increment_dog_round_stat( "finished" );
+
+	wait 8;
 }
 
 round_max()
@@ -113,6 +84,35 @@ round_max()
 	level.zombie_total = max;
 }
 
+round_start()
+{
+	level.music_round_override = 1;
+	maps\mp\zombies\_zm_ai_dogs::dog_round_start();
+
+	level.dog_intermission = 1;
+	level thread maps\mp\zombies\_zm_ai_dogs::dog_round_aftermath();
+	players = sys::getplayers();
+	array_thread( players, maps\mp\zombies\_zm_ai_dogs::play_dog_round );
+	wait 1;
+	playsoundatposition( game["zmbdialog"]["prefix"] + "_event_dogstart_0", ( 0, 0, 0 ) );
+	wait 6;
+}
+
+round_over()
+{
+	if ( !isDefined( level.dog_round_count ) )
+	{
+		level.dog_round_count = 1;
+	}
+
+	maps\mp\zombies\_zm_ai_dogs::dog_health_increase();
+
+	maps\mp\zombies\_zm_ai_dogs::dog_round_stop();
+	level.music_round_override = 0;
+	level.dog_round_count = level.dog_round_count + 1;
+	flag_clear( "dog_round" );
+}
+
 round_chance()
 {
 
@@ -123,7 +123,92 @@ round_chance()
 
 round_next()
 {
-	return level.special_round.last_data.round_number + randomintrange( getDvarInt( "rm_min_rounds_before_special_round" ), getDvarInt( "rm_max_rounds_before_special_round" ) );
+	min = getDvarInt( "rm_min_rounds_before_special_round" );
+	max = getDvarInt( "rm_max_rounds_before_special_round" );
+	if ( min >= max )
+	{
+		return level.special_round.last_data.round_number + 1;
+	}
+	else
+	{
+		return level.special_round.last_data.round_number + randomintrange( min, max );
+	}
+}
+
+round_spawning_rush()
+{
+	level endon( "end_of_round" );
+	level endon( "intermission" );
+	level.dog_targets = sys::getplayers();
+
+	for ( i = 0; i < level.dog_targets.size; i++ )
+		level.dog_targets[i].hunted_by = 0;
+
+/#
+	level endon( "kill_round" );
+
+	if ( getdvarint( #"zombie_cheat" ) == 2 || getdvarint( #"zombie_cheat" ) >= 4 )
+		return;
+#/
+
+	if ( level.intermission )
+		return;
+
+	count = 0;
+	max = level.zombie_total;
+	while ( true )
+	{
+		while ( get_zombie_dog_count() >= level.zombie_ai_limit || get_zombie_dog_count() >= getdvarint( "rm_dog_rush_max_dogs_alive" ) || level.zombie_total <= 0 )
+			wait 0.1;
+
+		count = spawn_zombie_dog( count );
+
+		waiting_for_next_dog_spawn_rush( count, max );
+	}
+}
+
+round_max_rush()
+{
+	players = sys::getplayers();
+
+	dog_max = getdvarint( "rm_dog_rush_max_dogs_round_base" );
+
+	dog_max += players.size * getdvarint( "rm_dog_rush_max_dogs_round_per_player" );
+
+	dog_max *= int( level.round_number * getdvarfloat( "rm_dog_rush_max_dogs_round_number_multiplier" ) );
+
+	max = getdvarint( "rm_dog_rush_max_dogs_round" );
+	if ( dog_max > max )
+	{
+		dog_max = max;
+	}
+
+	dog_max = int( dog_max );
+	level.zombie_total = dog_max;
+}
+
+round_chance_rush()
+{
+	if ( level.round_number < getdvarint( "rm_dog_rush_min_round" ) )
+	{
+		return false;
+	}
+
+	return randomint( 100 ) <= getdvarint( "rm_dog_rush_round_chance" );
+}
+
+round_next_rush()
+{
+	min = getDvarInt( "rm_min_rounds_before_special_round" );
+	max = getDvarInt( "rm_max_rounds_before_special_round" );
+	if ( min >= max )
+	{
+		return level.special_round.last_data.round_number + 1;
+	}
+	else
+	{
+		return level.special_round.last_data.round_number + randomintrange( min, max );
+	}
 }
 
 waiting_for_next_dog_spawn( count, max )
@@ -143,17 +228,57 @@ waiting_for_next_dog_spawn( count, max )
 	wait( default_wait );
 }
 
-round_over()
+waiting_for_next_dog_spawn_rush( count, max )
 {
-	if ( !isDefined( level.dog_round_count ) )
+	default_wait = getdvarfloat( "rm_dog_rush_max_spawn_wait" );
+
+	default_wait = default_wait - ( ( count / max ) * 2 );
+	min_wait = getdvarfloat( "rm_dog_rush_min_spawn_wait" );
+	if ( default_wait <= min_wait )
 	{
-		level.dog_round_count = 1;
+		default_wait = min_wait;
+	}
+	if ( default_wait < 0.05 )
+	{
+		default_wait = 0.05;
+	}
+	wait( default_wait );
+}
+
+spawn_zombie_dog( count )
+{
+	players = sys::getplayers();
+	favorite_enemy = maps\mp\zombies\_zm_ai_dogs::get_favorite_enemy();
+
+	if ( isdefined( level.dog_spawn_func ) )
+	{
+		spawn_loc = [[ level.dog_spawn_func ]]( level.dog_spawners, favorite_enemy );
+		ai = spawn_zombie( level.dog_spawners[0] );
+
+		if ( isdefined( ai ) )
+		{
+			ai.favoriteenemy = favorite_enemy;
+			spawn_loc thread maps\mp\zombies\_zm_ai_dogs::dog_spawn_fx( ai, spawn_loc );
+			level.zombie_total--;
+			count++;
+		}
+	}
+	else
+	{
+		spawn_point = dog_spawn_factory_logic( level.enemy_dog_spawns, favorite_enemy );
+		ai = spawn_zombie( level.dog_spawners[0] );
+
+		if ( isdefined( ai ) )
+		{
+			ai.favoriteenemy = favorite_enemy;
+			spawn_point thread maps\mp\zombies\_zm_ai_dogs::dog_spawn_fx( ai, spawn_point );
+			level.zombie_total--;
+			count++;
+			flag_set( "dog_clips" );
+		}
 	}
 
-	maps\mp\zombies\_zm_ai_dogs::dog_round_stop();
-	level.music_round_override = 0;
-	level.dog_round_count = level.dog_round_count + 1;
-	flag_clear( "dog_round" );
+	return count;
 }
 
 dog_spawn_sumpf_logic( dog_array, favorite_enemy )

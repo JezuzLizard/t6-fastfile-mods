@@ -52,8 +52,7 @@ main()
 	level.ai_data[ "mechz" ].should_execute = level.script != "zm_tomb";
 	level.ai_data[ "zombie_dog" ] = sys::spawnstruct();
 	level.ai_data[ "zombie_dog" ].main = maps\mp\zombies\_zm_ai_dogs::init;
-	level.ai_data[ "zombie_dog" ].init = maps\mp\zombies\_zm_ai_dogs::enable_dog_rounds;
-	level.ai_data[ "zombie_dog" ].should_execute = !( level.gametype == "zstandard" && getGametypeSetting( "allowDogs" ) == 1 );	
+	level.ai_data[ "zombie_dog" ].should_execute = level.gametype != "zstandard" ;	
 
 	keys = getArrayKeys( level.ai_data );
 	for ( i = 0; i < keys.size; i++ )

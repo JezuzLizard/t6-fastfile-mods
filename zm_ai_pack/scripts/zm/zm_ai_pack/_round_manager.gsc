@@ -7,11 +7,11 @@
 main()
 {
 	set_dvar_if_unset( "rm_min_rounds_before_special_round", 3 );
-	set_dvar_if_unset( "rm_max_rounds_before_special_round", 7 );
+	set_dvar_if_unset( "rm_max_rounds_before_special_round", 5 );
 	set_dvar_if_unset( "rm_special_round_chance", 33 );
 	set_dvar_if_unset( "rm_allow_same_round_as_last_round", 1 );
 
-	set_dvar_if_unset( "rm_allowed_special_rounds", "normal zombie_dog mechz brutus leaper ghost avogadro mixed" );
+	set_dvar_if_unset( "rm_allowed_special_rounds", "normal zombie_dog mechz" );
 	set_dvar_if_unset( "rm_allowed_special_round_variants", "default" );
 	set_dvar_if_unset( "rm_forced_special_round", "" );
 	set_dvar_if_unset( "rm_forced_special_variant", "" );
@@ -31,24 +31,62 @@ main()
 	level.normal_round.current_data.variant = "";
 
 	scripts\zm\zm_ai_pack\rounds\_zombie_dog::main();
+	scripts\zm\zm_ai_pack\rounds\_mechz::main();
+
 	register_special_round( "zombie_dog", "default",
 										  scripts\zm\zm_ai_pack\rounds\_zombie_dog::round_spawning,
 										  scripts\zm\zm_ai_pack\rounds\_zombie_dog::round_wait,
 										  scripts\zm\zm_ai_pack\rounds\_zombie_dog::round_max,
+										  scripts\zm\zm_ai_pack\rounds\_zombie_dog::round_start,
 										  scripts\zm\zm_ai_pack\rounds\_zombie_dog::round_over,
 										  scripts\zm\zm_ai_pack\rounds\_zombie_dog::round_chance,
 										  scripts\zm\zm_ai_pack\rounds\_zombie_dog::round_next );
 
+	register_special_round( "zombie_dog", "rush",
+										  scripts\zm\zm_ai_pack\rounds\_zombie_dog::round_spawning_rush,
+										  scripts\zm\zm_ai_pack\rounds\_zombie_dog::round_wait,
+										  scripts\zm\zm_ai_pack\rounds\_zombie_dog::round_max_rush,
+										  scripts\zm\zm_ai_pack\rounds\_zombie_dog::round_start,
+										  scripts\zm\zm_ai_pack\rounds\_zombie_dog::round_over,
+										  scripts\zm\zm_ai_pack\rounds\_zombie_dog::round_chance_rush,
+										  scripts\zm\zm_ai_pack\rounds\_zombie_dog::round_next_rush );
+
+	register_special_round( "mechz", "default",
+										  scripts\zm\zm_ai_pack\rounds\_mechz::round_spawning,
+										  scripts\zm\zm_ai_pack\rounds\_mechz::round_wait,
+										  scripts\zm\zm_ai_pack\rounds\_mechz::round_max,
+										  scripts\zm\zm_ai_pack\rounds\_mechz::round_start,
+										  scripts\zm\zm_ai_pack\rounds\_mechz::round_over,
+										  scripts\zm\zm_ai_pack\rounds\_mechz::round_chance,
+										  scripts\zm\zm_ai_pack\rounds\_mechz::round_next );
+
+	register_special_round( "mechz", "rush",
+										  scripts\zm\zm_ai_pack\rounds\_mechz::round_spawning_rush,
+										  scripts\zm\zm_ai_pack\rounds\_mechz::round_wait,
+										  scripts\zm\zm_ai_pack\rounds\_mechz::round_max_rush,
+										  scripts\zm\zm_ai_pack\rounds\_mechz::round_start,
+										  scripts\zm\zm_ai_pack\rounds\_mechz::round_over,
+										  scripts\zm\zm_ai_pack\rounds\_mechz::round_chance_rush,
+										  scripts\zm\zm_ai_pack\rounds\_mechz::round_next_rush );
+
 	register_special_round( "normal", "default",
-										  scripts\zm\zm_ai_pack\rounds\_zombie::round_spawning,
-										  scripts\zm\zm_ai_pack\rounds\_zombie::round_wait,
-										  scripts\zm\zm_ai_pack\rounds\_zombie::round_max,
-										  scripts\zm\zm_ai_pack\rounds\_zombie::round_over,
-										  scripts\zm\zm_ai_pack\rounds\_zombie::round_chance,
-										  scripts\zm\zm_ai_pack\rounds\_zombie::round_next );
+										  scripts\zm\zm_ai_pack\rounds\_normal::round_spawning,
+										  scripts\zm\zm_ai_pack\rounds\_normal::round_wait,
+										  scripts\zm\zm_ai_pack\rounds\_normal::round_max,
+										  scripts\zm\zm_ai_pack\rounds\_normal::round_start,
+										  scripts\zm\zm_ai_pack\rounds\_normal::round_over,
+										  scripts\zm\zm_ai_pack\rounds\_normal::round_chance,
+										  scripts\zm\zm_ai_pack\rounds\_normal::round_next );
+
+	//Future variants
+	// random - random ais, true_random - random ais + random behavior and stats
+	// elemental?
+	// durable
+	// waves for mixed round_type
+	// several default presets to cycle through
 }
 
-register_special_round( round_type, variant_type, round_spawning_func, round_wait_func, round_max_func, between_round_over_func, round_chance_func, next_instance_func )
+register_special_round( round_type, variant_type, round_spawning_func, round_wait_func, round_max_func, round_start_func, between_round_over_func, round_chance_func, next_instance_func )
 {
 	if ( !isDefined( level.round_manager_special_rounds ) )
 	{
@@ -64,6 +102,7 @@ register_special_round( round_type, variant_type, round_spawning_func, round_wai
 	s.spawning_func = round_spawning_func;
 	s.wait_func = round_wait_func;
 	s.max_func = round_max_func;
+	s.start_func = round_start_func;
 	s.between_round_over_func = between_round_over_func;
 	s.chance_func = round_chance_func;
 	s.next_instance_func = next_instance_func;
@@ -125,7 +164,7 @@ should_do_special_round()
 
 	chance = getDvarInt( "rm_special_round_chance" );
 
-	special_round_diff = level.round_number - level.special_round.last_round;
+	special_round_diff = level.round_number - level.special_round.last_data.round_number;
 
 	if ( special_round_diff >= max_round )
 	{
@@ -145,16 +184,6 @@ determine_current_round_type()
 	return_value = sys::spawnstruct();
 	return_value.round_number = level.round_number;
 
-	should_do_special_round = should_do_special_round();
-
-	if ( !should_do_special_round || !isDefined( level.round_manager_special_rounds ) || level.round_manager_special_rounds.size <= 0 )
-	{
-		return_value.round_type = "normal";
-		return_value.variant = "default";
-		level.normal_round.current_data = return_value;
-		return level.normal_round.current_data;
-	}
-
 	level.special_round.last_data = level.special_round.current_data;
 
 	forced_special_round = getdvar( "rm_forced_special_round" );
@@ -173,6 +202,16 @@ determine_current_round_type()
 			level.special_round.current_data = return_value;
 			return level.special_round.current_data;
 		}
+	}
+
+	should_do_special_round = should_do_special_round();
+
+	if ( !should_do_special_round || !isDefined( level.round_manager_special_rounds ) || level.round_manager_special_rounds.size <= 0 )
+	{
+		return_value.round_type = "normal";
+		return_value.variant = "default";
+		level.normal_round.current_data = return_value;
+		return level.normal_round.current_data;
 	}
 
 	allowed_round_string = getDvar( "rm_allowed_special_rounds" );
@@ -247,6 +286,26 @@ get_zombie_dog_count()
 	return get_zombie_dog_array().size;
 }
 
+get_mechz_array()
+{
+	zombies = getaiarray( level.zombie_team );
+	mechz = [];
+	for ( i = 0; i < zombies.size; i++ )
+	{
+		if ( isdefined( zombies[ i ].animname ) && zombies[ i ].animname == "mechz_zombie" )
+		{
+			mechz[ mechz.size ] = zombies[ i ];
+		}
+	}
+
+	return mechz;
+}
+
+get_mechz_count()
+{
+	return get_mechz_array().size;
+}
+
 round_think_override( restart )
 {
 	if ( !isdefined( restart ) )
@@ -285,6 +344,12 @@ round_think_override( restart )
 
 	for (;;)
 	{
+		current_round_data = determine_current_round_type();
+
+		round_manager_inst = level.round_manager_special_rounds[ current_round_data.round_type ][ current_round_data.variant ];
+
+		level [[ round_manager_inst.start_func ]]();
+
 		maxreward = 50 * level.round_number;
 
 		if ( maxreward > 500 )
@@ -318,9 +383,6 @@ round_think_override( restart )
 		while ( level.zombie_spawn_locations.size <= 0 )
 			wait 0.1;
 
-		current_round_data = determine_current_round_type();
-
-		round_manager_inst = level.round_manager_special_rounds[ current_round_data.round_type ][ current_round_data.variant ];
 		level.round_manager_special_rounds[ current_round_data.round_type ][ current_round_data.variant ].active = true;
 		level [[ round_manager_inst.max_func ]]();
 		level thread [[ round_manager_inst.spawning_func ]]();

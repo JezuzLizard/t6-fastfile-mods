@@ -68,6 +68,17 @@ script,scripts/zm/zm_ai_pack_mod_main.gsc
 script,scripts/zm/clientfield_alt_sys.csc
 script,scripts/zm/clientfield_alt_sys.gsc
 
+script,scripts/zm/zm_ai_pack/_utility.gsc
+script,scripts/zm/zm_ai_pack/_round_manager.gsc
+script,scripts/zm/zm_ai_pack/rounds/_avogadro.gsc
+script,scripts/zm/zm_ai_pack/rounds/_brutus.gsc
+script,scripts/zm/zm_ai_pack/rounds/_ghost.gsc
+script,scripts/zm/zm_ai_pack/rounds/_leaper.gsc
+script,scripts/zm/zm_ai_pack/rounds/_mechz.gsc
+script,scripts/zm/zm_ai_pack/rounds/_mixed.gsc
+script,scripts/zm/zm_ai_pack/rounds/_normal.gsc
+script,scripts/zm/zm_ai_pack/rounds/_zombie_dog.gsc
+
 script,sys.gsc
 script,pluto_sys.gsc
 
