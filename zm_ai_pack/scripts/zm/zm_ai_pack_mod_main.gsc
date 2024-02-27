@@ -20,9 +20,10 @@ main()
 	replace_single_function( "maps/mp/zombies/_zm_weap_slowgun", "can_be_paralyzed", ::can_be_paralyzed_override );
 	replace_single_function( "maps/mp/zombies/_zm_ai_sloth", "watch_crash_trigger", ::watch_crash_trigger_override );
 
-	pluto_sys::replacefunc( maps\mp\zombies\_zm::round_spawning, scripts\zm\zm_ai_pack\_round_manager::round_spawning_override );
-	pluto_sys::replacefunc( maps\mp\zombies\_zm::round_wait, scripts\zm\zm_ai_pack\_round_manager::round_wait_override );
 	pluto_sys::replacefunc( maps\mp\zombies\_zm::round_think, scripts\zm\zm_ai_pack\_round_manager::round_think_override );
+
+	pluto_sys::replacefunc( maps\mp\animscripts\zm_dog_combat::domeleeafterwait, ::domeleeafterwait_override );
+	pluto_sys::replacefunc( maps\mp\animscripts\zm_dog_combat::handlemeleebiteattacknotetracks, ::handlemeleebiteattacknotetracks_override );
 
 	level.script = toLower( getDvar( "mapname" ) );
 	level.gametype = toLower( getDvar( "g_gametype" ) );
@@ -401,5 +402,53 @@ increment_enemy_count( who )
 	else
 	{
 		level.zombie_total++;
+	}
+}
+
+domeleeafterwait_override( time )
+{
+	self endon( "death" );
+	wait( time );
+	hitent = self melee();
+
+	if ( isdefined( hitent ) )
+	{
+		if ( isplayer( hitent ) )
+			hitent shellshock( "dog_bite", 0.35 );
+	}
+}
+
+handlemeleebiteattacknotetracks_override( note, player )
+{
+	switch ( note )
+	{
+		case "dog_melee":
+			if ( !isdefined( level.dogmeleebiteattacktime ) )
+			{
+				level.dogmeleebiteattacktime = gettime() - level.dogmeleebiteattacktimestart;
+				level.dogmeleebiteattacktime = level.dogmeleebiteattacktime + 50;
+			}
+
+			hitent = self melee( anglestoforward( self.angles ) );
+
+			if ( isdefined( hitent ) )
+			{
+				if ( isplayer( hitent ) )
+					hitent shellshock( "dog_bite", 0.35 );
+			}
+			else if ( isdefined( level.dog_melee_miss ) )
+				self [[ level.dog_melee_miss ]]( player );
+
+			break;
+		case "stop_tracking":
+			melee_time = 200;
+
+			if ( !isdefined( level.dogmeleebiteattacktime ) )
+				level.dogmeleebiteattacktimestart = gettime();
+			else
+				melee_time = level.dogmeleebiteattacktime;
+
+			self thread maps\mp\animscripts\zm_dog_combat::orienttoplayerdeadreckoning( player, melee_time );
+			break;
 	}
 }
