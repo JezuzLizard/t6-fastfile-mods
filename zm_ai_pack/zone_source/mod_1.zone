@@ -2,12 +2,12 @@
 >type,fastfile
 >name,mod_1
 
-//include,buried/zm_buried_basic
+include,buried/zm_buried_basic
 include,buried/zm_buried_ghost
 //include,buried/zm_buried_sloth
 
-//include,highrise/zm_highrise_basic
+include,highrise/zm_highrise_basic
 //include,highrise/zm_highrise_leaper
 
-//include,nuked/zm_nuked_basic
+include,nuked/zm_nuked_basic
 //include,nuked/zm_nuked_dog

@@ -7,27 +7,27 @@
 >level.ipak_read,dlczm3
 >level.ipak_read,dlczm4
 
-//include,zm_all_basic
+include,zm_all_basic
 
-//include,buried/zm_buried_basic_no_anims
+include,buried/zm_buried_basic_no_anims
 include,buried/zm_buried_ghost
 //include,buried/zm_buried_sloth
 
-//include,highrise/zm_highrise_basic_no_anims
+include,highrise/zm_highrise_basic_no_anims
 //include,highrise/zm_highrise_leaper
 
-//include,nuked/zm_nuked_basic_no_anims
+include,nuked/zm_nuked_basic_no_anims
 //include,nuked/zm_nuked_dog
 
-//include,prison/zm_alcatraz_basic_no_anims
+include,prison/zm_alcatraz_basic_no_anims
 include,prison/zm_alcatraz_brutus
 
-//include,tomb/zm_tomb_basic_no_anims
+include,tomb/zm_tomb_basic_no_anims
 //include,tomb/zm_tomb_giant_robot
 include,tomb/zm_tomb_mech_zombie
 
 include,transit/zm_transit_avogadro
-//include,transit/zm_transit_basic_no_anims
+include,transit/zm_transit_basic_no_anims
 include,transit/zm_transit_screecher
 include,transit/zombie_dog
 
