@@ -446,7 +446,15 @@ mechz_attach_objects()
 
 mechz_set_starting_health()
 {
-	self.maxhealth = level.mechz_health;
+	if ( isdefined( self.custom_starting_health ) )
+	{
+		self.maxhealth = self.custom_starting_health;
+	}
+	else
+	{
+		self.maxhealth = level.mechz_health;
+	}
+	
 	self.helmet_dmg = 0;
 	self.helmet_dmg_for_removal = self.maxhealth * level.mechz_helmet_health_percentage;
 	self.powerplant_cover_dmg = 0;
@@ -463,7 +471,7 @@ mechz_set_starting_health()
 		println( "\\nMZ: MechZ Required Powerplant Dmg: " + self.powerplant_dmg_for_destroy );
 	}
 #/
-	self.health = level.mechz_health;
+	self.health = self.maxhealth;
 	self.non_attacker_func = ::mechz_non_attacker_damage_override;
 	self.non_attack_func_takes_attacker = 1;
 	self.actor_damage_func = ::mechz_damage_override;

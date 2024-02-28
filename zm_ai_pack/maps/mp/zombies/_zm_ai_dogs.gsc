@@ -249,8 +249,23 @@ dog_init()
 	if ( getdvar( #"scr_dog_health_walk_multiplier" ) != "" )
 		health_multiplier = getdvarfloat( #"scr_dog_health_walk_multiplier" );
 
-	self.maxhealth = int( level.dog_health * health_multiplier );
-	self.health = int( level.dog_health * health_multiplier );
+	if ( isdefined( self.custom_starting_health ) )
+	{
+		if ( isdefined( self.use_dog_health_walk_multiplier ) )
+		{
+			self.maxhealth = int( self.custom_starting_health * health_multiplier );
+		}
+		else
+		{
+			self.maxhealth = self.custom_starting_health;
+		}
+	}
+	else
+	{
+		self.maxhealth = int( level.dog_health * health_multiplier );
+	}
+	
+	self.health = self.maxhealth;
 	self.freezegun_damage = 0;
 	self.zombie_move_speed = "sprint";
 	self thread dog_run_think();
@@ -268,7 +283,15 @@ dog_init()
 	self clearenemy();
 	self cleargoalvolume();
 	self.flame_damage_time = 0;
-	self.meleedamage = 40;
+	if ( isdefined( self.custom_melee_damage ) )
+	{
+		self.meleedamage = self.custom_melee_damage;
+	}
+	else
+	{
+		self.meleedamage = 40;
+	}
+	
 	self.thundergun_knockdown_func = ::dog_thundergun_knockdown;
 	self maps\mp\zombies\_zm_spawner::zombie_history( "zombie_dog_spawn_init -> Spawned = " + self.origin );
 
@@ -473,11 +496,22 @@ dog_run_think()
 	self endon( "death" );
 	self waittill( "visible" );
 
-	if ( self.health > level.dog_health )
+	if ( isdefined( self.custom_starting_health ) )
 	{
-		self.maxhealth = level.dog_health;
-		self.health = level.dog_health;
+		if ( self.health > self.custom_starting_health )
+		{
+			self.maxhealth = self.custom_starting_health;
+		}
 	}
+	else
+	{
+		if ( self.health > level.dog_health )
+		{
+			self.maxhealth = level.dog_health;
+		}
+	}
+
+	self.health = self.maxhealth;
 
 	assert( isdefined( self.fx_dog_eye ) );
 	maps\mp\zombies\_zm_net::network_safe_play_fx_on_tag( "dog_fx", 2, level._effect["dog_eye_glow"], self.fx_dog_eye, "tag_origin" );

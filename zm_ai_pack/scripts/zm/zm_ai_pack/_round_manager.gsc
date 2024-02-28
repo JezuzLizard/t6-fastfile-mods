@@ -11,10 +11,15 @@ main()
 	set_dvar_if_unset( "rm_special_round_chance", 33 );
 	set_dvar_if_unset( "rm_allow_same_round_as_last_round", 1 );
 
-	set_dvar_if_unset( "rm_allowed_special_rounds", "normal zombie_dog mechz" );
+	set_dvar_if_unset( "rm_allowed_special_rounds", "normal zombie_dog mechz mixed" );
 	set_dvar_if_unset( "rm_allowed_special_round_variants", "default" );
 	set_dvar_if_unset( "rm_forced_special_round", "" );
 	set_dvar_if_unset( "rm_forced_special_variant", "" );
+
+	set_dvar_if_unset( "rm_allowed_mixed_rounds_presets", "default" );
+	set_dvar_if_unset( "rm_allowed_mixed_rounds_variants", "random" );
+	set_dvar_if_unset( "rm_forced_mixed_rounds_preset", "" );
+	set_dvar_if_unset( "rm_forced_mixed_rounds_variant", "" );
 
 	level.special_round = sys::spawnstruct();
 	level.special_round.current_data = sys::spawnstruct();
@@ -78,6 +83,23 @@ main()
 										  scripts\zm\zm_ai_pack\rounds\_normal::round_chance,
 										  scripts\zm\zm_ai_pack\rounds\_normal::round_next );
 
+	register_special_round( "mixed", "default",
+										  scripts\zm\zm_ai_pack\rounds\_mixed::round_spawning,
+										  scripts\zm\zm_ai_pack\rounds\_mixed::round_wait,
+										  scripts\zm\zm_ai_pack\rounds\_mixed::round_max,
+										  scripts\zm\zm_ai_pack\rounds\_mixed::round_start,
+										  scripts\zm\zm_ai_pack\rounds\_mixed::round_over,
+										  scripts\zm\zm_ai_pack\rounds\_mixed::round_chance,
+										  scripts\zm\zm_ai_pack\rounds\_mixed::round_next );
+
+	register_mixed_round_preset( "default", 
+										  scripts\zm\zm_ai_pack\rounds\mixed_presets\_default::preset_chance );
+
+	register_mixed_round_preset_variant( "default", "random",
+										  scripts\zm\zm_ai_pack\rounds\mixed_variants\_random::spawning_random,
+										  scripts\zm\zm_ai_pack\rounds\mixed_variants\_random::spawning_chance,
+										  scripts\zm\zm_ai_pack\rounds\mixed_variants\_random::spawning_limit,
+										  scripts\zm\zm_ai_pack\rounds\mixed_variants\_random::spawning_cooldown );
 	//Future variants
 	// random - random ais, true_random - random ais + random behavior and stats
 	// elemental?
@@ -110,24 +132,32 @@ register_special_round( round_type, variant_type, round_spawning_func, round_wai
 	level.round_manager_special_rounds[ round_type ][ variant_type ] = s;
 }
 
-register_mixed_round_spawning_behavior( spawning_type, variant_type, spawning_func, spawning_portion_of_zombie_total_func, spawning_chance_func, spawning_limit_per_round_func, spawning_cooldown_func )
+register_mixed_round_preset( preset_type, preset_chance_func )
 {
-	if ( !isDefined( level.round_manager_normal_round_spawning_behaviors ) )
+	if ( !isDefined( level.round_manager_mixed_round_presets ) )
 	{
-		level.round_manager_normal_round_spawning_behaviors = [];
+		level.round_manager_mixed_round_presets = [];
 	}
 
-	if ( !isDefined( level.round_manager_normal_round_spawning_behaviors[ spawning_type ] ) )
+	if ( !isDefined( level.round_manager_mixed_round_presets[ preset_type ] ) )
 	{
-		level.round_manager_normal_round_spawning_behaviors[ spawning_type ] = [];
+		level.round_manager_mixed_round_presets[ preset_type ] = sys::spawnstruct();
+		level.round_manager_mixed_round_presets[ preset_type ].variants = [];
 	}
+
+	level.round_manager_mixed_round_presets[ preset_type ].chance_func = preset_chance_func;
+}
+
+register_mixed_round_preset_variant( preset_type, variant_type, spawning_func, spawning_chance_func, spawning_limit_per_round_func, spawning_cooldown_func )
+{
+	assert( isdefined( level.round_manager_mixed_round_presets[ preset_type ] ) );
+
 	s = sys::spawnstruct();
 	s.spawning_func = spawning_func;
-	s.portion_of_zombie_total_func = spawning_portion_of_zombie_total_func;
 	s.chance_func = spawning_chance_func;
 	s.limit_per_round_func = spawning_limit_per_round_func;
 	s.cooldown_func = spawning_cooldown_func;
-	level.round_manager_normal_round_spawning_behaviors[ spawning_type ][ variant_type ] = s;
+	level.round_manager_mixed_round_presets[ preset_type ].variants[ variant_type ] = s;
 }
 
 should_do_special_round()
@@ -233,6 +263,10 @@ determine_current_round_type()
 	current_iterations = 0;
 
 	allow_repeats = getDvarInt( "rm_allow_same_round_as_last_round" ) != 0;
+
+	allowed_mixed_presets_string = getdvar( "rm_allowed_mixed_rounds_presets" );
+	can_pick_mixed_round_type = allowed_mixed_presets_string != "";
+
 	for (;;)
 	{
 		possible_round_types = array_randomize( possible_round_types_keys );
@@ -242,6 +276,11 @@ determine_current_round_type()
 			possible_variants = array_randomize( possible_variants_keys );
 
 			if ( !allow_repeats && possible_round_types.size > 1 && possible_round_types[ i ] == level.special_round.last_data.round_type )
+			{
+				continue;
+			}
+
+			if ( !can_pick_mixed_round_type && possible_round_types[ i ] == "mixed" )
 			{
 				continue;
 			}
@@ -460,5 +499,107 @@ round_think_override( restart )
 		level.round_manager_special_rounds[ current_round_data.round_type ][ current_round_data.variant ].active = false;
 		level [[ round_manager_inst.between_round_over_func ]]();
 		restart = 0;
+	}
+}
+
+determine_mixed_round_preset()
+{
+	forced_preset = getdvar( "rm_forced_mixed_rounds_preset" );
+
+	if ( forced_preset != "" )
+	{
+		if ( !isDefined( level.round_manager_mixed_round_presets[ forced_preset ] ) )
+		{
+			print( "Round Manager ERROR: Can't set preset to " + forced_preset + " because it wasn't registered" );
+			assert( false );
+		}
+		else
+		{
+			return level.round_manager_mixed_round_presets[ forced_preset ];
+		}
+	}
+
+	allowed_presets_string = getDvar( "rm_allowed_mixed_rounds_presets" );
+
+	allowed_presets_keys = strok( allowed_presets_string, " " );
+
+	max_iterations = 50;
+	current_iterations = 0;
+
+	for (;;)
+	{
+		possible_presets = array_randomize( allowed_presets_keys );
+		for ( i = 0; i < possible_presets.size; i++ )
+		{
+			assert( isDefined( level.round_manager_mixed_round_presets[ possible_presets[ i ] ] ) );
+
+			if ( possible_presets.size <= 1 || [[ level.round_manager_mixed_round_presets[ possible_presets[ i ] ].chance_func ]]() )
+			{
+				return level.round_manager_mixed_round_presets[ possible_presets[ i ] ];
+			}
+		}
+
+		current_iterations++;
+
+		if ( current_iterations >= max_iterations )
+		{
+			return level.round_manager_mixed_round_presets[ possible_presets[ 0 ] ];
+		}
+	}
+}
+
+pick_mixed_round_preset_variant( variants )
+{
+	forced_variant = getdvar( "rm_forced_mixed_rounds_variant" );
+
+	if ( forced_preset != "" )
+	{
+		if ( !isDefined( variants[ forced_variant ] ) )
+		{
+			print( "Round Manager ERROR: Can't set preset to " + forced_preset + " because it wasn't registered" );
+			assert( false );
+		}
+		else
+		{
+			return variants[ forced_variant ];
+		}
+	}
+
+	allowed_variants_string = getdvar( "rm_allowed_mixed_rounds_variants" );
+
+	pick_from_allowed_variants_pool = allowed_variants_string != "";
+
+	if ( !pick_from_allowed_variants_pool )
+	{
+		return random( variants );
+	}
+
+	allowed_variants_keys = strtok( allowed_variants_string, " " );
+
+	if ( allowed_variants_keys.size <= 1 )
+	{
+		return variants[ allowed_variants_keys[ 0 ] ];
+	}
+
+	max_iterations = 50;
+	current_iterations = 0;
+
+	for (;;)
+	{
+		possible_variants = array_randomize( allowed_variants_keys );
+		for ( i = 0; i < possible_variants.size; i++ )
+		{
+			if ( [[ variants[ possible_variants[ i ] ].chance_func ]]() )
+			{
+				return variants[ possible_variants[ i ] ];
+			}
+		}
+
+		current_iterations++;
+
+		if ( current_iterations >= max_iterations )
+		{
+			return variants[ possible_variants[ 0 ] ];
+		}
 	}
 }

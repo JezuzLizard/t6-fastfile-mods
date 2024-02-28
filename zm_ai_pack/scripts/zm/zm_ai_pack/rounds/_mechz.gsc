@@ -19,6 +19,7 @@ main()
 	set_dvar_if_unset( "rm_mechz_rush_max_spawn_wait", 2.5 );
 	set_dvar_if_unset( "rm_mechz_rush_max_mechz_alive", 24 );
 	set_dvar_if_unset( "rm_mechz_rush_max_mechz_round", 24 );
+	set_dvar_if_unset( "rm_mechz_rush_max_health_multiplier", 0.5 );
 }
 
 round_spawning_common()
@@ -67,9 +68,7 @@ round_spawning()
 		while ( level.zombie_mechz_locations.size < 1 )
 			wait( randomfloatrange( 5.0, 10.0 ) );
 
-		ai = spawn_zombie( level.mechz_spawners[0] );
-		ai thread maps\mp\zombies\_zm_ai_mechz::mechz_spawn();
-		level.mechz_left_to_spawn--;
+		ai = spawn_single_mechz();
 
 		if ( level.mechz_left_to_spawn == 0 )
 			level thread maps\mp\zombies\_zm_ai_mechz::response_to_air_raid_siren_vo();
@@ -189,10 +188,7 @@ round_spawning_rush()
 		while ( level.zombie_mechz_locations.size < 1 )
 			wait( randomfloatrange( 5.0, 10.0 ) );
 
-		ai = spawn_zombie( level.mechz_spawners[0] );
-		ai thread maps\mp\zombies\_zm_ai_mechz::mechz_spawn();
-		level.mechz_left_to_spawn--;
-		level.zombie_total--;
+		ai = spawn_single_mechz( int( level.mechz_health * getdvarfloat( "rm_mechz_rush_max_health_multiplier" ) ) );
 
 		if ( level.mechz_left_to_spawn == 0 )
 			level thread maps\mp\zombies\_zm_ai_mechz::response_to_air_raid_siren_vo();
@@ -235,4 +231,22 @@ round_next_rush()
 	{
 		return level.special_round.last_data.round_number + randomintrange( min, max );
 	}
+}
+
+spawn_single_mechz( starting_health )
+{
+	ai = spawn_zombie( level.mechz_spawners[0] );
+	if ( isdefined( starting_health ) )
+	{
+		ai.custom_starting_health = starting_health;
+	}
+
+	ai thread maps\mp\zombies\_zm_ai_mechz::mechz_spawn();
+	if ( isdefined( ai ) )
+	{
+		level.mechz_left_to_spawn--;
+		level.zombie_total--;
+	}
+
+	return ai;
 }

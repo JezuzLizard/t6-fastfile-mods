@@ -54,48 +54,8 @@ round_spawning()
 			wait 0.1;
 
 		run_custom_ai_spawn_checks();
-		spawn_point = level.zombie_spawn_locations[randomint( level.zombie_spawn_locations.size )];
 
-		if ( !isdefined( old_spawn ) )
-			old_spawn = spawn_point;
-		else if ( spawn_point == old_spawn )
-			spawn_point = level.zombie_spawn_locations[randomint( level.zombie_spawn_locations.size )];
-
-		old_spawn = spawn_point;
-
-		if ( isdefined( level.zombie_spawners ) )
-		{
-			if ( isdefined( level.use_multiple_spawns ) && level.use_multiple_spawns )
-			{
-				if ( isdefined( spawn_point.script_int ) )
-				{
-					if ( isdefined( level.zombie_spawn[spawn_point.script_int] ) && level.zombie_spawn[spawn_point.script_int].size )
-						spawner = random( level.zombie_spawn[spawn_point.script_int] );
-					else
-					{
-/#
-						assertmsg( "Wanting to spawn from zombie group " + spawn_point.script_int + "but it doens't exist" );
-#/
-					}
-				}
-				else if ( isdefined( level.zones[spawn_point.zone_name].script_int ) && level.zones[spawn_point.zone_name].script_int )
-					spawner = random( level.zombie_spawn[level.zones[spawn_point.zone_name].script_int] );
-				else if ( isdefined( level.spawner_int ) && ( isdefined( level.zombie_spawn[level.spawner_int].size ) && level.zombie_spawn[level.spawner_int].size ) )
-					spawner = random( level.zombie_spawn[level.spawner_int] );
-				else
-					spawner = random( level.zombie_spawners );
-			}
-			else
-				spawner = random( level.zombie_spawners );
-
-			ai = spawn_zombie( spawner, spawner.targetname, spawn_point );
-		}
-
-		if ( isdefined( ai ) )
-		{
-			level.zombie_total--;
-			ai thread round_spawn_failsafe();
-		}
+		ai = spawn_single_normal_zombie();
 
 		wait( level.zombie_vars["zombie_spawn_delay"] );
 		wait_network_frame();
@@ -209,4 +169,54 @@ default_max_zombie_func( max_num )
 		max = int( max_num * 0.9 );
 
 	return max;
+}
+
+spawn_single_normal_zombie()
+{
+	ai = undefined;
+
+	spawn_point = level.zombie_spawn_locations[randomint( level.zombie_spawn_locations.size )];
+
+	if ( !isdefined( old_spawn ) )
+		old_spawn = spawn_point;
+	else if ( spawn_point == old_spawn )
+		spawn_point = level.zombie_spawn_locations[randomint( level.zombie_spawn_locations.size )];
+
+	old_spawn = spawn_point;
+
+	if ( isdefined( level.zombie_spawners ) )
+	{
+		if ( isdefined( level.use_multiple_spawns ) && level.use_multiple_spawns )
+		{
+			if ( isdefined( spawn_point.script_int ) )
+			{
+				if ( isdefined( level.zombie_spawn[spawn_point.script_int] ) && level.zombie_spawn[spawn_point.script_int].size )
+					spawner = random( level.zombie_spawn[spawn_point.script_int] );
+				else
+				{
+/#
+					assertmsg( "Wanting to spawn from zombie group " + spawn_point.script_int + "but it doens't exist" );
+#/
+				}
+			}
+			else if ( isdefined( level.zones[spawn_point.zone_name].script_int ) && level.zones[spawn_point.zone_name].script_int )
+				spawner = random( level.zombie_spawn[level.zones[spawn_point.zone_name].script_int] );
+			else if ( isdefined( level.spawner_int ) && ( isdefined( level.zombie_spawn[level.spawner_int].size ) && level.zombie_spawn[level.spawner_int].size ) )
+				spawner = random( level.zombie_spawn[level.spawner_int] );
+			else
+				spawner = random( level.zombie_spawners );
+		}
+		else
+			spawner = random( level.zombie_spawners );
+
+		ai = spawn_zombie( spawner, spawner.targetname, spawn_point );
+	}
+
+	if ( isdefined( ai ) )
+	{
+		level.zombie_total--;
+		ai thread round_spawn_failsafe();
+	}
+
+	return ai;
 }
