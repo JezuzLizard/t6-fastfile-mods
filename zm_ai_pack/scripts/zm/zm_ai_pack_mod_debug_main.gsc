@@ -20,6 +20,8 @@ init()
 	}
 	level.zone_hud_y_offset = y;
 
+	level.location_hud_y_offset = y - 20;
+
 	level thread command_thread();
 	level thread on_player_connect();
 	level thread draw_zombie_spawn_locations();
@@ -101,6 +103,11 @@ on_player_connect()
 		level waittill( "connected", player );
 		player thread zone_hud();
 		player thread location_hud();
+		player thread zombie_counter_hud();
+		if ( getdvarint( "zm_ai_pack_debug" ) > 0 )
+		{
+			level.zombie_vars[ "zombie_intermission_time" ] = 0.05;
+		}
 	}
 }
 
@@ -226,6 +233,52 @@ location_hud()
 			loc_hud[ i ].alpha = 1;
 			loc_hud[ i ] setValue( self.origin[ i ] );
 		}
+		wait 0.05;
+	}
+}
+
+zombie_counter_hud()
+{
+	self endon( "disconnect" );
+
+	x = 5;
+	y = level.location_hud_y_offset - 20;
+
+	text_hud = self new_debug_hud( x, y );
+	text_hud settext( "Zombies Left: " );
+	x += 75;
+	current_hud = self new_debug_hud( x, y );
+	x += 20;
+	plus_hud = self new_debug_hud( x, y );
+	plus_hud settext( " + " );
+	x += 20;
+	total_hud = self new_debug_hud( x, y );
+
+	flag_wait( "initial_blackscreen_passed" );
+
+	while ( !isdefined( level.zombie_total ) )
+	{
+		wait 1;
+	}
+	for (;;)
+	{
+		while ( getDvarInt( "zm_ai_pack_debug" ) <= 0 )
+		{
+			text_hud.alpha = 0;
+			current_hud.alpha = 0;
+			plus_hud.alpha = 0;
+			total_hud.alpha = 0;
+			wait 1;
+		}
+
+		text_hud.alpha = 1;
+		current_hud.alpha = 1;
+		plus_hud.alpha = 1;
+		total_hud.alpha = 1;
+
+		current_hud setvalue( get_current_zombie_count() );
+		total_hud setvalue( level.zombie_total );
+
 		wait 0.05;
 	}
 }
@@ -457,6 +510,8 @@ draw_nodes()
 			draw_node_data( node, color, type );
 			throttle_count++;
 		}
+
+		nodes = undefined;
 		wait 0.05;
 	}
 }
@@ -496,3 +551,4 @@ print_entities()
 	}
 	print( "Listed " + ents.size + " entities" );
 }
+

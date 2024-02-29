@@ -4,6 +4,8 @@
 
 #include maps\mp\zombies\_zm;
 
+#include scripts\zm\zm_ai_pack\_utility;
+
 round_spawning()
 {
 	level endon( "intermission" );
@@ -13,18 +15,10 @@ round_spawning()
 	level endon( "kill_round" );
 #/
 
-	if ( level.intermission )
-		return;
-
-/#
-	if ( getdvarint( #"zombie_cheat" ) == 2 || getdvarint( #"zombie_cheat" ) >= 4 )
-		return;
-#/
-
 	if ( level.zombie_spawn_locations.size < 1 )
 	{
 /#
-		assertmsg( "No active spawners in the map.  Check to see if the zone is active and if it's pointing to spawners." );
+		assertmsg( "No active spawn locations in the zone.  Check to see if the zone is active and if it's pointing to spawners." );
 #/
 		return;
 	}
@@ -39,7 +33,7 @@ round_spawning()
 
 	while ( true )
 	{
-		while ( get_current_zombie_count() >= level.zombie_ai_limit || level.zombie_total <= 0 )
+		while ( get_current_zombie_count() >= level.zombie_ai_limit || level.zombie_total <= 0 || level.intermission )
 			wait 0.1;
 
 		while ( get_current_actor_count() >= level.zombie_actor_limit )
@@ -57,7 +51,7 @@ round_spawning()
 
 		ai = spawn_single_normal_zombie();
 
-		wait( level.zombie_vars["zombie_spawn_delay"] );
+		wait( level.zombie_vars[ "zombie_spawn_delay" ] );
 		wait_network_frame();
 	}
 }
@@ -171,9 +165,10 @@ default_max_zombie_func( max_num )
 	return max;
 }
 
-spawn_single_normal_zombie()
+spawn_single_normal_zombie( starting_properties_struct )
 {
 	ai = undefined;
+	old_spawn = undefined;
 
 	spawn_point = level.zombie_spawn_locations[randomint( level.zombie_spawn_locations.size )];
 
@@ -217,6 +212,8 @@ spawn_single_normal_zombie()
 		level.zombie_total--;
 		ai thread round_spawn_failsafe();
 	}
+	
+	ai scripts\zm\zm_ai_pack\_round_manager::set_starting_properties_for_ai( starting_properties_struct );
 
 	return ai;
 }

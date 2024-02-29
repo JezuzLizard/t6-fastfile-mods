@@ -1392,7 +1392,6 @@ get_priority_item_for_brutus( zone_name, do_secondary_zone_checks )
 
 		if ( !isDefined( int_objects ) )
 		{
-			print( "int_objects is undefined" );
 			continue;
 		}
 

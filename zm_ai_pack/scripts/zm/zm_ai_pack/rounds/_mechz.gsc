@@ -5,6 +5,7 @@
 #include maps\mp\zombies\_zm_ai_mechz;
 
 #include scripts\zm\zm_ai_pack\_round_manager;
+#include scripts\zm\zm_ai_pack\_utility;
 
 main()
 {
@@ -17,8 +18,8 @@ main()
 	set_dvar_if_unset( "rm_mechz_rush_min_round", 45 );
 	set_dvar_if_unset( "rm_mechz_rush_min_spawn_wait", 1.5 );
 	set_dvar_if_unset( "rm_mechz_rush_max_spawn_wait", 2.5 );
-	set_dvar_if_unset( "rm_mechz_rush_max_mechz_alive", 24 );
-	set_dvar_if_unset( "rm_mechz_rush_max_mechz_round", 24 );
+	set_dvar_if_unset( "rm_mechz_rush_max_mechz_alive", 12 );
+	set_dvar_if_unset( "rm_mechz_rush_max_mechz_round", 12 );
 	set_dvar_if_unset( "rm_mechz_rush_max_health_multiplier", 0.5 );
 }
 
@@ -45,11 +46,7 @@ round_spawning()
 
 	if ( level.intermission )
 		return;
-
-/#
-	if ( getdvarint( #"zombie_cheat" ) == 2 || getdvarint( #"zombie_cheat" ) >= 4 )
-		return;
-#/
+	
 	round_spawning_common();
 
 	for (;;)
@@ -188,7 +185,9 @@ round_spawning_rush()
 		while ( level.zombie_mechz_locations.size < 1 )
 			wait( randomfloatrange( 5.0, 10.0 ) );
 
-		ai = spawn_single_mechz( int( level.mechz_health * getdvarfloat( "rm_mechz_rush_max_health_multiplier" ) ) );
+		starting_properties = sys::spawnstruct();
+		starting_properties.health = int( level.mechz_health * getdvarfloat( "rm_mechz_rush_max_health_multiplier" ) );
+		ai = spawn_single_mechz( starting_properties );
 
 		if ( level.mechz_left_to_spawn == 0 )
 			level thread maps\mp\zombies\_zm_ai_mechz::response_to_air_raid_siren_vo();
@@ -233,13 +232,11 @@ round_next_rush()
 	}
 }
 
-spawn_single_mechz( starting_health )
+spawn_single_mechz( starting_properties )
 {
 	ai = spawn_zombie( level.mechz_spawners[0] );
-	if ( isdefined( starting_health ) )
-	{
-		ai.custom_starting_health = starting_health;
-	}
+
+	ai scripts\zm\zm_ai_pack\_round_manager::set_starting_properties_for_ai( starting_properties );
 
 	ai thread maps\mp\zombies\_zm_ai_mechz::mechz_spawn();
 	if ( isdefined( ai ) )

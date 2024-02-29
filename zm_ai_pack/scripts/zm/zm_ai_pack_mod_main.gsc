@@ -51,7 +51,7 @@ main()
 	level.ai_data[ "mechz" ].init = maps\mp\zombies\_zm_ai_mechz::init;
 	level.ai_data[ "mechz" ].should_execute = level.script != "zm_tomb";
 	level.ai_data[ "zombie_dog" ] = sys::spawnstruct();
-	level.ai_data[ "zombie_dog" ].main = maps\mp\zombies\_zm_ai_dogs::init;
+	level.ai_data[ "zombie_dog" ].init = maps\mp\zombies\_zm_ai_dogs::init;
 	level.ai_data[ "zombie_dog" ].should_execute = level.gametype != "zstandard" ;	
 
 	keys = getArrayKeys( level.ai_data );
@@ -183,7 +183,7 @@ dotraverse_teleport( no_powerups )
 	startnode = self getnegotiationstartnode();
 	if ( !isdefined( endnode ) || !isdefined( startnode ) )
 	{
-		print( "dotraverse_teleport() missing endnode or startnode" );
+		assertmsg( "dotraverse_teleport() missing endnode or startnode" );
 		return;
 	}
 

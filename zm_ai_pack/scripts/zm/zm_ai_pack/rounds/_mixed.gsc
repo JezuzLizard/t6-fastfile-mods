@@ -4,6 +4,8 @@
 
 #include maps\mp\zombies\_zm;
 
+#include scripts\zm\zm_ai_pack\_utility;
+
 round_spawning()
 {
 	level endon( "intermission" );
@@ -15,11 +17,6 @@ round_spawning()
 
 	if ( level.intermission )
 		return;
-
-/#
-	if ( getdvarint( #"zombie_cheat" ) == 2 || getdvarint( #"zombie_cheat" ) >= 4 )
-		return;
-#/
 
 	if ( level.zombie_spawn_locations.size < 1 )
 	{
@@ -33,33 +30,20 @@ round_spawning()
 
 	if ( level.round_number < 10 || level.speed_change_max > 0 )
 		level thread zombie_speed_up();
-
-	mixed_spawns = 0;
-	old_spawn = undefined;
-
-	spawning_preset = scripts\zm\zm_ai_pack\_round_manager::determine_mixed_round_preset();
-
+	
 	while ( true )
 	{
-		while ( get_current_zombie_count() >= level.zombie_ai_limit || level.zombie_total <= 0 )
-			wait 0.1;
+		spawning_variant = scripts\zm\zm_ai_pack\_round_manager::pick_mixed_round_preset_variant( level.round_manager_spawning_preset.variants );
 
-		while ( get_current_actor_count() >= level.zombie_actor_limit )
+		if ( isdefined( spawning_variant ) )
 		{
-			clear_all_corpses();
-			wait 0.1;
+			if ( getdvarint( "zm_ai_pack_debug" ) > 0 )
+			{
+				print( "Round Manager: Running mixed preset <" + spawning_variant.preset_type + "> variant <" + spawning_variant.variant_type + ">" );
+			}
+			level [[ spawning_variant.spawning_func ]]();
 		}
 
-		flag_wait( "spawn_zombies" );
-
-		while ( level.zombie_spawn_locations.size <= 0 )
-			wait 0.1;
-
-		run_custom_ai_spawn_checks();
-
-		ai = scripts\zm\zm_ai_pack\rounds\_normal::spawn_single_normal_zombie();
-
-		wait( level.zombie_vars["zombie_spawn_delay"] );
 		wait_network_frame();
 	}
 }
@@ -84,7 +68,7 @@ round_wait()
 		if ( isdefined( level.is_ghost_round_started ) && [[ level.is_ghost_round_started ]]() )
 			should_wait = 1;
 		else
-			should_wait = get_current_zombie_count() > 0 || level.zombie_total > 0 || level.intermission;
+			should_wait = get_all_ai_count() > 0 || level.zombie_total > 0 || level.intermission;
 
 		if ( !should_wait )
 			return;
@@ -131,7 +115,16 @@ round_max()
 
 round_start()
 {
-	
+	level.round_manager_spawning_preset = scripts\zm\zm_ai_pack\_round_manager::determine_mixed_round_preset();
+
+	level [[ level.round_manager_spawning_preset.start_func ]]();
+
+	variants = level.round_manager_spawning_preset.variants;
+	variant_keys = getarraykeys( level.round_manager_spawning_preset.variants );
+	for ( i = 0; i < variant_keys.size; i++ )
+	{
+		level [[ variants[ variant_keys[ i ] ].start_func ]]();
+	}
 }
 
 round_over()
@@ -147,68 +140,4 @@ round_chance()
 round_next()
 {
 	return level.round_number + 1;
-}
-
-special_dog_spawn( spawners, num_to_spawn )
-{
-	dogs = getaispeciesarray( "all", "zombie_dog" );
-
-	if ( isdefined( dogs ) && dogs.size >= 9 )
-		return false;
-
-	if ( !isdefined( num_to_spawn ) )
-		num_to_spawn = 1;
-
-	spawn_point = undefined;
-	count = 0;
-
-	while ( count < num_to_spawn )
-	{
-		players = sys::getplayers();
-		favorite_enemy = get_favorite_enemy();
-
-		if ( isdefined( spawners ) )
-		{
-			spawn_point = spawners[randomint( spawners.size )];
-			ai = spawn_zombie( spawn_point );
-
-			if ( isdefined( ai ) )
-			{
-				ai.favoriteenemy = favorite_enemy;
-				spawn_point thread dog_spawn_fx( ai );
-				count++;
-				flag_set( "dog_clips" );
-			}
-		}
-		else if ( isdefined( level.dog_spawn_func ) )
-		{
-			spawn_loc = [[ level.dog_spawn_func ]]( level.dog_spawners, favorite_enemy );
-			ai = spawn_zombie( level.dog_spawners[0] );
-
-			if ( isdefined( ai ) )
-			{
-				ai.favoriteenemy = favorite_enemy;
-				spawn_loc thread dog_spawn_fx( ai, spawn_loc );
-				count++;
-				flag_set( "dog_clips" );
-			}
-		}
-		else
-		{
-			spawn_point = dog_spawn_factory_logic( level.enemy_dog_spawns, favorite_enemy );
-			ai = spawn_zombie( level.dog_spawners[0] );
-
-			if ( isdefined( ai ) )
-			{
-				ai.favoriteenemy = favorite_enemy;
-				spawn_point thread dog_spawn_fx( ai, spawn_point );
-				count++;
-				flag_set( "dog_clips" );
-			}
-		}
-
-		waiting_for_next_dog_spawn( count, num_to_spawn );
-	}
-
-	return true;
 }
