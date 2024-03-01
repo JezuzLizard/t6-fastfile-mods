@@ -81,7 +81,10 @@ script,scripts/zm/zm_ai_pack/rounds/_timed.gsc
 script,scripts/zm/zm_ai_pack/rounds/_zombie_dog.gsc
 
 script,scripts/zm/zm_ai_pack/mixed_presets/_default.gsc
+script,scripts/zm/zm_ai_pack/mixed_presets/_wave.gsc
 script,scripts/zm/zm_ai_pack/mixed_variants/_dog_wave.gsc
+script,scripts/zm/zm_ai_pack/mixed_variants/_mechz_wave.gsc
+script,scripts/zm/zm_ai_pack/mixed_variants/_normal_wave.gsc
 script,scripts/zm/zm_ai_pack/mixed_variants/_random.gsc
 
 script,sys.gsc
@@ -89,3 +92,6 @@ script,pluto_sys.gsc
 
 // Map specific scripts
 script,scripts/zm/zm_prison/zm_ai_pack_mod_zm_prison_main.gsc
+script,scripts/zm/zm_buried/zm_ai_pack_mod_zm_buried_main.gsc
+script,scripts/zm/zm_highrise/zm_ai_pack_mod_zm_highrise_main.gsc
+script,scripts/zm/zm_transit/zm_ai_pack_mod_zm_transit_main.gsc

@@ -10,18 +10,12 @@ main()
 	set_dvar_if_unset( "rm_mixed_preset_default_random_variant_wave_spawn_limit", 24 );
 	set_dvar_if_unset( "rm_mixed_preset_default_random_variant_wave_spawn_cooldown", 1 );
 
-	set_dvar_if_unset( "rm_mixed_preset_default_random_variant_mechz_spawn_chance_1000", 5 );
+	set_dvar_if_unset( "rm_mixed_preset_default_random_variant_mechz_spawn_chance_1000", 10 );
 	set_dvar_if_unset( "rm_mixed_preset_default_random_variant_zombie_dog_spawn_chance_1000", 200 );
 }
 
 spawning_random()
 {
-	level endon( "intermission" );
-	level endon( "end_of_round" );
-	level endon( "restart_round" );
-/#
-	level endon( "kill_round" );
-#/
 	mechz_spawn_chance = getdvarint( "rm_mixed_preset_default_random_variant_mechz_spawn_chance_1000" );
 	zombie_dog_chance = getdvarint( "rm_mixed_preset_default_random_variant_zombie_dog_spawn_chance_1000" );
 

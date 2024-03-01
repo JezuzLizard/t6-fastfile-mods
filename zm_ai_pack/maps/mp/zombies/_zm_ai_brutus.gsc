@@ -233,19 +233,6 @@ init()
 setup_interaction_matrix()
 {
 	level.interaction_types = [];
-	level.interaction_types["magic_box"] = sys::spawnstruct();
-	level.interaction_types["magic_box"].priority = 0;
-	level.interaction_types["magic_box"].animstate = "zm_lock_magicbox";
-	level.interaction_types["magic_box"].notify_name = "box_lock_anim";
-	level.interaction_types["magic_box"].action_notetrack = "locked";
-	level.interaction_types["magic_box"].end_notetrack = "lock_done";
-	level.interaction_types["magic_box"].validity_func = ::is_magic_box_valid;
-	level.interaction_types["magic_box"].get_func = ::get_magic_boxes;
-	level.interaction_types["magic_box"].value_func = ::get_dist_score;
-	level.interaction_types["magic_box"].interact_func = ::magic_box_lock;
-	level.interaction_types["magic_box"].spawn_bias = 1000;
-	level.interaction_types["magic_box"].num_times_to_scale = 1;
-	level.interaction_types["magic_box"].unlock_cost = 2000;
 	level.interaction_types["perk_machine"] = sys::spawnstruct();
 	level.interaction_types["perk_machine"].priority = 1;
 	level.interaction_types["perk_machine"].animstate = "zm_lock_perk_machine";
@@ -260,6 +247,19 @@ setup_interaction_matrix()
 	level.interaction_types["perk_machine"].unlock_cost = 2000;
 	if ( getDvar( "mapname" ) == "zm_prison" )
 	{
+		level.interaction_types["magic_box"] = sys::spawnstruct();
+		level.interaction_types["magic_box"].priority = 0;
+		level.interaction_types["magic_box"].animstate = "zm_lock_magicbox";
+		level.interaction_types["magic_box"].notify_name = "box_lock_anim";
+		level.interaction_types["magic_box"].action_notetrack = "locked";
+		level.interaction_types["magic_box"].end_notetrack = "lock_done";
+		level.interaction_types["magic_box"].validity_func = ::is_magic_box_valid;
+		level.interaction_types["magic_box"].get_func = ::get_magic_boxes;
+		level.interaction_types["magic_box"].value_func = ::get_dist_score;
+		level.interaction_types["magic_box"].interact_func = ::magic_box_lock;
+		level.interaction_types["magic_box"].spawn_bias = 1000;
+		level.interaction_types["magic_box"].num_times_to_scale = 1;
+		level.interaction_types["magic_box"].unlock_cost = 2000;
 		level.interaction_types["craftable_table"] = sys::spawnstruct();
 		level.interaction_types["craftable_table"].priority = 2;
 		level.interaction_types["craftable_table"].animstate = "zm_smash_craftable_table";
@@ -877,6 +877,7 @@ brutus_round_tracker()
 	old_spawn_func = level.round_spawn_func;
 	old_wait_func = level.round_wait_func;
 
+	is_team_on_golden_gate_bridge_func = pluto_sys::getfunction( "maps/mp/zm_alcatraz_utility", "is_team_on_golden_gate_bridge" );
 	while ( true )
 	{
 		level waittill( "between_round_over" );
@@ -886,13 +887,11 @@ brutus_round_tracker()
 			continue;
 		else if ( level.next_brutus_round <= level.round_number )
 		{
-			/*
-			if ( maps\mp\zm_alcatraz_utility::is_team_on_golden_gate_bridge() )
+			if ( isdefined( is_team_on_golden_gate_bridge_func ) && [[ is_team_on_golden_gate_bridge_func ]]() )
 			{
 				level.next_brutus_round = level.round_number + 1;
 				continue;
 			}
-			*/
 
 			wait( randomfloatrange( level.brutus_min_spawn_delay, level.brutus_max_spawn_delay ) );
 
@@ -2220,17 +2219,19 @@ brutus_damage_override( inflictor, attacker, damage, flags, meansofdeath, weapon
 			return damage;
 	}
 
-	/*
+	player_damage_shield_func = pluto_sys::getfunction( "maps/mp/zombies/_zm_weap_riotshield_prison", "player_damage_shield" );
 	if ( isdefined( meansofdeath ) && ( meansofdeath == "MOD_MELEE" || meansofdeath == "MOD_IMPACT" ) )
 	{
 		if ( weapon == "alcatraz_shield_zm" )
 		{
 			shield_damage = level.zombie_vars["riotshield_fling_damage_shield"];
-			inflictor maps\mp\zombies\_zm_weap_riotshield_prison::player_damage_shield( shield_damage, 0 );
+			if ( isdefined( player_damage_shield_func ) )
+			{
+				inflictor [[ player_damage_shield_func ]]( shield_damage, 0 );
+			}
 			return 0;
 		}
 	}
-	*/
 
 	if ( isdefined( level.zombiemode_using_afterlife ) && level.zombiemode_using_afterlife && weapon == "lightning_hands_zm" )
 	{
@@ -2751,7 +2752,8 @@ check_craftable_table_valid( player )
 			self.stub.is_locked = 0;
 			self.stub.locked_cost = undefined;
 			self.stub.lock_fx delete();
-			//self.stub thread maps\mp\zombies\_zm_craftables::craftablestub_update_prompt( player );
+			craftablestub_update_prompt_func = pluto_sys::getfunction( "maps/mp/zombies/_zm_craftables", "craftablestub_update_prompt" );
+			self.stub thread [[ craftablestub_update_prompt_func ]]( player );
 			self sethintstring( self.stub.hint_string );
 		}
 
@@ -2777,7 +2779,10 @@ check_plane_valid( player )
 			plane_struct.locked_cost = undefined;
 			plane_struct.lock_fx delete();
 			func = pluto_sys::getfunction( "maps/mp/zm_alcatraz_sq", "reset_plane_hint_string" );
-			plane_struct [[ func ]]( player );
+			if ( isdefined( func ) )
+			{
+				plane_struct [[ func ]]( player );
+			}
 		}
 
 		return false;

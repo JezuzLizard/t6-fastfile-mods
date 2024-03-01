@@ -41,6 +41,7 @@ register_mixed_round_preset( preset_type, preset_chance_func, preset_round_start
 
 	level.round_manager_mixed_round_presets[ preset_type ].chance_func = preset_chance_func;
 	level.round_manager_mixed_round_presets[ preset_type ].start_func = preset_round_start_func;
+	level.round_manager_mixed_round_presets[ preset_type ].preset_type = preset_type;
 }
 
 register_mixed_round_preset_variant( preset_type, variant_type, spawning_func, spawning_chance_func, spawning_limit, spawning_cooldown_func, spawning_round_start_func )
@@ -118,5 +119,18 @@ wait_for_free_ai_slot( func )
 	{
 		clear_all_corpses();
 		wait 0.1;
+	}
+}
+
+set_starting_properties_for_ai( starting_properties_struct )
+{
+	if ( !isdefined( starting_properties_struct ) )
+	{
+		return;
+	}
+
+	if ( isdefined( starting_properties_struct.health ) )
+	{
+		self.custom_starting_health = starting_properties_struct.health;
 	}
 }

@@ -14,27 +14,17 @@ round_spawning()
 /#
 	level endon( "kill_round" );
 #/
-
-	if ( level.intermission )
-		return;
-
-	if ( level.zombie_spawn_locations.size < 1 )
-	{
-/#
-		assertmsg( "No active spawners in the map.  Check to see if the zone is active and if it's pointing to spawners." );
-#/
-		return;
-	}
-
-	ai_calculate_health( level.round_number );
-
-	if ( level.round_number < 10 || level.speed_change_max > 0 )
-		level thread zombie_speed_up();
 	
 	while ( true )
 	{
+		while ( level.intermission )
+		{
+			wait 1;
+		}
+		wait_for_free_ai_slot( ::get_all_ai_count );
 		spawning_variant = scripts\zm\zm_ai_pack\_round_manager::pick_mixed_round_preset_variant( level.round_manager_spawning_preset.variants );
 
+		level.round_manager_spawning_preset_current_variant = spawning_variant;
 		if ( isdefined( spawning_variant ) )
 		{
 			if ( getdvarint( "zm_ai_pack_debug" ) > 0 )
@@ -115,6 +105,11 @@ round_max()
 
 round_start()
 {
+	ai_calculate_health( level.round_number );
+
+	if ( level.round_number < 10 || level.speed_change_max > 0 )
+		level thread zombie_speed_up();
+	
 	level.round_manager_spawning_preset = scripts\zm\zm_ai_pack\_round_manager::determine_mixed_round_preset();
 
 	level [[ level.round_manager_spawning_preset.start_func ]]();

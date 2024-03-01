@@ -25,7 +25,6 @@ main()
 
 round_spawning_common()
 {
-
 	while ( !isdefined( level.zombie_mechz_locations ) )
 		wait 0.05;
 
@@ -236,13 +235,13 @@ spawn_single_mechz( starting_properties )
 {
 	ai = spawn_zombie( level.mechz_spawners[0] );
 
-	ai scripts\zm\zm_ai_pack\_round_manager::set_starting_properties_for_ai( starting_properties );
-
-	ai thread maps\mp\zombies\_zm_ai_mechz::mechz_spawn();
 	if ( isdefined( ai ) )
 	{
 		level.mechz_left_to_spawn--;
 		level.zombie_total--;
+		ai set_starting_properties_for_ai( starting_properties );
+
+		ai thread maps\mp\zombies\_zm_ai_mechz::mechz_spawn();
 	}
 
 	return ai;

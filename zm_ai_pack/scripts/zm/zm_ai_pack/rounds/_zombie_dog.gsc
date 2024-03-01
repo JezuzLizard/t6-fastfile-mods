@@ -165,7 +165,7 @@ round_max_rush()
 
 	dog_max += players.size * getdvarint( "rm_dog_rush_max_dogs_round_per_player" );
 
-	//dog_max *= int( level.round_number * getdvarfloat( "rm_dog_rush_max_dogs_round_number_multiplier" ) );
+	dog_max *= int( level.round_number * getdvarfloat( "rm_dog_rush_max_dogs_round_number_multiplier" ) );
 
 	max = getdvarint( "rm_dog_rush_max_dogs_round" );
 	if ( dog_max > max )
@@ -279,7 +279,10 @@ spawn_single_zombie_dog( starting_properties_struct )
 		}
 	}
 
-	ai scripts\zm\zm_ai_pack\_round_manager::set_starting_properties_for_ai( starting_properties_struct );
+	if ( isdefined( ai ) )
+	{
+		ai set_starting_properties_for_ai( starting_properties_struct );
+	}
 
 	return ai;
 }

@@ -13,15 +13,19 @@ main()
 	set_dvar_if_unset( "rm_special_round_chance", 33 );
 	set_dvar_if_unset( "rm_allow_same_round_as_last_round", 1 );
 
-	set_dvar_if_unset( "rm_allowed_special_rounds", "normal zombie_dog mechz mixed" );
+	set_dvar_if_unset( "rm_allowed_special_rounds", "normal zombie_dog mechz" );
 	set_dvar_if_unset( "rm_allowed_special_round_variants", "default" );
 	set_dvar_if_unset( "rm_forced_special_round", "" );
 	set_dvar_if_unset( "rm_forced_special_variant", "" );
 
-	set_dvar_if_unset( "rm_allowed_mixed_rounds_presets", "default" );
-	set_dvar_if_unset( "rm_allowed_mixed_round_variants", "random" );
+	set_dvar_if_unset( "rm_allowed_mixed_rounds_presets", "default wave" );
+	set_dvar_if_unset( "rm_allowed_mixed_round_variants_for_default_preset", "random" );
+	set_dvar_if_unset( "rm_allowed_mixed_round_variants_for_wave_preset", "normal_wave dog_wave mechz_wave" );
 	set_dvar_if_unset( "rm_forced_mixed_rounds_preset", "" );
 	set_dvar_if_unset( "rm_forced_mixed_rounds_variant", "" );
+	set_dvar_if_unset( "rm_mixed_round_chance_base", 20 );
+	set_dvar_if_unset( "rm_mixed_round_chance_round_scalar", 5 );
+	set_dvar_if_unset( "rm_mixed_round_min_start_round", 18 );
 
 	level.special_round = sys::spawnstruct();
 	level.special_round.current_data = sys::spawnstruct();
@@ -109,14 +113,37 @@ main()
 										  scripts\zm\zm_ai_pack\mixed_variants\_random::spawning_cooldown,
 										  scripts\zm\zm_ai_pack\mixed_variants\_random::spawning_round_start );
 
-	register_mixed_round_preset_variant( "default", "dog_wave",
-										  scripts\zm\zm_ai_pack\mixed_variants\_dog_wave::spawning_dog_wave,
+	register_mixed_round_preset( "wave", 
+										  scripts\zm\zm_ai_pack\mixed_presets\_default::preset_chance,
+										  scripts\zm\zm_ai_pack\mixed_presets\_default::round_start );
+
+	register_mixed_round_preset_variant( "wave", "normal_wave",
+										  scripts\zm\zm_ai_pack\mixed_variants\_normal_wave::spawning_wave,
+										  scripts\zm\zm_ai_pack\mixed_variants\_normal_wave::spawning_chance,
+										  scripts\zm\zm_ai_pack\mixed_variants\_normal_wave::spawning_limit,
+										  scripts\zm\zm_ai_pack\mixed_variants\_normal_wave::spawning_cooldown,
+										  scripts\zm\zm_ai_pack\mixed_variants\_normal_wave::spawning_round_start );
+
+	register_mixed_round_preset_variant( "wave", "dog_wave",
+										  scripts\zm\zm_ai_pack\mixed_variants\_dog_wave::spawning_wave,
 										  scripts\zm\zm_ai_pack\mixed_variants\_dog_wave::spawning_chance,
 										  scripts\zm\zm_ai_pack\mixed_variants\_dog_wave::spawning_limit,
 										  scripts\zm\zm_ai_pack\mixed_variants\_dog_wave::spawning_cooldown,
 										  scripts\zm\zm_ai_pack\mixed_variants\_dog_wave::spawning_round_start);
+	
+	register_mixed_round_preset_variant( "wave", "mechz_wave",
+										  scripts\zm\zm_ai_pack\mixed_variants\_mechz_wave::spawning_wave,
+										  scripts\zm\zm_ai_pack\mixed_variants\_mechz_wave::spawning_chance,
+										  scripts\zm\zm_ai_pack\mixed_variants\_mechz_wave::spawning_limit,
+										  scripts\zm\zm_ai_pack\mixed_variants\_mechz_wave::spawning_cooldown,
+										  scripts\zm\zm_ai_pack\mixed_variants\_mechz_wave::spawning_round_start);
 
-	scripts\zm\zm_ai_pack\mixed_variants\_random::main();									  
+	scripts\zm\zm_ai_pack\mixed_presets\_default::main();
+
+	scripts\zm\zm_ai_pack\mixed_variants\_random::main();
+	scripts\zm\zm_ai_pack\mixed_variants\_dog_wave::main();
+	scripts\zm\zm_ai_pack\mixed_variants\_mechz_wave::main();
+	scripts\zm\zm_ai_pack\mixed_variants\_normal_wave::main();
 	//Future variants
 	// random - random ais, true_random - random ais + random behavior and stats
 	// elemental?
@@ -127,7 +154,8 @@ main()
 
 should_do_special_round()
 {
-	if ( getDvar( "rm_forced_special_round" ) != "" && getdvar( "rm_forced_special_variant" ) )
+	forced_special_round_string = getDvar( "rm_forced_special_round" );
+	if ( forced_special_round_string != "" && forced_special_round_string != "mixed" && getdvar( "rm_forced_special_variant" ) )
 	{
 		return true;
 	}
@@ -174,6 +202,24 @@ should_do_special_round()
 	return false;
 }
 
+should_do_mixed_round()
+{
+	if ( getdvar( "rm_allowed_mixed_rounds_presets" ) == "" )
+	{
+		return false;
+	}
+	min_round = getDvarInt( "rm_mixed_round_min_start_round" );
+
+	chance_base = getdvarint( "rm_mixed_round_chance_base" );
+
+	if ( level.round_number >= min_round )
+	{
+		return randomInt( 100 ) <= ( chance_base + int( level.round_number * getdvarint( "rm_mixed_round_chance_round_scalar" ) ) );
+	}
+
+	return false;
+}
+
 determine_current_round_type()
 {
 	return_value = sys::spawnstruct();
@@ -200,9 +246,19 @@ determine_current_round_type()
 
 	should_do_special_round = should_do_special_round();
 
-	if ( !should_do_special_round || !isDefined( level.round_manager_special_rounds ) || level.round_manager_special_rounds.size <= 0 )
+	should_do_mixed_round = should_do_mixed_round();
+
+	if ( ( !should_do_special_round && !should_do_mixed_round ) || !isDefined( level.round_manager_special_rounds ) || level.round_manager_special_rounds.size <= 0 )
 	{
 		return_value.round_type = "normal";
+		return_value.variant = "default";
+		level.normal_round.current_data = return_value;
+		return level.normal_round.current_data;
+	}
+
+	if ( !should_do_special_round && should_do_mixed_round )
+	{
+		return_value.round_type = "mixed";
 		return_value.variant = "default";
 		level.normal_round.current_data = return_value;
 		return level.normal_round.current_data;
@@ -501,7 +557,7 @@ pick_mixed_round_preset_variant( variants )
 		}
 	}
 
-	allowed_variants_string = getdvar( "rm_allowed_mixed_round_variants" );
+	allowed_variants_string = getdvar( "rm_allowed_mixed_round_variants_for_" + level.round_manager_spawning_preset.preset_type + "_preset" );
 
 	pick_from_allowed_variants_pool = allowed_variants_string != "";
 
@@ -525,7 +581,7 @@ pick_mixed_round_preset_variant( variants )
 		possible_variants = array_randomize( allowed_variants_keys );
 		for ( i = 0; i < possible_variants.size; i++ )
 		{
-			if ( [[ variants[ possible_variants[ i ] ].chance_func ]]() && possible_variants[ i ] [[ variants[ possible_variants[ i ] ].cooldown_func ]]() )
+			if ( [[ variants[ possible_variants[ i ] ].chance_func ]]() && variants[ possible_variants[ i ] ] [[ variants[ possible_variants[ i ] ].cooldown_func ]]() )
 			{
 				variants[ possible_variants[ i ] ].last_time = gettime();
 				return variants[ possible_variants[ i ] ];
@@ -539,18 +595,5 @@ pick_mixed_round_preset_variant( variants )
 			variants[ possible_variants[ 0 ] ].last_time = gettime();
 			return variants[ possible_variants[ 0 ] ];
 		}
-	}
-}
-
-set_starting_properties_for_ai( starting_properties_struct )
-{
-	if ( !isdefined( starting_properties_struct ) )
-	{
-		return;
-	}
-
-	if ( isdefined( starting_properties_struct.health ) )
-	{
-		self.custom_starting_health = starting_properties_struct.health;
 	}
 }

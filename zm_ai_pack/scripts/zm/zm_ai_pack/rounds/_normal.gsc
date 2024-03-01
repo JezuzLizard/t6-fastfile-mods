@@ -15,22 +15,6 @@ round_spawning()
 	level endon( "kill_round" );
 #/
 
-	if ( level.zombie_spawn_locations.size < 1 )
-	{
-/#
-		assertmsg( "No active spawn locations in the zone.  Check to see if the zone is active and if it's pointing to spawners." );
-#/
-		return;
-	}
-
-	ai_calculate_health( level.round_number );
-
-	if ( level.round_number < 10 || level.speed_change_max > 0 )
-		level thread zombie_speed_up();
-
-	mixed_spawns = 0;
-	old_spawn = undefined;
-
 	while ( true )
 	{
 		while ( get_current_zombie_count() >= level.zombie_ai_limit || level.zombie_total <= 0 || level.intermission )
@@ -123,7 +107,10 @@ round_max()
 
 round_start()
 {
-	
+	ai_calculate_health( level.round_number );
+
+	if ( level.round_number < 10 || level.speed_change_max > 0 )
+		level thread zombie_speed_up();
 }
 
 round_over()
@@ -211,9 +198,8 @@ spawn_single_normal_zombie( starting_properties_struct )
 	{
 		level.zombie_total--;
 		ai thread round_spawn_failsafe();
+		ai set_starting_properties_for_ai( starting_properties_struct );
 	}
-	
-	ai scripts\zm\zm_ai_pack\_round_manager::set_starting_properties_for_ai( starting_properties_struct );
 
 	return ai;
 }
