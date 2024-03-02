@@ -110,7 +110,6 @@ init()
 	level.mechz_base_health = 5000;
 	level.mechz_health = level.mechz_base_health;
 	level.mechz_health_increase = 1000;
-	level.mechz_round_count = 0;
 	level.mechz_damage_percent = 0.1;
 	level.mechz_remove_helmet_head_dmg_base = 500;
 	level.mechz_remove_helmet_head_dmg = level.mechz_remove_helmet_head_dmg_base;
@@ -659,21 +658,18 @@ jump_pos_used_cooldown()
 
 mechz_health_increases()
 {
-	if ( !isdefined( level.mechz_last_spawn_round ) || level.round_number > level.mechz_last_spawn_round )
-	{
-		a_players = sys::getplayers();
-		n_player_modifier = 1;
+	a_players = sys::getplayers();
+	n_player_modifier = 1;
 
-		if ( a_players.size > 1 )
-			n_player_modifier = a_players.size * 0.75;
+	if ( a_players.size > 1 )
+		n_player_modifier = a_players.size * 0.75;
 
-		level.mechz_health = int( n_player_modifier * ( level.mechz_base_health + level.mechz_health_increase * level.mechz_round_count ) );
+	level.mechz_health = int( n_player_modifier * ( level.mechz_base_health + level.mechz_health_increase * level.special_round_count ) );
 
-		if ( level.mechz_health >= 22500 * n_player_modifier )
-			level.mechz_health = int( 22500 * n_player_modifier );
+	if ( level.mechz_health >= 22500 * n_player_modifier )
+		level.mechz_health = int( 22500 * n_player_modifier );
 
-		level.mechz_last_spawn_round = level.round_number;
-	}
+	level.mechz_last_spawn_round = level.round_number;
 }
 
 mechz_death()
@@ -722,7 +718,24 @@ mechz_death()
 			event = "ballistic_knife_death";
 
 		self.attacker delay_thread( 4.0, maps\mp\zombies\_zm_audio::create_and_play_dialog, "general", "mech_defeated" );
-		self.attacker maps\mp\zombies\_zm_score::player_add_points( event, self.damagemod, self.damagelocation, 1 );
+		team_points = round_up_score( level.mechz_points_for_team, 5 );
+		player_points = round_up_score( level.mechz_points_for_killer, 5 );
+		a_players = sys::getplayers();
+
+		foreach ( player in a_players )
+		{
+			if ( !is_player_valid( player ) )
+				continue;
+
+			player add_to_player_score( team_points );
+
+			if ( player == self.attacker )
+			{
+				player add_to_player_score( player_points );
+			}
+
+			player.pers["score"] = player.score;
+		}
 		self.attacker maps\mp\zombies\_zm_stats::increment_client_stat( "tomb_mechz_killed", 0 );
 		self.attacker maps\mp\zombies\_zm_stats::increment_player_stat( "tomb_mechz_killed" );
 
@@ -1600,6 +1613,10 @@ mechz_damage_override( inflictor, attacker, damage, flags, meansofdeath, weapon,
 		}
 
 		self thread shoot_mechz_head_vo();
+		if ( isdefined( attacker ) && isalive( attacker ) && isplayer( attacker ) )
+		{
+			attacker add_to_player_score( level.mechz_points_for_helmet );
+		}
 	}
 
 	if ( isdefined( self.powerplant_covered ) && self.powerplant_covered && self.powerplant_cover_dmg >= self.powerplant_cover_dmg_for_removal )
@@ -1621,6 +1638,11 @@ mechz_damage_override( inflictor, attacker, damage, flags, meansofdeath, weapon,
 			self sys::animscripted( self.origin, self.angles, "zm_pain_powercore" );
 			self maps\mp\animscripts\zm_shared::donotetracks( "pain_anim_powercore" );
 		}
+		if ( isdefined( attacker ) && isalive( attacker ) && isplayer( attacker ) )
+		{
+			attacker add_to_player_score( level.mechz_points_for_powerplant );
+		}
+		
 	}
 	else if ( !( isdefined( self.powerplant_covered ) && self.powerplant_covered ) && ( isdefined( self.has_powerplant ) && self.has_powerplant ) && self.powerplant_dmg >= self.powerplant_dmg_for_destroy )
 	{

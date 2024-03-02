@@ -42,6 +42,9 @@ round_wait()
 {
 	level endon( "restart_round" );
 /#
+	level endon( "kill_round" );
+#/
+/#
 	if ( getdvarint( #"zombie_rise_test" ) )
 		level waittill( "forever" );
 #/

@@ -82,6 +82,7 @@ script,scripts/zm/zm_ai_pack/rounds/_zombie_dog.gsc
 
 script,scripts/zm/zm_ai_pack/mixed_presets/_default.gsc
 script,scripts/zm/zm_ai_pack/mixed_presets/_wave.gsc
+script,scripts/zm/zm_ai_pack/mixed_variants/_brutus_wave.gsc
 script,scripts/zm/zm_ai_pack/mixed_variants/_dog_wave.gsc
 script,scripts/zm/zm_ai_pack/mixed_variants/_mechz_wave.gsc
 script,scripts/zm/zm_ai_pack/mixed_variants/_normal_wave.gsc

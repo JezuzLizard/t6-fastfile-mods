@@ -18,30 +18,15 @@ main()
 
 spawning_wave()
 {
-	level.round_manager_mechz_wave_count++;
+	level.round_manager_vars[ "mechz_wave_count" ]++;
 	scripts\zm\zm_ai_pack\mixed_presets\_wave::spawn_wave( "mechz" );
 	time = randomfloatrange( getdvarfloat( "rm_mixed_preset_wave_mechz_wave_variant_min_cooldown" ), getdvarfloat( "rm_mixed_preset_wave_mechz_wave_variant_max_cooldown" ) );
-	level.round_manager_guaranteed_mechz_wave_time = gettime() + ( time * level.round_manager_mechz_wave_count );
+	level.round_manager_vars[ "guaranteed_mechz_wave_time" ] = gettime() + ( time * 1000 );
 }
 
 spawning_chance()
 {
-	if ( level.round_number < getdvarint( "rm_mixed_preset_wave_mechz_wave_variant_min_round" ) )
-	{
-		return false;
-	}
-	chance_of_wave = 0;
-	chance_of_wave -= ( level.round_manager_mechz_wave_count * getdvarint( "rm_mixed_preset_wave_mechz_wave_variant_chance_threshold" ) );
-
-	min = getdvarint( "rm_mixed_preset_wave_mechz_wave_variant_chance_per_spawn_min" );
-	max = getdvarint( "rm_mixed_preset_wave_mechz_wave_variant_chance_per_spawn_max" );
-	chance_of_wave += ( level.round_manager_spawn_count * randomintrange( min , max ) );
-
-	should_spawn_wave_random = chance_of_wave >= getdvarint( "rm_mixed_preset_wave_mechz_wave_variant_chance_threshold" );
-	time = randomfloatrange( getdvarfloat( "rm_mixed_preset_wave_mechz_wave_variant_min_cooldown" ), getdvarfloat( "rm_mixed_preset_wave_mechz_wave_variant_max_cooldown" ) );
-	should_spawn_guaranteed_wave = ( ( level.round_manager_guaranteed_mechz_wave_time + ( time * 1000 ) ) <= getTime() );
-
-	return should_spawn_wave_random || should_spawn_guaranteed_wave;
+	return scripts\zm\zm_ai_pack\mixed_presets\_wave::spawning_chance( "mechz" );
 }
 
 spawning_limit()
@@ -67,6 +52,6 @@ spawning_cooldown()
 
 spawning_round_start()
 {
-	level.round_manager_guaranteed_mechz_wave_time = level.round_start_time;
-	level.round_manager_mechz_wave_count = 0;
+	level.round_manager_vars[ "guaranteed_mechz_wave_time" ] = level.round_start_time;
+	level.round_manager_vars[ "mechz_wave_count" ] = 0;
 }

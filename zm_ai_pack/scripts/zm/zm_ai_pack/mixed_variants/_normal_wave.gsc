@@ -10,7 +10,7 @@ main()
 
 spawning_wave()
 {
-	scripts\zm\zm_ai_pack\mixed_presets\_wave::spawn_wave( "normal" );
+	scripts\zm\zm_ai_pack\mixed_presets\_wave::spawn_wave( "normal", undefined, false );
 }
 
 spawning_chance()
@@ -20,7 +20,7 @@ spawning_chance()
 
 spawning_limit()
 {
-	return int( level.zombie_total * 0.1 ) + 6;
+	return 24;
 }
 
 spawning_cooldown()

@@ -70,6 +70,9 @@ command_thread()
 				case "printentities":
 					level thread print_entities();
 					break;
+				case "gotoround":
+					goto_round( int( args[ 2 ] ) );
+					break;
 				default:
 					player iPrintLn( "Invalid command" );
 					break;
@@ -552,3 +555,40 @@ print_entities()
 	print( "Listed " + ents.size + " entities" );
 }
 
+goto_round( target_round )
+{
+	level notify( "end_round_think" );
+	level.round_number = target_round;
+	level.zombie_vars["spectators_respawn"] = 1;
+	level.zombie_total = 0;
+	if ( level.gamedifficulty == 0 )
+		level.zombie_move_speed = level.round_number * level.zombie_vars["zombie_move_speed_multiplier_easy"];
+	else
+		level.zombie_move_speed = level.round_number * level.zombie_vars["zombie_move_speed_multiplier"];
+	level.zombie_vars["zombie_spawn_delay"] = 2;
+	for ( i = 1; i <= level.round_number; i++ )
+	{
+		timer = level.zombie_vars["zombie_spawn_delay"];
+
+		if ( timer > 0.08 )
+		{
+			level.zombie_vars["zombie_spawn_delay"] = timer * 0.95;
+			continue;
+		}
+
+		if ( timer < 0.08 )
+			level.zombie_vars["zombie_spawn_delay"] = 0.08;
+	}
+
+	level thread maps\mp\zombies\_zm::round_think( 1 );
+
+	if ( getdvar( "rm_allowed_special_rounds" ) == "" )
+	{
+		return;
+	}
+	old_round_number = level.round_number;
+	average = int( ( getdvarint( "rm_min_rounds_before_special_round" ) + getdvarint( "rm_max_rounds_before_special_round" ) ) / 2 );
+
+	average_estimated_special_rounds = int( ( level.round_number - old_round_number ) / average );
+	level.special_round_count += average_estimated_special_rounds;
+}

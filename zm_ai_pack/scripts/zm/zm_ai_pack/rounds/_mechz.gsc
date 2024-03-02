@@ -78,6 +78,9 @@ round_wait()
 {
 	level endon( "restart_round" );
 /#
+	level endon( "kill_round" );
+#/
+/#
 	while ( getdvarint( #"zombie_cheat" ) == 2 || getdvarint( #"zombie_cheat" ) >= 4 )
 		wait 1;
 #/
@@ -98,9 +101,9 @@ round_max()
 {
 	if ( isdefined( level.is_forever_solo_game ) && level.is_forever_solo_game )
 		level.mechz_zombie_per_round = 1;
-	else if ( level.mechz_round_count < 2 )
+	else if ( level.special_round_count < 2 )
 		level.mechz_zombie_per_round = 1;
-	else if ( level.mechz_round_count < 5 )
+	else if ( level.special_round_count < 5 )
 		level.mechz_zombie_per_round = 2;
 	else
 		level.mechz_zombie_per_round = 3;
@@ -116,8 +119,6 @@ round_start()
 
 round_over()
 {
-	maps\mp\zombies\_zm_ai_mechz::mechz_health_increases();
-	level.mechz_round_count++;
 	maps\mp\zombies\_zm_ai_mechz::mechz_clear_spawns();
 }
 

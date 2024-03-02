@@ -11402,25 +11402,6 @@
 "angles" "0 0 0"
 }
 {
-"origin" "0 100 -500"
-"script_disable_bleeder" "1"
-"script_noteworthy" "screecher_zombie_spawner"
-"spawnflags" "3"
-"export" "135"
-"model" "c_zom_screecher_fb"
-"classname" "actor_zm_transit_screecher"
-"script_forcespawn" "1"
-"count" "9999"
-}
-{
-"script_string" "find_flesh"
-"angles" "0 270 0"
-"targetname" "culdesac_green_zone_spawners"
-"origin" "-239 838 -84"
-"script_noteworthy" "riser_location screecher_location"
-"classname" "script_struct"
-}
-{
 "classname" "actor_zm_alcatraz_brutus"
 "model" "c_zom_cellbreaker_fb"
 "export" "2"

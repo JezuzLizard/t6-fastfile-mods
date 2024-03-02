@@ -8,25 +8,26 @@
 
 main()
 {
-	set_dvar_if_unset( "rm_min_rounds_before_special_round", 3 );
-	set_dvar_if_unset( "rm_max_rounds_before_special_round", 5 );
+	set_dvar_if_unset( "rm_min_rounds_before_special_round", 4 );
+	set_dvar_if_unset( "rm_max_rounds_before_special_round", 6 );
 	set_dvar_if_unset( "rm_special_round_chance", 33 );
 	set_dvar_if_unset( "rm_allow_same_round_as_last_round", 1 );
 
-	set_dvar_if_unset( "rm_allowed_special_rounds", "normal zombie_dog mechz" );
+	set_dvar_if_unset( "rm_allowed_special_rounds", "normal zombie_dog mechz brutus" );
 	set_dvar_if_unset( "rm_allowed_special_round_variants", "default" );
 	set_dvar_if_unset( "rm_forced_special_round", "" );
 	set_dvar_if_unset( "rm_forced_special_variant", "" );
 
 	set_dvar_if_unset( "rm_allowed_mixed_rounds_presets", "default wave" );
 	set_dvar_if_unset( "rm_allowed_mixed_round_variants_for_default_preset", "random" );
-	set_dvar_if_unset( "rm_allowed_mixed_round_variants_for_wave_preset", "normal_wave dog_wave mechz_wave" );
+	set_dvar_if_unset( "rm_allowed_mixed_round_variants_for_wave_preset", "normal_wave dog_wave mechz_wave brutus_wave" );
 	set_dvar_if_unset( "rm_forced_mixed_rounds_preset", "" );
 	set_dvar_if_unset( "rm_forced_mixed_rounds_variant", "" );
 	set_dvar_if_unset( "rm_mixed_round_chance_base", 20 );
 	set_dvar_if_unset( "rm_mixed_round_chance_round_scalar", 5 );
 	set_dvar_if_unset( "rm_mixed_round_min_start_round", 18 );
 
+	level.round_manager_vars = [];
 	level.special_round = sys::spawnstruct();
 	level.special_round.current_data = sys::spawnstruct();
 	level.special_round.current_data.round_type = "";
@@ -40,10 +41,13 @@ main()
 	level.normal_round.current_data = sys::spawnstruct();
 	level.normal_round.current_data.round_type = "";
 	level.normal_round.current_data.variant = "";
+	level.special_round_is_active = false;
+	level.special_round_count = 1;
 
 	register_ai_spawning_func( "normal", scripts\zm\zm_ai_pack\rounds\_normal::spawn_single_normal_zombie );
 	register_ai_spawning_func( "zombie_dog", scripts\zm\zm_ai_pack\rounds\_zombie_dog::spawn_single_zombie_dog );
 	register_ai_spawning_func( "mechz", scripts\zm\zm_ai_pack\rounds\_mechz::spawn_single_mechz );
+	register_ai_spawning_func( "brutus", scripts\zm\zm_ai_pack\rounds\_brutus::spawn_single_brutus );
 
 	scripts\zm\zm_ai_pack\rounds\_zombie_dog::main();
 	scripts\zm\zm_ai_pack\rounds\_mechz::main();
@@ -83,6 +87,24 @@ main()
 										  scripts\zm\zm_ai_pack\rounds\_mechz::round_over,
 										  scripts\zm\zm_ai_pack\rounds\_mechz::round_chance_rush,
 										  scripts\zm\zm_ai_pack\rounds\_mechz::round_next_rush );
+										  
+	register_special_round( "brutus", "default",
+										  scripts\zm\zm_ai_pack\rounds\_brutus::round_spawning,
+										  scripts\zm\zm_ai_pack\rounds\_brutus::round_wait,
+										  scripts\zm\zm_ai_pack\rounds\_brutus::round_max,
+										  scripts\zm\zm_ai_pack\rounds\_brutus::round_start,
+										  scripts\zm\zm_ai_pack\rounds\_brutus::round_over,
+										  scripts\zm\zm_ai_pack\rounds\_brutus::round_chance,
+										  scripts\zm\zm_ai_pack\rounds\_brutus::round_next );
+
+	register_special_round( "brutus", "rush",
+										  scripts\zm\zm_ai_pack\rounds\_brutus::round_spawning_rush,
+										  scripts\zm\zm_ai_pack\rounds\_brutus::round_wait,
+										  scripts\zm\zm_ai_pack\rounds\_brutus::round_max_rush,
+										  scripts\zm\zm_ai_pack\rounds\_brutus::round_start,
+										  scripts\zm\zm_ai_pack\rounds\_brutus::round_over,
+										  scripts\zm\zm_ai_pack\rounds\_brutus::round_chance_rush,
+										  scripts\zm\zm_ai_pack\rounds\_brutus::round_next_rush );
 
 	register_special_round( "normal", "default",
 										  scripts\zm\zm_ai_pack\rounds\_normal::round_spawning,
@@ -138,9 +160,17 @@ main()
 										  scripts\zm\zm_ai_pack\mixed_variants\_mechz_wave::spawning_cooldown,
 										  scripts\zm\zm_ai_pack\mixed_variants\_mechz_wave::spawning_round_start);
 
+	register_mixed_round_preset_variant( "wave", "brutus_wave",
+										  scripts\zm\zm_ai_pack\mixed_variants\_brutus_wave::spawning_wave,
+										  scripts\zm\zm_ai_pack\mixed_variants\_brutus_wave::spawning_chance,
+										  scripts\zm\zm_ai_pack\mixed_variants\_brutus_wave::spawning_limit,
+										  scripts\zm\zm_ai_pack\mixed_variants\_brutus_wave::spawning_cooldown,
+										  scripts\zm\zm_ai_pack\mixed_variants\_brutus_wave::spawning_round_start);
+
 	scripts\zm\zm_ai_pack\mixed_presets\_default::main();
 
 	scripts\zm\zm_ai_pack\mixed_variants\_random::main();
+	scripts\zm\zm_ai_pack\mixed_variants\_brutus_wave::main();
 	scripts\zm\zm_ai_pack\mixed_variants\_dog_wave::main();
 	scripts\zm\zm_ai_pack\mixed_variants\_mechz_wave::main();
 	scripts\zm\zm_ai_pack\mixed_variants\_normal_wave::main();
@@ -214,7 +244,7 @@ should_do_mixed_round()
 
 	if ( level.round_number >= min_round )
 	{
-		return randomInt( 100 ) <= ( chance_base + int( level.round_number * getdvarint( "rm_mixed_round_chance_round_scalar" ) ) );
+		return randomInt( 100 ) <= ( chance_base + int( ( level.round_number - getdvarint( "rm_mixed_round_min_start_round" ) ) * getdvarint( "rm_mixed_round_chance_round_scalar" ) ) );
 	}
 
 	return false;
@@ -263,6 +293,8 @@ determine_current_round_type()
 		level.normal_round.current_data = return_value;
 		return level.normal_round.current_data;
 	}
+
+	level.special_round_is_active = true;
 
 	allowed_round_string = getDvar( "rm_allowed_special_rounds" );
 
@@ -416,6 +448,17 @@ round_think_override( restart )
 			wait 1;
 #/
 
+		maps\mp\zombies\_zm_ai_dogs::dog_health_increase();
+		maps\mp\zombies\_zm_ai_mechz::mechz_health_increases();
+		maps\mp\zombies\_zm_ai_brutus::brutus_health_increases();
+
+		if ( current_round_data.round_type != "mixed" )
+		{
+			if ( getdvarint( "zm_ai_pack_debug" ) > 0 )
+			{
+				print( "Round Manager: Running special round <" + current_round_data.round_type + "> variant <" + current_round_data.variant + ">" );
+			}
+		}
 		level.round_manager_special_rounds[ current_round_data.round_type ][ current_round_data.variant ].active = true;
 		level [[ round_manager_inst.max_func ]]();
 		level thread [[ round_manager_inst.spawning_func ]]();
@@ -492,6 +535,11 @@ round_think_override( restart )
 		level notify( "between_round_over" );
 		level.round_manager_special_rounds[ current_round_data.round_type ][ current_round_data.variant ].active = false;
 		level [[ round_manager_inst.between_round_over_func ]]();
+		if ( level.special_round_is_active )
+		{
+			level.special_round_count++;
+		}
+		level.special_round_is_active = false;
 		restart = 0;
 	}
 }

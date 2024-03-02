@@ -23,7 +23,6 @@ init()
 	}
 	level.dogs_enabled = 1;
 	level.dog_rounds_enabled = 0;
-	level.dog_round_count = 1;
 	level.dog_spawners = [];
 	level.enemy_dog_spawns = [];
 	level.enemy_dog_locations = [];
@@ -156,13 +155,13 @@ dog_health_increase()
 {
 	players = sys::getplayers();
 
-	if ( level.dog_round_count == 1 )
+	if ( level.special_round_count == 1 )
 		level.dog_health = 400;
-	else if ( level.dog_round_count == 2 )
+	else if ( level.special_round_count == 2 )
 		level.dog_health = 900;
-	else if ( level.dog_round_count == 3 )
+	else if ( level.special_round_count == 3 )
 		level.dog_health = 1300;
-	else if ( level.dog_round_count == 4 )
+	else if ( level.special_round_count == 4 )
 		level.dog_health = 1600;
 
 	if ( level.dog_health > 1600 )

@@ -100,8 +100,6 @@ main()
 	level.sndbrutusistalking = 0;
 	level.brutus_health = 500;
 	level.brutus_health_increase = 1000;
-	level.brutus_round_count = 0;
-	level.brutus_last_spawn_round = 0;
 	level.brutus_count = 0;
 	level.brutus_max_count = 1;
 	level.brutus_damage_percent = 0.1;
@@ -174,8 +172,6 @@ init()
 	level.sndbrutusistalking = 0;
 	level.brutus_health = 500;
 	level.brutus_health_increase = 1000;
-	level.brutus_round_count = 0;
-	level.brutus_last_spawn_round = 0;
 	level.brutus_count = 0;
 	level.brutus_max_count = 1;
 	level.brutus_damage_percent = 0.1;
@@ -584,26 +580,20 @@ sndbrutusloopwatcher( ent )
 
 brutus_health_increases()
 {
-	if ( level.round_number > level.brutus_last_spawn_round )
-	{
-		a_players = sys::getplayers();
-		n_player_modifier = 1;
+	a_players = sys::getplayers();
+	n_player_modifier = 1;
 
-		if ( a_players.size > 1 )
-			n_player_modifier = a_players.size * 0.75;
+	if ( a_players.size > 1 )
+		n_player_modifier = a_players.size * 0.75;
 
-		level.brutus_round_count++;
-		level.brutus_health = int( level.brutus_health_increase * n_player_modifier * level.brutus_round_count );
-		level.brutus_expl_dmg_req = int( level.brutus_explosive_damage_increase * n_player_modifier * level.brutus_round_count );
+	level.brutus_health = int( level.brutus_health_increase * n_player_modifier * level.special_round_count );
+	level.brutus_expl_dmg_req = int( level.brutus_explosive_damage_increase * n_player_modifier * level.special_round_count );
 
-		if ( level.brutus_health >= 5000 * n_player_modifier )
-			level.brutus_health = int( 5000 * n_player_modifier );
+	if ( level.brutus_health >= 5000 * n_player_modifier )
+		level.brutus_health = int( 5000 * n_player_modifier );
 
-		if ( level.brutus_expl_dmg_req >= 4500 * n_player_modifier )
-			level.brutus_expl_dmg_req = int( 4500 * n_player_modifier );
-
-		level.brutus_last_spawn_round = level.round_number;
-	}
+	if ( level.brutus_expl_dmg_req >= 4500 * n_player_modifier )
+		level.brutus_expl_dmg_req = int( 4500 * n_player_modifier );
 }
 
 get_brutus_spawn_pos_val( brutus_pos )
@@ -808,9 +798,8 @@ brutus_death()
 		}
 		else
 		{
-			multiplier = maps\mp\zombies\_zm_score::get_points_multiplier( self );
-			team_points = multiplier * round_up_score( level.brutus_team_points_for_death, 5 );
-			player_points = multiplier * round_up_score( level.brutus_player_points_for_death, 5 );
+			team_points = round_up_score( level.brutus_team_points_for_death, 5 );
+			player_points = round_up_score( level.brutus_player_points_for_death, 5 );
 			a_players = sys::getplayers();
 		}
 
@@ -2124,8 +2113,7 @@ scale_helmet_damage( attacker, damage, headshot_mod, damage_mod, vdir )
 				player_points = level.brutus_points_for_helmet;
 			else
 			{
-				multiplier = maps\mp\zombies\_zm_score::get_points_multiplier( self );
-				player_points = multiplier * round_up_score( level.brutus_points_for_helmet, 5 );
+				player_points = round_up_score( level.brutus_points_for_helmet, 5 );
 			}
 
 			if ( isdefined( attacker ) && isplayer( attacker ) )
@@ -2201,8 +2189,7 @@ brutus_damage_override( inflictor, attacker, damage, flags, meansofdeath, weapon
 					player_points = level.brutus_points_for_helmet;
 				else
 				{
-					multiplier = maps\mp\zombies\_zm_score::get_points_multiplier( self );
-					player_points = multiplier * round_up_score( level.brutus_points_for_helmet, 5 );
+					player_points = round_up_score( level.brutus_points_for_helmet, 5 );
 				}
 
 				if ( isdefined( attacker ) && isplayer( attacker ) )
@@ -2256,8 +2243,7 @@ brutus_damage_override( inflictor, attacker, damage, flags, meansofdeath, weapon
 				player_points = level.brutus_points_for_helmet;
 			else
 			{
-				multiplier = maps\mp\zombies\_zm_score::get_points_multiplier( self );
-				player_points = multiplier * round_up_score( level.brutus_points_for_helmet, 5 );
+				player_points = round_up_score( level.brutus_points_for_helmet, 5 );
 			}
 
 			attacker add_to_player_score( player_points );

@@ -100,6 +100,26 @@ get_mechz_count()
 	return get_mechz_array().size;
 }
 
+get_brutus_array()
+{
+	zombies = getaiarray( level.zombie_team );
+	brutus = [];
+	for ( i = 0; i < zombies.size; i++ )
+	{
+		if ( isdefined( zombies[ i ].animname ) && zombies[ i ].animname == "brutus_zombie" )
+		{
+			brutus[ brutus.size ] = zombies[ i ];
+		}
+	}
+
+	return brutus;
+}
+
+get_brutus_count()
+{
+	return get_brutus_array().size;
+}
+
 get_all_ai_array()
 {
 	return getaispeciesarray( level.zombie_team, "all" );
