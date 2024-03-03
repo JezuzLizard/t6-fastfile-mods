@@ -13,8 +13,8 @@ main()
 	set_dvar_if_unset( "rm_special_round_chance", 33 );
 	set_dvar_if_unset( "rm_allow_same_round_as_last_round", 1 );
 
-	set_dvar_if_unset( "rm_allowed_special_rounds", "normal zombie_dog mechz brutus" );
-	set_dvar_if_unset( "rm_allowed_special_round_variants", "default" );
+	set_dvar_if_unset( "rm_allowed_special_rounds", "normal zombie_dog" );
+	set_dvar_if_unset( "rm_allowed_special_round_variants", "default rush" );
 	set_dvar_if_unset( "rm_forced_special_round", "" );
 	set_dvar_if_unset( "rm_forced_special_variant", "" );
 

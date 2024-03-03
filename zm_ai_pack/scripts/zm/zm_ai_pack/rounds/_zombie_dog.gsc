@@ -169,6 +169,10 @@ round_max_rush()
 	{
 		dog_max = max;
 	}
+	if ( dog_max <= 0 )
+	{
+		dog_max = 6;
+	}
 
 	dog_max = int( dog_max );
 	level.zombie_total = dog_max;

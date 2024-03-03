@@ -60,7 +60,7 @@ main()
 		if ( isDefined( level.ai_data[ keys[ i ] ].main ) && isDefined( level.ai_data[ keys[ i ] ].should_execute ) 
 			&& level.ai_data[ keys[ i ] ].should_execute )
 		{
-			level [[ level.ai_data[ keys[ i ] ].main ]]();
+			level thread [[ level.ai_data[ keys[ i ] ].main ]]();
 		}
 	}
 	if ( level.script != "zm_tomb" && level.script != "zm_prison" )

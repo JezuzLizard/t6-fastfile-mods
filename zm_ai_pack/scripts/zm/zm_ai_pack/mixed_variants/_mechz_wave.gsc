@@ -21,7 +21,7 @@ spawning_wave()
 	level.round_manager_vars[ "mechz_wave_count" ]++;
 	scripts\zm\zm_ai_pack\mixed_presets\_wave::spawn_wave( "mechz" );
 	time = randomfloatrange( getdvarfloat( "rm_mixed_preset_wave_mechz_wave_variant_min_cooldown" ), getdvarfloat( "rm_mixed_preset_wave_mechz_wave_variant_max_cooldown" ) );
-	level.round_manager_vars[ "guaranteed_mechz_wave_time" ] = gettime() + ( time * 1000 );
+	level.round_manager_vars[ "guaranteed_mechz_wave_time" ] = int( gettime() + ( time * 1000 ) );
 }
 
 spawning_chance()

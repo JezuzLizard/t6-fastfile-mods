@@ -94,7 +94,6 @@ main()
 	}
 
 	setup_interaction_matrix();
-	flag_wait( "start_zombie_round_logic" );
 
 	level.brutus_spawn_positions = getstructarray( "brutus_location", "script_noteworthy" );
 	level.sndbrutusistalking = 0;
@@ -138,6 +137,8 @@ main()
 
 	level.brutus_shotgun_damage_mod = 1.5;
 	level.brutus_custom_goalradius = 48;
+
+	flag_wait( "start_zombie_round_logic" );
 	level thread brutus_spawning_logic();
 
 	if ( !level.brutus_in_grief )
