@@ -20,8 +20,6 @@ main()
 	set_dvar_if_unset( "rm_dog_rush_max_dogs_round_number_multiplier", 0.1 );
 	set_dvar_if_unset( "rm_dog_rush_max_spawn_wait", 0.5 );
 	set_dvar_if_unset( "rm_dog_rush_min_spawn_wait", 0.1 );
-
-	level.round_manager_mixed_round_dog_spawn_count = 0;
 }
 
 round_spawning()

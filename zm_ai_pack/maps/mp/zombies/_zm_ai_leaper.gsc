@@ -40,13 +40,14 @@ init()
 	level thread leaper_calc_anim_offsets();
 
 	if ( !isdefined( level.leapers_per_player ) )
-		level.leapers_per_player = 2;
+		level.leapers_per_player = 6;
 
 	level.no_jump_triggers = sys::getentarray( "leaper_no_jump_trigger", "targetname" );
 }
 
 leaper_calc_anim_offsets()
 {
+	flag_wait( "initial_blackscreen_passed" );
 	leaper = spawn_zombie( level.leaper_spawners[0] );
 
 	if ( isdefined( leaper ) )
@@ -121,7 +122,10 @@ leaper_spawner_zone_check()
 		str_spawn_count_list = str_spawn_count_list + a_zones[i] + ": " + level.zones[a_zones[i]].leaper_locations.size + "\\n";
 	}
 
-	assert( n_zones_missing_spawners == 0, "All zones require at least one leaper spawn point." + n_zones_missing_spawners + " zones are missing leaper spawners. They are: " + str_zone_list );
+	if ( n_zones_missing_spawners != 0 )
+	{
+		assertmsg( "All zones require at least one leaper spawn point." + n_zones_missing_spawners + " zones are missing leaper spawners. They are: " + str_zone_list );
+	}
 /#
 	println( "========== LEAPER SPAWN COUNT PER ZONE ===========" );
 	println( str_spawn_count_list );
@@ -135,6 +139,7 @@ leaper_init()
 	level endon( "intermission" );
 	self.animname = "leaper_zombie";
 	self.audio_type = "leaper";
+	self.no_gib = true;
 	self.has_legs = 1;
 	self.ignore_all_poi = 1;
 	self.is_leaper = 1;
@@ -160,8 +165,15 @@ leaper_init()
 	self thread leaper_think();
 	self thread leaper_spawn_failsafe();
 	self thread leaper_traverse_watcher();
-	self.maxhealth = level.leaper_health;
-	self.health = level.leaper_health;
+	if ( isdefined( self.custom_starting_health ) )
+	{
+		self.maxhealth = self.custom_starting_health;
+	}
+	else
+	{
+		self.maxhealth = level.leaper_health;
+	}
+	self.health = self.maxhealth;
 	self setphysparams( 15, 0, 24 );
 	self.zombie_init_done = 1;
 	self notify( "zombie_init_done" );
@@ -538,200 +550,17 @@ leaper_notetracks( animname )
 
 enable_leaper_rounds()
 {
-	level.leaper_rounds_enabled = 1;
-	flag_init( "leaper_round" );
-	level thread leaper_round_tracker();
-}
-
-leaper_round_tracker()
-{
-	level.leaper_round_count = 1;
-	level.next_leaper_round = level.round_number + randomintrange( 4, 7 );
-	old_spawn_func = level.round_spawn_func;
-	old_wait_func = level.round_wait_func;
-
-	while ( true )
-	{
-		level waittill( "between_round_over" );
-
-		if ( level.round_number == level.next_leaper_round )
-		{
-			level.music_round_override = 1;
-			old_spawn_func = level.round_spawn_func;
-			old_wait_func = level.round_wait_func;
-			leaper_round_start();
-			level.round_spawn_func = ::leaper_round_spawning;
-			level.round_wait_func = ::leaper_round_wait;
-			level.next_leaper_round = level.round_number + randomintrange( 4, 6 );
-		}
-		else if ( flag( "leaper_round" ) )
-		{
-			leaper_round_stop();
-			level.round_spawn_func = old_spawn_func;
-			level.round_wait_func = old_wait_func;
-			level.music_round_override = 0;
-			level.leaper_round_count = level.leaper_round_count + 1;
-		}
-	}
-}
-
-leaper_round_spawning()
-{
-	level endon( "intermission" );
-	level endon( "leaper_round_ending" );
-	level.leaper_targets = sys::getplayers();
-
-	for ( i = 0; i < level.leaper_targets.size; i++ )
-		level.leaper_targets[i].hunted_by = 0;
-
-/#
-	level endon( "kill_round" );
-
-	if ( getdvarint( #"zombie_cheat" ) == 2 || getdvarint( #"zombie_cheat" ) >= 4 )
-		return;
-#/
-
-	if ( level.intermission )
-		return;
-
-	level.leaper_intermission = 1;
-	level thread leaper_round_accuracy_tracking();
-	level thread leaper_round_aftermath();
-	players = sys::getplayers();
-	wait 1;
-	playsoundatposition( "vox_zmba_event_dogstart_0", ( 0, 0, 0 ) );
-	wait 1;
-
-	if ( level.leaper_round_count < 3 )
-		max = players.size * level.leapers_per_player;
-	else
-		max = players.size * level.leapers_per_player;
-
-	level.zombie_total = max;
-	leaper_health_increase();
-	level.leaper_count = 0;
-
-	while ( true )
-	{
-		b_hold_spawning_when_leapers_are_all_dead = 1;
-/#
-		n_test_mode_active = getdvarint( #"_id_298DD9A4" );
-
-		if ( isdefined( n_test_mode_active ) && n_test_mode_active == 1 )
-		{
-			level.zombie_total = 9999;
-			b_hold_spawning_when_leapers_are_all_dead = 0;
-		}
-		else
-		{
-			n_remaining_leapers_this_round = max - level.leaper_count;
-			level.zombie_total = clamp( n_remaining_leapers_this_round, 0, max );
-		}
-#/
-
-		if ( level.leaper_count >= max && b_hold_spawning_when_leapers_are_all_dead )
-		{
-			wait 0.5;
-			continue;
-		}
-
-		num_player_valid = get_number_of_valid_players();
-		per_player = 2;
-/#
-		if ( getdvarint( #"_id_5A273E4B" ) == 2 )
-			per_player = 1;
-#/
-
-		while ( get_current_zombie_count() >= num_player_valid * per_player )
-		{
-			wait 2;
-			num_player_valid = get_number_of_valid_players();
-		}
-
-		players = sys::getplayers();
-		favorite_enemy = get_favorite_enemy();
-		spawn_point = leaper_spawn_logic( level.enemy_dog_spawns, favorite_enemy );
-		ai = spawn_zombie( level.leaper_spawners[0] );
-
-		if ( isdefined( ai ) )
-		{
-			ai.favoriteenemy = favorite_enemy;
-			ai.spawn_point = spawn_point;
-			spawn_point thread leaper_spawn_fx( ai, spawn_point );
-			level.zombie_total--;
-			level.leaper_count++;
-		}
-
-		waiting_for_next_leaper_spawn( level.leaper_count, max );
-	}
-}
-
-leaper_round_accuracy_tracking()
-{
-	players = sys::getplayers();
-	level.leaper_round_accurate_players = 0;
-
-	for ( i = 0; i < players.size; i++ )
-	{
-		players[i].total_shots_start_leaper_round = players[i] maps\mp\gametypes_zm\_globallogic_score::getpersstat( "total_shots" );
-		players[i].total_hits_start_leaper_round = players[i] maps\mp\gametypes_zm\_globallogic_score::getpersstat( "hits" );
-	}
-
-	level waittill( "last_leaper_down" );
-	players = sys::getplayers();
-
-	for ( i = 0; i < players.size; i++ )
-	{
-		total_shots_end_leaper_round = players[i] maps\mp\gametypes_zm\_globallogic_score::getpersstat( "total_shots" ) - players[i].total_shots_start_leaper_round;
-		total_hits_end_leaper_round = players[i] maps\mp\gametypes_zm\_globallogic_score::getpersstat( "hits" ) - players[i].total_hits_start_leaper_round;
-
-		if ( total_shots_end_leaper_round == total_hits_end_leaper_round )
-			level.leaper_round_accurate_players++;
-	}
-
-	if ( level.leaper_round_accurate_players == players.size )
-	{
-		for ( i = 0; i < players.size; i++ )
-			players[i] maps\mp\zombies\_zm_score::add_to_player_score( 2000 );
-
-		if ( isdefined( level.last_leaper_origin ) )
-		{
-			trace = groundtrace( level.last_leaper_origin + vectorscale( ( 0, 0, 1 ), 10.0 ), level.last_leaper_origin + vectorscale( ( 0, 0, -1 ), 150.0 ), 0, undefined, 1 );
-			power_up_origin = trace["position"];
-			level thread maps\mp\zombies\_zm_powerups::specific_powerup_drop( "free_perk", power_up_origin + vectorscale( ( 1, 1, 0 ), 30.0 ) );
-		}
-	}
-}
-
-leaper_round_wait()
-{
-	level endon( "restart_round" );
-/#
-	if ( getdvarint( #"zombie_cheat" ) == 2 || getdvarint( #"zombie_cheat" ) >= 4 )
-		level waittill( "forever" );
-#/
-	wait 1;
-
-	if ( flag( "leaper_round" ) )
-	{
-		wait 7;
-
-		while ( level.leaper_intermission )
-			wait 0.5;
-	}
 }
 
 leaper_health_increase()
 {
-	players = sys::getplayers();
-
-	if ( level.leaper_round_count == 1 )
+	if ( level.special_round_count == 1 )
 		level.leaper_health = 400;
-	else if ( level.leaper_round_count == 2 )
+	else if ( level.special_round_count == 2 )
 		level.leaper_health = 900;
-	else if ( level.leaper_round_count == 3 )
+	else if ( level.special_round_count == 3 )
 		level.leaper_health = 1300;
-	else if ( level.leaper_round_count == 4 )
+	else if ( level.special_round_count == 4 )
 		level.leaper_health = 1600;
 
 	if ( level.leaper_health > 1600 )
@@ -780,155 +609,6 @@ leaper_combat_animmode()
 	self sys::animmode( "gravity", 0 );
 }
 
-leaper_spawn_logic_old( leaper_array, favorite_enemy )
-{
-	all_locs = getstructarray( "leaper_location", "script_noteworthy" );
-	leaper_locs = array_randomize( all_locs );
-
-	for ( i = 0; i < leaper_locs.size; i++ )
-	{
-		if ( leaper_locs.size > 1 )
-		{
-			if ( isdefined( level.old_leaper_spawn ) && level.old_leaper_spawn == leaper_locs[i] )
-				continue;
-		}
-
-		dist_squared = sys::distancesquared( leaper_locs[i].origin, favorite_enemy.origin );
-
-		if ( dist_squared > 160000 && dist_squared < 1000000 )
-		{
-			level.old_leaper_spawn = leaper_locs[i];
-			return leaper_locs[i];
-		}
-	}
-
-	return leaper_locs[0];
-}
-
-leaper_spawn_logic( leaper_array, favorite_enemy )
-{
-	a_zones_active = level.active_zone_names;
-	a_zones_occupied = [];
-
-	foreach ( zone in a_zones_active )
-	{
-		if ( level.zones[zone].is_occupied )
-			a_zones_occupied[a_zones_occupied.size] = zone;
-	}
-
-	a_leaper_spawn_points = [];
-
-	foreach ( zone in a_zones_occupied )
-		a_leaper_spawn_points = arraycombine( a_leaper_spawn_points, level.zones[zone].leaper_locations, 0, 0 );
-
-	if ( a_leaper_spawn_points.size == 0 )
-	{
-		foreach ( zone in a_zones_active )
-			a_leaper_spawn_points = arraycombine( a_leaper_spawn_points, level.zones[zone].leaper_locations, 0, 0 );
-	}
-
-	if ( a_leaper_spawn_points.size == 0 )
-	{
-		str_zone_list_occupied = "";
-		a_keys_error = getarraykeys( a_zones_occupied );
-
-		foreach ( key in a_zones_occupied )
-			str_zone_list_occupied = str_zone_list_occupied + "  " + key;
-
-		str_zone_list_active = "";
-		a_keys_error = getarraykeys( a_zones_active );
-
-		foreach ( key in a_zones_active )
-			str_zone_list_active = str_zone_list_active + "  " + key;
-
-/#
-		assertmsg( "No leaper spawn locations were found in any of the occupied or active zones. Occupied zones: " + str_zone_list_occupied + ". Active zones: " + str_zone_list_active );
-#/
-	}
-
-/#
-	if ( getdvarint( #"scr_zombie_spawn_in_view" ) )
-	{
-		player = sys::getplayers()[0];
-		a_spawn_points_in_view = [];
-
-		for ( i = 0; i < a_leaper_spawn_points.size; i++ )
-		{
-			player_vec = sys::vectornormalize( anglestoforward( player.angles ) );
-			player_spawn = sys::vectornormalize( a_leaper_spawn_points[i].origin - player.origin );
-			dot = sys::vectordot( player_vec, player_spawn );
-
-			if ( dot > 0.707 )
-			{
-				a_spawn_points_in_view[a_spawn_points_in_view.size] = a_leaper_spawn_points[i];
-				debugstar( a_leaper_spawn_points[i].origin, 1000, ( 1, 1, 1 ) );
-			}
-		}
-
-		if ( a_spawn_points_in_view.size <= 0 )
-		{
-			a_spawn_points_in_view[a_spawn_points_in_view.size] = a_leaper_spawn_points[0];
-			iprintln( "no spawner in view" );
-		}
-
-		a_leaper_spawn_points = a_spawn_points_in_view;
-	}
-#/
-	s_leaper_spawn_point = select_leaper_spawn_point( a_leaper_spawn_points );
-	return s_leaper_spawn_point;
-}
-
-select_leaper_spawn_point( a_spawn_points )
-{
-	a_valid_nodes = get_valid_spawner_array( a_spawn_points );
-
-	if ( a_valid_nodes.size == 0 )
-	{
-/#
-		iprintln( "All leaper spawns used...resetting" );
-#/
-
-		for ( i = 0; i < a_spawn_points.size; i++ )
-			a_spawn_points[i].has_spawned_leaper_this_round = 0;
-
-		a_valid_nodes = get_valid_spawner_array( a_spawn_points );
-	}
-
-	if ( a_valid_nodes.size > 0 )
-	{
-		s_spawn_point = random( a_valid_nodes );
-		s_spawn_point.has_spawned_leaper_this_round = 1;
-	}
-	else
-	{
-/#
-		iprintln( "DEBUG: no valid leaper spawns available" );
-#/
-		s_spawn_point = a_spawn_points[0];
-	}
-
-	return s_spawn_point;
-}
-
-get_valid_spawner_array( a_spawn_points )
-{
-	a_valid_nodes = [];
-
-	for ( i = 0; i < a_spawn_points.size; i++ )
-	{
-		if ( isdefined( a_spawn_points[i].is_blocked ) && a_spawn_points[i].is_blocked || !( isdefined( a_spawn_points[i].is_enabled ) && a_spawn_points[i].is_enabled ) || isdefined( a_spawn_points[i].is_spawning ) && a_spawn_points[i].is_spawning )
-			continue;
-
-		if ( !isdefined( a_spawn_points[i].has_spawned_leaper_this_round ) )
-			a_spawn_points[i].has_spawned_leaper_this_round = 0;
-
-		if ( !a_spawn_points[i].has_spawned_leaper_this_round )
-			a_valid_nodes[a_valid_nodes.size] = a_spawn_points[i];
-	}
-
-	return a_valid_nodes;
-}
-
 leaper_spawn_fx( ai, ent )
 {
 	ai sys::setfreecameralockonallowed( 0 );
@@ -946,22 +626,41 @@ leaper_spawn_fx( ai, ent )
 	playsoundatposition( "zmb_leaper_spawn_fx", v_fx_origin );
 }
 
-waiting_for_next_leaper_spawn( count, max )
+leaper_round_accuracy_tracking()
 {
-	default_wait = 1.5;
+	players = sys::getplayers();
+	level.leaper_round_accurate_players = 0;
 
-	if ( level.leaper_round_count == 1 )
-		default_wait = 3;
-	else if ( level.leaper_round_count == 2 )
-		default_wait = 2.5;
-	else if ( level.leaper_round_count == 3 )
-		default_wait = 2;
-	else
-		default_wait = 1.5;
+	for ( i = 0; i < players.size; i++ )
+	{
+		players[i].total_shots_start_leaper_round = players[i] maps\mp\gametypes_zm\_globallogic_score::getpersstat( "total_shots" );
+		players[i].total_hits_start_leaper_round = players[i] maps\mp\gametypes_zm\_globallogic_score::getpersstat( "hits" );
+	}
 
-	default_wait = default_wait - count / max;
-	default_wait = clamp( default_wait, 0, 3 );
-	wait( default_wait );
+	level waittill( "last_leaper_down" );
+	players = sys::getplayers();
+
+	for ( i = 0; i < players.size; i++ )
+	{
+		total_shots_end_leaper_round = players[i] maps\mp\gametypes_zm\_globallogic_score::getpersstat( "total_shots" ) - players[i].total_shots_start_leaper_round;
+		total_hits_end_leaper_round = players[i] maps\mp\gametypes_zm\_globallogic_score::getpersstat( "hits" ) - players[i].total_hits_start_leaper_round;
+
+		if ( total_shots_end_leaper_round == total_hits_end_leaper_round )
+			level.leaper_round_accurate_players++;
+	}
+
+	if ( level.leaper_round_accurate_players == players.size )
+	{
+		for ( i = 0; i < players.size; i++ )
+			players[i] maps\mp\zombies\_zm_score::add_to_player_score( 2000 );
+
+		if ( isdefined( level.last_leaper_origin ) )
+		{
+			trace = groundtrace( level.last_leaper_origin + vectorscale( ( 0, 0, 1 ), 10.0 ), level.last_leaper_origin + vectorscale( ( 0, 0, -1 ), 150.0 ), 0, undefined, 1 );
+			power_up_origin = trace["position"];
+			//level thread maps\mp\zombies\_zm_powerups::specific_powerup_drop( "free_perk", power_up_origin + vectorscale( ( 1, 1, 0 ), 30.0 ) );
+		}
+	}
 }
 
 leaper_round_aftermath()
@@ -982,12 +681,10 @@ leaper_round_aftermath()
 	wait 2;
 	clientnotify( "leaper_stop" );
 	wait 6;
-	level.leaper_intermission = 0;
 }
 
 leaper_round_start()
 {
-	flag_set( "leaper_round" );
 	level thread maps\mp\zombies\_zm_audio::change_zombie_music( "dog_start" );
 	level thread leaper_round_start_audio();
 	level notify( "leaper_round_starting" );
@@ -996,7 +693,6 @@ leaper_round_start()
 
 leaper_round_stop()
 {
-	flag_clear( "leaper_round" );
 	level notify( "leaper_round_ending" );
 	clientnotify( "leaper_stop" );
 }
@@ -1082,7 +778,10 @@ is_leaper_outside_playable_space( playable_area )
 	foreach ( area in playable_area )
 	{
 		if ( self sys::istouching( area ) )
+		{
 			b_outside_play_space = 0;
+			break;
+		}
 	}
 
 	return b_outside_play_space;
@@ -1093,7 +792,6 @@ leaper_cleanup()
 	self leaper_stop_trail_fx();
 	self notify( "leaper_cleanup" );
 	wait 0.05;
-	level.leaper_count--;
 	level.zombie_total++;
 }
 

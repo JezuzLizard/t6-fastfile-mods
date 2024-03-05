@@ -96,6 +96,11 @@ main()
 
 	setup_interaction_matrix();
 
+	while ( !isdefined( level.struct_class_names ) )
+	{
+		wait 0.05;
+	}
+
 	level.brutus_spawn_positions = getstructarray( "brutus_location", "script_noteworthy" );
 	level.sndbrutusistalking = 0;
 	level.brutus_health = 500;
@@ -320,13 +325,13 @@ setup_interaction_matrix()
 	{
 		int_type = interaction_types[i];
 		interaction = level.interaction_types[int_type];
-		assert( !isdefined( level.interaction_priority[interaction.priority] ) );
-		level.interaction_priority[interaction.priority] = int_type;
+		assert( !isdefined( level.interaction_priority[interaction.priority + ""] ) );
+		level.interaction_priority[interaction.priority + ""] = int_type;
 	}
 
 /#
 	for ( i = 0; i < interaction_types.size; i++ )
-		assert( isdefined( level.interaction_priority[i] ) );
+		assert( isdefined( level.interaction_priority[i + ""] ) );
 #/
 }
 
@@ -1376,7 +1381,7 @@ get_priority_item_for_brutus( zone_name, do_secondary_zone_checks )
 	{
 		best_score = -1;
 		best_object = undefined;
-		int_type = interact_prio[i];
+		int_type = interact_prio[i + ""];
 		int_struct = interact_types[int_type];
 		int_objects = self [[ int_struct.get_func ]]( zone_name );
 

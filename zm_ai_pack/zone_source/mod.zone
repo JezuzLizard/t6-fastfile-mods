@@ -14,7 +14,7 @@ include,buried/zm_buried_ghost
 //include,buried/zm_buried_sloth
 
 //include,highrise/zm_highrise_basic_no_anims
-//include,highrise/zm_highrise_leaper
+include,highrise/zm_highrise_leaper
 
 //include,nuked/zm_nuked_basic_no_anims
 //include,nuked/zm_nuked_dog

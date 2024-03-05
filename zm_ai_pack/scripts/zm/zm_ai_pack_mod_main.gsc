@@ -43,9 +43,9 @@ main()
 	// level.ai_data[ "ghost" ] = sys::spawnstruct();
 	// level.ai_data[ "ghost" ].main = maps\mp\zombies\_zm_ai_ghost::main;
 	// level.ai_data[ "ghost" ].should_execute = !( level.script == "zm_buried" && level.gametype == "zclassic" );
-	// level.ai_data[ "leaper" ] = sys::spawnstruct();
-	// level.ai_data[ "leaper" ].main = maps\mp\zombies\_zm_ai_leaper::main;
-	// level.ai_data[ "leaper" ].should_execute = level.script != "zm_highrise";
+	level.ai_data[ "leaper" ] = sys::spawnstruct();
+	level.ai_data[ "leaper" ].main = maps\mp\zombies\_zm_ai_leaper::main;
+	level.ai_data[ "leaper" ].should_execute = level.script != "zm_highrise";
 	level.ai_data[ "brutus" ] = sys::spawnstruct();
 	level.ai_data[ "brutus" ].main = maps\mp\zombies\_zm_ai_brutus::main;
 	level.ai_data[ "brutus" ].should_execute = level.script != "zm_prison";
@@ -85,6 +85,8 @@ init()
 			level thread [[ level.ai_data[ keys[ i ] ].init ]]();
 		}
 	}
+
+	level.melee_anim_state = ::melee_anim_state;
 
 	level thread add_spawn_functions_to_spawners();
 }
@@ -511,4 +513,25 @@ handlemeleebiteattacknotetracks_override( note, player )
 			self thread maps\mp\animscripts\zm_dog_combat::orienttoplayerdeadreckoning( player, melee_time );
 			break;
 	}
+}
+
+melee_anim_state()
+{
+	if ( self.zombie_move_speed == "bus_walk" )
+		return maps\mp\animscripts\zm_utility::append_missing_legs_suffix( "zm_walk_melee" );
+
+	if ( isdefined( self.animname ) && self.animname == "leaper_zombie" )
+	{
+		mas = "zm_run_melee";
+		melee_dist = distancesquared( self.origin, self.enemy.origin );
+		kick_dist = 1024;
+
+		if ( melee_dist < kick_dist )
+			mas = "zm_jump_melee";
+
+		self.melee_attack = 1;
+		return mas;
+	}
+
+	return undefined;
 }

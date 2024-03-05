@@ -13,7 +13,7 @@ main()
 	set_dvar_if_unset( "rm_special_round_chance", 33 );
 	set_dvar_if_unset( "rm_allow_same_round_as_last_round", 1 );
 
-	set_dvar_if_unset( "rm_allowed_special_rounds", "normal zombie_dog" );
+	set_dvar_if_unset( "rm_allowed_special_rounds", "normal zombie_dog leaper" );
 	set_dvar_if_unset( "rm_allowed_special_round_variants", "default rush" );
 	set_dvar_if_unset( "rm_forced_special_round", "" );
 	set_dvar_if_unset( "rm_forced_special_variant", "" );
@@ -48,9 +48,12 @@ main()
 	register_ai_spawning_func( "zombie_dog", scripts\zm\zm_ai_pack\rounds\_zombie_dog::spawn_single_zombie_dog );
 	register_ai_spawning_func( "mechz", scripts\zm\zm_ai_pack\rounds\_mechz::spawn_single_mechz );
 	register_ai_spawning_func( "brutus", scripts\zm\zm_ai_pack\rounds\_brutus::spawn_single_brutus );
+	register_ai_spawning_func( "leaper", scripts\zm\zm_ai_pack\rounds\_leaper::spawn_single_leaper );
 
 	scripts\zm\zm_ai_pack\rounds\_zombie_dog::main();
 	scripts\zm\zm_ai_pack\rounds\_mechz::main();
+	scripts\zm\zm_ai_pack\rounds\_brutus::main();
+	scripts\zm\zm_ai_pack\rounds\_leaper::main();
 
 	register_special_round( "zombie_dog", "default",
 										  scripts\zm\zm_ai_pack\rounds\_zombie_dog::round_spawning,
@@ -105,6 +108,24 @@ main()
 										  scripts\zm\zm_ai_pack\rounds\_brutus::round_over,
 										  scripts\zm\zm_ai_pack\rounds\_brutus::round_chance_rush,
 										  scripts\zm\zm_ai_pack\rounds\_brutus::round_next_rush );
+
+	register_special_round( "leaper", "default",
+										  scripts\zm\zm_ai_pack\rounds\_leaper::round_spawning,
+										  scripts\zm\zm_ai_pack\rounds\_leaper::round_wait,
+										  scripts\zm\zm_ai_pack\rounds\_leaper::round_max,
+										  scripts\zm\zm_ai_pack\rounds\_leaper::round_start,
+										  scripts\zm\zm_ai_pack\rounds\_leaper::round_over,
+										  scripts\zm\zm_ai_pack\rounds\_leaper::round_chance,
+										  scripts\zm\zm_ai_pack\rounds\_leaper::round_next );
+
+	register_special_round( "leaper", "rush",
+										  scripts\zm\zm_ai_pack\rounds\_leaper::round_spawning_rush,
+										  scripts\zm\zm_ai_pack\rounds\_leaper::round_wait,
+										  scripts\zm\zm_ai_pack\rounds\_leaper::round_max_rush,
+										  scripts\zm\zm_ai_pack\rounds\_leaper::round_start,
+										  scripts\zm\zm_ai_pack\rounds\_leaper::round_over,
+										  scripts\zm\zm_ai_pack\rounds\_leaper::round_chance_rush,
+										  scripts\zm\zm_ai_pack\rounds\_leaper::round_next_rush );
 
 	register_special_round( "normal", "default",
 										  scripts\zm\zm_ai_pack\rounds\_normal::round_spawning,
@@ -451,6 +472,7 @@ round_think_override( restart )
 		maps\mp\zombies\_zm_ai_dogs::dog_health_increase();
 		maps\mp\zombies\_zm_ai_mechz::mechz_health_increases();
 		maps\mp\zombies\_zm_ai_brutus::brutus_health_increases();
+		maps\mp\zombies\_zm_ai_leaper::leaper_health_increase();
 
 		if ( current_round_data.round_type != "mixed" )
 		{

@@ -80,19 +80,24 @@ get_zombie_dog_count()
 	return get_zombie_dog_array().size;
 }
 
-get_mechz_array()
+get_zombies_by_animname( animname )
 {
 	zombies = getaiarray( level.zombie_team );
-	mechz = [];
+	matching_zombies = [];
 	for ( i = 0; i < zombies.size; i++ )
 	{
-		if ( isdefined( zombies[ i ].animname ) && zombies[ i ].animname == "mechz_zombie" )
+		if ( isdefined( zombies[ i ].animname ) && zombies[ i ].animname == animname )
 		{
-			mechz[ mechz.size ] = zombies[ i ];
+			matching_zombies[ matching_zombies.size ] = zombies[ i ];
 		}
 	}
 
-	return mechz;
+	return matching_zombies;
+}
+
+get_mechz_array()
+{
+	return get_zombies_by_animname( "mechz_zombie" );
 }
 
 get_mechz_count()
@@ -102,22 +107,22 @@ get_mechz_count()
 
 get_brutus_array()
 {
-	zombies = getaiarray( level.zombie_team );
-	brutus = [];
-	for ( i = 0; i < zombies.size; i++ )
-	{
-		if ( isdefined( zombies[ i ].animname ) && zombies[ i ].animname == "brutus_zombie" )
-		{
-			brutus[ brutus.size ] = zombies[ i ];
-		}
-	}
-
-	return brutus;
+	return get_zombies_by_animname( "brutus_zombie" );
 }
 
 get_brutus_count()
 {
 	return get_brutus_array().size;
+}
+
+get_leaper_array()
+{
+	return get_zombies_by_animname( "leaper_zombie" );
+}
+
+get_leaper_count()
+{
+	return get_leaper_array().size;
 }
 
 get_all_ai_array()
@@ -132,6 +137,10 @@ get_all_ai_count()
 
 wait_for_free_ai_slot( func )
 {
+	if ( !isdefined( func ) )
+	{
+		func = ::get_all_ai_count;
+	}
 	while ( level.zombie_total <= 0 || isdefined( func ) && [[ func ]]() >= level.zombie_ai_limit )
 		wait 0.1;
 
