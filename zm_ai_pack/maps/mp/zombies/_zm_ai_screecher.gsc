@@ -54,6 +54,7 @@ init()
 /#
 	level thread screecher_debug();
 #/
+	registerclientfield( "actor", "render_third_person", 1, 1, "int" );
 	level.near_miss = 0;
 }
 

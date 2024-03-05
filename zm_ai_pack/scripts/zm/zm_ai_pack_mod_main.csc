@@ -40,7 +40,6 @@ main()
 
 init()
 {
-
 }
 
 add_visionset_callback( func )

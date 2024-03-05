@@ -1,60 +1,58 @@
-execute_clientfield_alt_callback_internal( data, last_data, field_type, field_name )
+execute_clientfield_alt_callback_internal( data, field_type, field_name )
 {
-	entnum = data.entnum;
-	ent = undefined;
-	field_data = level.clientfield_alts[ field_type ][ field_name ];
-	ent = getEntByNum( 0, entnum );
+	foreach ( item in data )
+	{
+		entnum = item.entnum;
+		field_data = level.clientfield_alts[ field_type ][ field_name ];
+		ent = getEntByNum( 0, entnum );
 
-	assert( isDefined( ent ) );
+		assert( isDefined( ent ) );
 
-	ent thread [[ field_data.callback ]]( data.value, last_data.value );
+		ent thread [[ field_data.callback ]]( item.value );
+	}
 }
 
 get_data_from_payload( payload )
 {
-	struct = spawnStruct();
-	if ( payload != "" )
+	data = [];
+	keys = strtok( payload, "|" );
+	foreach ( key in keys )
 	{
-		tokens = strTok( payload, " " );
-	
+		struct = spawnStruct();
+		tokens = strTok( key, " " );
+		
 		struct.entnum = int( tokens[ 0 ] );
 		struct.value = tokens[ 1 ];
-	}
-	else
-	{
-		struct.entnum = -1;
-		struct.value = "";
+		data[ data.size ] = struct;
 	}
 
-	return struct;
+	return data;
 }
 
-execute_clientfield_alt_callback( payload, last_payload, field_type, field_name )
+execute_clientfield_alt_callback( payload, field_type, field_name )
 {
 	data = get_data_from_payload( payload );
-	last_data = get_data_from_payload( last_payload );
 
-	execute_clientfield_alt_callback_internal( data, last_data, field_type, field_name );
+	execute_clientfield_alt_callback_internal( data, field_type, field_name );
 }
 
 handle_clientfield_alt_callbacks( dvar_name, field_type, field_name )
 {
 	level endon( "disconnect" );
 
-	old_dvar_value = getDvar( dvar_name );
 	for (;;)
 	{
 		dvar_value = getDvar( dvar_name );
-		if ( dvar_value != old_dvar_value )
+		if ( dvar_value != "" )
 		{
 			if ( getDvarInt( "clientfield_alt_debug" ) )
 			{
 				print( "handle_clientfield_alt_callbacks( " + dvar_name + ", " + field_type + ", " + field_name + " )" );
-				print( "handle_clientfield_alt_callbacks() dvar_value: \"" + dvar_value + "\" old_dvar_value: \"" + old_dvar_value + "\"" );
+				print( "handle_clientfield_alt_callbacks() dvar_value: \"" + dvar_value + "\"" );
 			}
 
-			level execute_clientfield_alt_callback( dvar_value, old_dvar_value, field_type, field_name );
-			old_dvar_value = dvar_value;			
+			level execute_clientfield_alt_callback( dvar_value, field_type, field_name );
+			setdvar( dvar_name, "" );
 		}
 
 		wait 0.01;

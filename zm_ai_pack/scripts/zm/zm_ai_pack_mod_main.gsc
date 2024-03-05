@@ -25,6 +25,9 @@ main()
 	pluto_sys::replacefunc( maps\mp\animscripts\zm_dog_combat::domeleeafterwait, ::domeleeafterwait_override );
 	pluto_sys::replacefunc( maps\mp\animscripts\zm_dog_combat::handlemeleebiteattacknotetracks, ::handlemeleebiteattacknotetracks_override );
 
+	//pluto_sys::replacefunc( maps\mp\animscripts\zm_run::setanimstatefromspeed, ::setanimstatefromspeed_override );
+	//pluto_sys::replacefunc( maps\mp\animscripts\zm_melee::set_zombie_melee_anim_state, ::set_zombie_melee_anim_state_override );
+
 	level.script = toLower( getDvar( "mapname" ) );
 	level.gametype = toLower( getDvar( "g_gametype" ) );
 
@@ -79,7 +82,7 @@ init()
 		if ( isDefined( level.ai_data[ keys[ i ] ].init ) && isDefined( level.ai_data[ keys[ i ] ].should_execute ) 
 			&& level.ai_data[ keys[ i ] ].should_execute )
 		{
-			level [[ level.ai_data[ keys[ i ] ].init ]]();
+			level thread [[ level.ai_data[ keys[ i ] ].init ]]();
 		}
 	}
 
@@ -111,6 +114,64 @@ watch_for_damage_from_players()
 		}
 		self player_attacks_enemy( attacker, amount, type, point );
 	}
+}
+
+setanimstatefromspeed_override()
+{
+	animstate = self maps\mp\animscripts\zm_utility::append_missing_legs_suffix( "zm_move_" + self.zombie_move_speed );
+
+	if ( isdefined( self.a.gib_ref ) && self.a.gib_ref == "no_legs" )
+		animstate = "zm_move_stumpy";
+
+	if ( isdefined( self.has_legs ) && self.has_legs && isdefined( self.original_move_substate_before_melee ) && isdefined( self.original_move_state_before_melee )
+		 && self.original_move_state_before_melee == animstate )
+	{
+		substate = self.original_move_substate_before_melee;
+		self setanimstatefromasd( animstate, substate );
+		self.original_move_state_before_melee = undefined;
+		self.original_move_substate_before_melee = undefined;
+	}
+	else if ( isdefined( self.preserve_asd_substates ) && self.preserve_asd_substates && ( animstate == self getanimstatefromasd() ) )
+	{
+		substate = self getanimsubstatefromasd();
+		self setanimstatefromasd( animstate, substate );
+	}
+	else
+	{
+		self setanimstatefromasd( animstate );
+	}
+	if ( isdefined( self.setanimstatefromspeed ) )
+		self [[ self.setanimstatefromspeed ]]( animstate, substate );
+}
+
+set_zombie_melee_anim_state_override( zombie )
+{
+	if ( isdefined( level.melee_anim_state ) )
+		melee_anim_state = self [[ level.melee_anim_state ]]();
+
+	if ( !isdefined( melee_anim_state ) )
+	{
+		if ( !zombie.has_legs && zombie.a.gib_ref == "no_legs" )
+			melee_anim_state = "zm_stumpy_melee";
+		else
+		{
+			switch ( zombie.zombie_move_speed )
+			{
+				case "walk":
+					melee_anim_state = maps\mp\animscripts\zm_utility::append_missing_legs_suffix( "zm_walk_melee" );
+					break;
+				case "run":
+				case "sprint":
+				default:
+					melee_anim_state = maps\mp\animscripts\zm_utility::append_missing_legs_suffix( "zm_run_melee" );
+					break;
+			}
+		}
+	}
+
+	zombie.original_move_state_before_melee = self getanimstatefromasd();
+	zombie.original_move_substate_before_melee = self getanimsubstatefromasd();
+	zombie setanimstatefromasd( melee_anim_state );
 }
 
 add_spawn_functions_to_spawners()

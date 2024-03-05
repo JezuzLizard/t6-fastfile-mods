@@ -37,7 +37,7 @@ precache_fx()
 init()
 {
 	leaper_spawner_init();
-	leaper_calc_anim_offsets();
+	level thread leaper_calc_anim_offsets();
 
 	if ( !isdefined( level.leapers_per_player ) )
 		level.leapers_per_player = 2;

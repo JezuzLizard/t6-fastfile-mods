@@ -6,8 +6,10 @@ implement waw-reimagined changes
 crossbow and paped variant
 spas shotgun from SP
 every wonder weapon on every map
-faster sprint anims for zombies (supersprint and chase_bus)
+faster sprint anims for zombies (supersprint and chase_bus) some from the old coolweps mod
 all the good ai types from BO2 and possibly BO1/BO3
 elemental variants of certain special enemies at higher rounds(electric panzer, flaming dogs, acid warden, aura)
 aats
 chicky-chicky comes in random variants 1. random projectiles in 360 radius, airstrike where bullet lands, turret shooter, friendly ai shooter
+
+fix zombie move anims changing when meleeing an enemy

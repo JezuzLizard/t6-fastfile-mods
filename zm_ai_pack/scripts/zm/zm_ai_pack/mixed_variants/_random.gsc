@@ -6,34 +6,53 @@
 
 main()
 {
-	set_dvar_if_unset( "rm_mixed_preset_default_random_variant_allowed_aitypes", "normal zombie_dog mechz" );
+	set_dvar_if_unset( "rm_mixed_preset_default_random_variant_allowed_aitypes", "normal zombie_dog mechz brutus" );
 	set_dvar_if_unset( "rm_mixed_preset_default_random_variant_wave_spawn_limit", 24 );
 	set_dvar_if_unset( "rm_mixed_preset_default_random_variant_wave_spawn_cooldown", 1 );
 
-	set_dvar_if_unset( "rm_mixed_preset_default_random_variant_mechz_spawn_chance_1000", 10 );
-	set_dvar_if_unset( "rm_mixed_preset_default_random_variant_zombie_dog_spawn_chance_1000", 200 );
+	set_dvar_if_unset( "rm_mixed_preset_default_random_variant_mechz_spawn_chance_10000_base", 100 );
+	set_dvar_if_unset( "rm_mixed_preset_default_random_variant_zombie_dog_spawn_chance_10000_base", 1200 );
+	set_dvar_if_unset( "rm_mixed_preset_default_random_variant_brutus_spawn_chance_10000_base", 150 );
+
+	set_dvar_if_unset( "rm_mixed_preset_default_random_variant_mechz_spawn_chance_10000_increase_per_round", 2 );
+	set_dvar_if_unset( "rm_mixed_preset_default_random_variant_zombie_dog_spawn_chance_10000_increase_per_round", 6 );
+	set_dvar_if_unset( "rm_mixed_preset_default_random_variant_brutus_spawn_chance_10000_increase_per_round", 2 );
 }
 
 spawning_random()
 {
-	mechz_spawn_chance = getdvarint( "rm_mixed_preset_default_random_variant_mechz_spawn_chance_1000" );
-	zombie_dog_chance = getdvarint( "rm_mixed_preset_default_random_variant_zombie_dog_spawn_chance_1000" );
+	mechz_spawn_chance = getdvarint( "rm_mixed_preset_default_random_variant_mechz_spawn_chance_10000_base" );
+	zombie_dog_chance = getdvarint( "rm_mixed_preset_default_random_variant_zombie_dog_spawn_chance_10000_base" );
 
 	count = 0;
 	for (;;)
 	{
 		wait_for_free_ai_slot( ::get_all_ai_count );
+
+		aitypes_string = getdvar( "rm_mixed_preset_default_random_variant_allowed_aitypes" );
+		if ( aitypes_string == "" )
+		{
+			wait 1;
+			continue;
+		}
+		aitypes = strtok( aitypes_string, " " );
+		aitypes = array_randomize( aitypes );
 		ai = undefined;
-		random_number = randomint( 1000 );
-		if ( random_number < mechz_spawn_chance )
+		has_normal = false;
+		for ( i = 0; i < aitypes.size; i++ )
 		{
-			ai = [[ level.round_manager_aitype_spawning_funcs[ "mechz" ] ]]();
+			if ( aitypes[ i ] == "normal" )
+			{
+				has_normal = true;
+				continue;
+			}
+			ai = attempt_random_spawn( aitypes[ i ] );
+			if ( isdefined( ai ) )
+			{
+				break;
+			} 
 		}
-		else if ( random_number < zombie_dog_chance )
-		{
-			ai = [[ level.round_manager_aitype_spawning_funcs[ "zombie_dog" ] ]]();
-		}
-		else
+		if ( !isdefined( ai ) )
 		{
 			ai = [[ level.round_manager_aitype_spawning_funcs[ "normal" ] ]]();
 		}
@@ -71,4 +90,28 @@ spawning_cooldown()
 spawning_round_start()
 {
 	
+}
+
+attempt_random_spawn( type )
+{
+	chance_base = getdvarint( "rm_mixed_preset_default_random_variant_" + type + "_spawn_chance_10000_base" );
+
+	chance_per_round = getdvarint( "rm_mixed_preset_default_random_variant_" + type + "_spawn_chance_10000_increase_per_round" );
+
+	chance_scaled = chance_base + ( chance_per_round * ( level.round_number - getdvarint( "rm_mixed_round_min_start_round" ) ) );
+
+	if ( chance_scaled <= 0 )
+	{
+		return undefined;
+	}
+
+	random_number = randomint( 10000 );
+
+	ai = undefined;
+	if ( chance_scaled < random_number )
+	{
+		ai = [[ level.round_manager_aitype_spawning_funcs[ type ] ]]();
+	}
+
+	return ai;
 }

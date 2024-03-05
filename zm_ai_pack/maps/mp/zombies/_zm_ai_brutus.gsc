@@ -71,7 +71,8 @@ main()
 	precachestring( &"ZOMBIE_LOCKED_COST_6000" );
 	flag_init( "brutus_setup_complete" );
 	setdvar( "zombie_double_wide_checks", 1 );
-
+	scripts\zm\clientfield_alt_sys::register_clientfield_alt( "actor", "helmet_off" );
+	scripts\zm\clientfield_alt_sys::register_clientfield_alt( "actor", "brutus_lock_down" );
 	if ( !isdefined( level.vsmgr_prio_zm_brutus_teargas ) )
 		level.vsmgr_prio_overlay_zm_ai_screecher_blur = 50;
 

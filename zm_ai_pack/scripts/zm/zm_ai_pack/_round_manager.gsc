@@ -584,6 +584,7 @@ determine_mixed_round_preset()
 
 		if ( current_iterations >= max_iterations )
 		{
+			assertmsg( "Round Manager ERROR: Reached max iterations for picking mixed preset type" );
 			return level.round_manager_mixed_round_presets[ possible_presets[ 0 ] ];
 		}
 	}
@@ -640,6 +641,7 @@ pick_mixed_round_preset_variant( variants )
 
 		if ( current_iterations >= max_iterations )
 		{
+			assertmsg( "Round Manager ERROR: Reached max iterations for picking mixed variant type" );
 			variants[ possible_variants[ 0 ] ].last_time = gettime();
 			return variants[ possible_variants[ 0 ] ];
 		}

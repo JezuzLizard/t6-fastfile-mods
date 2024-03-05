@@ -203,6 +203,10 @@ cleanup_fx_alt( index )
 		}
 	}
 
+	if ( getDvarInt( "clientfield_alt_mechz_debug" ) )
+	{
+		print( "cleanup_fx_alt( " + unique_script_id + " )" );
+	}
 	self notify( unique_script_id );
 }
 
@@ -223,14 +227,27 @@ cleanup_fx( localclientnum, index, bnewent, binitialsnap, fieldname, bwasdemojum
 	self notify( unique_script_id );
 }
 
-mechz_handle_fx_alt( new_val, old_val )
+mechz_handle_fx_alt( new_val )
 {
+	if ( !isdefined( self.mechz_handle_fx_alt_old_val ) )
+	{
+		self.mechz_handle_fx_alt_old_val = 0;
+	}
 	newval = int( new_val );
-	oldval = old_val != "" ? int( old_val ) : 0;
+	oldval = self.mechz_handle_fx_alt_old_val;
+	if ( getDvarInt( "clientfield_alt_mechz_debug" ) )
+	{
+		print( "mechz_handle_fx_alt( " + oldval + ", " + newval + " )" );
+	}
 	for ( i = 0; i < level.mechz_clientside_fx.size; i++ )
 	{
-		set_in_new = ( newval & 1 << i ) != 0;
-		set_in_old = ( oldval & 1 << i ) != 0;
+		set_in_new = ( newval & ( 1 << i ) ) != 0;
+		set_in_old = ( oldval & ( 1 << i ) ) != 0;
+
+		if ( getDvarInt( "clientfield_alt_mechz_debug" ) )
+		{
+			print( "mechz_handle_fx_alt( checked bits: " + set_in_new + ", " + set_in_old + " )" );
+		}
 
 		if ( set_in_new && !set_in_old )
 		{
@@ -249,6 +266,8 @@ mechz_handle_fx_alt( new_val, old_val )
 		if ( isdefined( self.smoke_fx ) )
 			deletefx( 0, self.smoke_fx );
 	}
+
+	self.mechz_handle_fx_alt_old_val = newval;
 }
 
 mechz_handle_fx( localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwasdemojump )
@@ -322,9 +341,13 @@ mechz_screen_shake_loop( localclientnum )
 	}
 }
 
-mechz_claw_callback_alt( new_val, old_val )
+mechz_claw_callback_alt( new_val )
 {
-	oldval = old_val != "" ? int( old_val ) : 0;
+	if ( !isdefined( self.mechz_claw_callback_alt_old_val ) )
+	{
+		self.mechz_claw_callback_alt_old_val = 0;
+	}
+	oldval = self.mechz_claw_callback_alt_old_val;
 	newval = int( new_val );
 	if ( oldval == 1 && newval == 0 )
 	{
@@ -333,6 +356,7 @@ mechz_claw_callback_alt( new_val, old_val )
 	}
 	else if ( newval == 1 )
 		self thread mechz_screen_shake_loop( 0 );
+	self.mechz_claw_callback_alt_old_val = newval;
 }
 
 mechz_claw_callback( localclientnum, oldval, newval, bnewent, binitialsnap, fieldname, bwasdemojump )

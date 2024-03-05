@@ -49,8 +49,8 @@ precache()
 
 register_clientfields()
 {
-	//registerclientfield( "actor", "mechz_fx", 14000, 12, "int" );
-	//registerclientfield( "toplayer", "mechz_grab", 14000, 1, "int" );
+	scripts\zm\clientfield_alt_sys::register_clientfield_alt( "actor", "mechz_fx" );
+	scripts\zm\clientfield_alt_sys::register_clientfield_alt( "toplayer", "mechz_grab" );
 	if ( getDvar( "mapname" ) != "zm_buried" || getDvar( "g_gametype" ) != "zclassic" )
 	{
 		registerclientfield( "actor", "anim_rate", 14000, 2, "float" );
