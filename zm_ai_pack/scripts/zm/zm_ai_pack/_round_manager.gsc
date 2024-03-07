@@ -13,14 +13,14 @@ main()
 	set_dvar_if_unset( "rm_special_round_chance", 33 );
 	set_dvar_if_unset( "rm_allow_same_round_as_last_round", 1 );
 
-	set_dvar_if_unset( "rm_allowed_special_rounds", "normal zombie_dog leaper" );
+	set_dvar_if_unset( "rm_allowed_special_rounds", "normal zombie_dog leaper mechz" );
 	set_dvar_if_unset( "rm_allowed_special_round_variants", "default rush" );
 	set_dvar_if_unset( "rm_forced_special_round", "" );
 	set_dvar_if_unset( "rm_forced_special_variant", "" );
 
 	set_dvar_if_unset( "rm_allowed_mixed_rounds_presets", "default wave" );
 	set_dvar_if_unset( "rm_allowed_mixed_round_variants_for_default_preset", "random" );
-	set_dvar_if_unset( "rm_allowed_mixed_round_variants_for_wave_preset", "normal_wave dog_wave mechz_wave brutus_wave" );
+	set_dvar_if_unset( "rm_allowed_mixed_round_variants_for_wave_preset", "normal_wave dog_wave mechz_wave brutus_wave leaper_wave" );
 	set_dvar_if_unset( "rm_forced_mixed_rounds_preset", "" );
 	set_dvar_if_unset( "rm_forced_mixed_rounds_variant", "" );
 	set_dvar_if_unset( "rm_mixed_round_chance_base", 20 );
@@ -187,6 +187,13 @@ main()
 										  scripts\zm\zm_ai_pack\mixed_variants\_brutus_wave::spawning_limit,
 										  scripts\zm\zm_ai_pack\mixed_variants\_brutus_wave::spawning_cooldown,
 										  scripts\zm\zm_ai_pack\mixed_variants\_brutus_wave::spawning_round_start);
+	
+	register_mixed_round_preset_variant( "wave", "leaper_wave",
+										  scripts\zm\zm_ai_pack\mixed_variants\_leaper_wave::spawning_wave,
+										  scripts\zm\zm_ai_pack\mixed_variants\_leaper_wave::spawning_chance,
+										  scripts\zm\zm_ai_pack\mixed_variants\_leaper_wave::spawning_limit,
+										  scripts\zm\zm_ai_pack\mixed_variants\_leaper_wave::spawning_cooldown,
+										  scripts\zm\zm_ai_pack\mixed_variants\_leaper_wave::spawning_round_start);
 
 	scripts\zm\zm_ai_pack\mixed_presets\_default::main();
 
@@ -197,10 +204,29 @@ main()
 	scripts\zm\zm_ai_pack\mixed_variants\_normal_wave::main();
 	//Future variants
 	// random - random ais, true_random - random ais + random behavior and stats
-	// elemental?
+	// fx related
+	//          - lightning enemies that stun you when they hit you
+	//          - fire enemies which set you on fire dealing damage over time
+	//          - ice enemies which slow you
+	//          - poison enemies
+	//          - auras that give nearby enemies buffs or debuff nearby players
+	//          - invisible done by using camo suit material from campaign
 	// durable
 	// waves for mixed round_type
+	// boss related
+	//          - enemies that override spawning system - enemies spawn near them while they are alive
+	//          - overrides enemy types
+	//          - gives special reward for defeating them
+	//          - always spawns at specific rounds 20/35/50/65 etc
+	//          - has special fx around them
+	//          - has special abilities if possible
+	//          - plays random boss music
+	//          - boss health bar and name
+	//          - randomly spawning powerups to help the players
 	// several default presets to cycle through
+	// modify aitypes player targetting - target weakest performing, strongest performing, furthest, closest, most health, least health
+	// Add faster sprinters as an enemy type
+	// ghosts phase through walls
 }
 
 should_do_special_round()
@@ -340,11 +366,41 @@ determine_current_round_type()
 	allowed_mixed_presets_string = getdvar( "rm_allowed_mixed_rounds_presets" );
 	can_pick_mixed_round_type = allowed_mixed_presets_string != "";
 
+	for ( i = 0; i < possible_round_types_keys.size; i++ )
+	{
+		if ( possible_round_types_keys[ i ] == "normal" )
+		{
+			continue;
+		}
+		assert( isDefined( level.round_manager_special_rounds[ possible_round_types_keys[ i ] ] ), "Round Manager ERROR: Round type <" + possible_round_types_keys[ i ] + "> was not registered" );
+		if ( !isDefined( level.round_manager_special_rounds[ possible_round_types_keys[ i ] ] ) )
+		{
+			continue;
+		}
+		for ( j = 0; j < possible_variants_keys.size; j++ )
+		{
+			assert( isDefined( level.round_manager_special_rounds[ possible_round_types_keys[ i ] ][ possible_variants_keys[ j ] ] ), "Round Manager ERROR: Variant <" + possible_variants_keys[ j ] + "> is not registered for round type <" + possible_round_types_keys[ i ] + "> ");
+		}
+	}
+
+	normal_present = false;
+	for ( i = 0; i < possible_round_types_keys.size; i++ )
+	{
+		if ( possible_round_types_keys[ i ] == "normal" )
+		{
+			normal_present = true;
+			break;
+		}
+
 	for (;;)
 	{
 		possible_round_types = array_randomize( possible_round_types_keys );
 		for ( i = 0; i < possible_round_types.size; i++ )
 		{
+			if ( possible_round_types[ i ] == "normal" )
+			{
+				continue;
+			}
 			assert( isDefined( level.round_manager_special_rounds[ possible_round_types[ i ] ] ) );
 			possible_variants = array_randomize( possible_variants_keys );
 
@@ -362,10 +418,8 @@ determine_current_round_type()
 
 			for ( j = 0; j < possible_variants.size; j++ )
 			{
-				assert( isDefined( level.round_manager_special_rounds[ possible_round_types[ i ] ][ possible_variants[ j ] ] ) );
-
-				if ( possible_round_types.size <= 1 || [[ level.round_manager_special_rounds[ possible_round_types[ i ] ][ possible_variants[ j ] ].chance_func ]]()
-					&& [[ level.round_manager_special_rounds[ possible_round_types[ i ] ][ possible_variants[ j ] ].next_instance_func ]]() <= level.round_number )
+				if ( possible_round_types.size <= 1 || ( [[ level.round_manager_special_rounds[ possible_round_types[ i ] ][ possible_variants[ j ] ].next_instance_func ]]() <= level.round_number || !normal_present )
+				&& [[ level.round_manager_special_rounds[ possible_round_types[ i ] ][ possible_variants[ j ] ].chance_func ]]() )
 				{
 					return_value.round_type = possible_round_types[ i ];
 					return_value.variant = possible_variants[ j ];

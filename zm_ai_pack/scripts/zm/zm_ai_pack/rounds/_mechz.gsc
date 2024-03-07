@@ -18,8 +18,9 @@ main()
 	set_dvar_if_unset( "rm_mechz_rush_min_round", 45 );
 	set_dvar_if_unset( "rm_mechz_rush_min_spawn_wait", 1.5 );
 	set_dvar_if_unset( "rm_mechz_rush_max_spawn_wait", 2.5 );
-	set_dvar_if_unset( "rm_mechz_rush_max_mechz_alive", 12 );
-	set_dvar_if_unset( "rm_mechz_rush_max_mechz_round", 12 );
+	set_dvar_if_unset( "rm_mechz_rush_max_mechz_alive", 24 );
+	set_dvar_if_unset( "rm_mechz_rush_max_mechz_round", 24 );
+	set_dvar_if_unset( "rm_mechz_rush_max_mechz_per_player", 4 );
 	set_dvar_if_unset( "rm_mechz_rush_max_health_multiplier", 0.5 );
 }
 
@@ -100,13 +101,13 @@ round_wait()
 round_max()
 {
 	if ( isdefined( level.is_forever_solo_game ) && level.is_forever_solo_game )
-		level.mechz_zombie_per_round = 1;
-	else if ( level.special_round_count < 2 )
-		level.mechz_zombie_per_round = 1;
-	else if ( level.special_round_count < 5 )
 		level.mechz_zombie_per_round = 2;
+	else if ( level.special_round_count < 2 )
+		level.mechz_zombie_per_round = 4;
+	else if ( level.special_round_count < 5 )
+		level.mechz_zombie_per_round = 6;
 	else
-		level.mechz_zombie_per_round = 3;
+		level.mechz_zombie_per_round = 8;
 
 	level.zombie_total = level.mechz_zombie_per_round;
 	level.mechz_left_to_spawn = level.zombie_total;
@@ -199,7 +200,19 @@ round_spawning_rush()
 
 round_max_rush()
 {
-	level.zombie_total = getdvarint( "rm_mechz_rush_max_mechz_round" );
+	max_per_player = getdvarint( "rm_mechz_rush_max_mechz_per_player" );
+
+	max_mechz = max_per_player * level.players.size;
+	max = getdvarint( "rm_mechz_rush_max_mechz_round" );
+	if ( max_mechz > max )
+	{
+		max_mechz = max;
+	}
+	if ( max_mechz <= 0 )
+	{
+		max_mechz = 2;
+	}
+	level.zombie_total = max_mechz;
 	level.mechz_left_to_spawn = level.zombie_total;
 }
 

@@ -16,7 +16,7 @@ preset_chance()
 
 round_start()
 {
-	level.round_manager_spawn_count = 0;
+	level.round_manager_vars[ "spawn_count" ] = 0;
 }
 
 spawn_wave( type, custom_starting_properties, wait_for_room = true )
@@ -40,7 +40,7 @@ spawn_wave( type, custom_starting_properties, wait_for_room = true )
 		if ( isdefined( ai ) )
 		{
 			count++;
-			level.round_manager_spawn_count++;
+			level.round_manager_vars[ "spawn_count" ]++;
 		}
 		wait( level.zombie_vars["zombie_spawn_delay"] ); 
 	}

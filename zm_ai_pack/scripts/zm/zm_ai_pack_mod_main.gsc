@@ -25,8 +25,11 @@ main()
 	pluto_sys::replacefunc( maps\mp\animscripts\zm_dog_combat::domeleeafterwait, ::domeleeafterwait_override );
 	pluto_sys::replacefunc( maps\mp\animscripts\zm_dog_combat::handlemeleebiteattacknotetracks, ::handlemeleebiteattacknotetracks_override );
 
-	//pluto_sys::replacefunc( maps\mp\animscripts\zm_run::setanimstatefromspeed, ::setanimstatefromspeed_override );
-	//pluto_sys::replacefunc( maps\mp\animscripts\zm_melee::set_zombie_melee_anim_state, ::set_zombie_melee_anim_state_override );
+	if ( getdvarint( "fix_zombie_move_anim_randomizing_after_melee" ) )
+	{
+		pluto_sys::replacefunc( maps\mp\animscripts\zm_run::setanimstatefromspeed, ::setanimstatefromspeed_override );
+		pluto_sys::replacefunc( maps\mp\animscripts\zm_melee::set_zombie_melee_anim_state, ::set_zombie_melee_anim_state_override );
+	}
 
 	level.script = toLower( getDvar( "mapname" ) );
 	level.gametype = toLower( getDvar( "g_gametype" ) );

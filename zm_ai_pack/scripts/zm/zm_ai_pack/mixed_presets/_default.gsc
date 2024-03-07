@@ -10,5 +10,5 @@ preset_chance()
 
 round_start()
 {
-	level.round_manager_spawn_count = 0;
+	level.round_manager_vars[ "spawn_count" ] = 0;
 }

@@ -13,3 +13,4 @@ aats
 chicky-chicky comes in random variants 1. random projectiles in 360 radius, airstrike where bullet lands, turret shooter, friendly ai shooter
 
 fix zombie move anims changing when meleeing an enemy
+reactive armor powerup makes enemiesa % of their max health as damage instead of dealing full damage to the player

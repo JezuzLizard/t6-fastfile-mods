@@ -513,10 +513,9 @@ playloopsound( sound_alias, fade_time )
 }
 
 /@
-	[DESCRIPTION]: Spawns a temp entity at CALLER's location which plays <sound_name>.
-	If sound is invalid sound will simply fail to play with no error.;
+	[DESCRIPTION]: Returns the playback time of <sound_alias>.;
 	[CALL_TYPE]: method;
-	[USAGE]: playback_time = playsound( <sound_alias> );
+	[USAGE]: playback_time = soundgetplaybacktime( <sound_alias> );
 	[PARAMS]: ARG1:<string>;
 	[PARAMS_NOTES]: NONE;
 	[RETURNS]: <int>;

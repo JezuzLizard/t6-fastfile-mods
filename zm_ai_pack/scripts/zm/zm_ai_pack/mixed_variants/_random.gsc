@@ -6,24 +6,23 @@
 
 main()
 {
-	set_dvar_if_unset( "rm_mixed_preset_default_random_variant_allowed_aitypes", "normal zombie_dog mechz brutus" );
+	set_dvar_if_unset( "rm_mixed_preset_default_random_variant_allowed_aitypes", "normal zombie_dog mechz brutus leaper" );
 	set_dvar_if_unset( "rm_mixed_preset_default_random_variant_wave_spawn_limit", 24 );
 	set_dvar_if_unset( "rm_mixed_preset_default_random_variant_wave_spawn_cooldown", 1 );
 
 	set_dvar_if_unset( "rm_mixed_preset_default_random_variant_mechz_spawn_chance_10000_base", 100 );
 	set_dvar_if_unset( "rm_mixed_preset_default_random_variant_zombie_dog_spawn_chance_10000_base", 1200 );
 	set_dvar_if_unset( "rm_mixed_preset_default_random_variant_brutus_spawn_chance_10000_base", 150 );
+	set_dvar_if_unset( "rm_mixed_preset_default_random_variant_leaper_spawn_chance_10000_base", 600 );
 
 	set_dvar_if_unset( "rm_mixed_preset_default_random_variant_mechz_spawn_chance_10000_increase_per_round", 2 );
 	set_dvar_if_unset( "rm_mixed_preset_default_random_variant_zombie_dog_spawn_chance_10000_increase_per_round", 6 );
 	set_dvar_if_unset( "rm_mixed_preset_default_random_variant_brutus_spawn_chance_10000_increase_per_round", 2 );
+	set_dvar_if_unset( "rm_mixed_preset_default_random_variant_leaper_spawn_chance_10000_increase_per_round", 5 );
 }
 
 spawning_random()
 {
-	mechz_spawn_chance = getdvarint( "rm_mixed_preset_default_random_variant_mechz_spawn_chance_10000_base" );
-	zombie_dog_chance = getdvarint( "rm_mixed_preset_default_random_variant_zombie_dog_spawn_chance_10000_base" );
-
 	count = 0;
 	for (;;)
 	{
@@ -60,7 +59,7 @@ spawning_random()
 		if ( isdefined( ai ) )
 		{
 			count++;
-			level.round_manager_spawn_count++;
+			level.round_manager_vars[ "spawn_count" ]++;
 		}
 
 		if ( count >= spawning_limit() )
