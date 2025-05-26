@@ -1,0 +1,21 @@
+body
+{
+	ai_zombie_giant_robot_walk_a
+	ai_zombie_giant_robot_walk_b
+	
+
+	ai_zombie_giant_robot_walk_nml_intro
+	ai_zombie_giant_robot_walk_nml
+	ai_zombie_giant_robot_walk_nml_outtro
+
+	ai_zombie_giant_robot_walk_trenches_intro
+	ai_zombie_giant_robot_walk_trenches
+	ai_zombie_giant_robot_walk_trenches_outtro
+
+	ai_zombie_giant_robot_walk_village_intro
+	ai_zombie_giant_robot_walk_village
+	ai_zombie_giant_robot_walk_village_outtro
+	
+	ai_zombie_giant_robot_bunker_intro
+
+} // end body

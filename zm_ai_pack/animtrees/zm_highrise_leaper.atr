@@ -1,0 +1,215 @@
+body
+{
+	ai_zombie_quad_idle
+	ai_zombie_quad_idle_2
+
+	// deaths
+	ai_zombie_leaper_death_v1
+	ai_zombie_leaper_death_v2
+
+	// run cycles
+	ai_zombie_leaper_run_f
+	ai_zombie_leaper_run_bounce
+
+	ai_zombie_quad_crawl
+	ai_zombie_quad_crawl_2
+	ai_zombie_quad_crawl_3
+
+	ai_zombie_quad_crawl_run
+	ai_zombie_quad_crawl_run_2
+	ai_zombie_quad_crawl_run_3
+	ai_zombie_quad_crawl_run_4
+	ai_zombie_quad_crawl_run_5
+
+	ai_zombie_quad_crawl_sprint
+	ai_zombie_quad_crawl_sprint_2
+	ai_zombie_quad_crawl_sprint_3
+
+	// run cycles in prone
+	ai_zombie_quad_crawl_01
+	ai_zombie_quad_crawl_02
+	ai_zombie_quad_crawl_03
+
+	// melee
+	ai_zombie_leaper_attack_v1
+	ai_zombie_leaper_attack_v2
+
+	// wall jumps
+	ai_zombie_leaper_wall_traverse_l
+	ai_zombie_leaper_wall_traverse_r
+	ai_zombie_leaper_ceiling_traverse
+	
+	// barrier traversals
+	ai_leaper_traverse_dierise_barrier
+	
+	// building to building only jumps
+	
+	// Die Rise specific traversals
+	ai_zombie_jump_down_40
+	ai_zombie_jump_down_48
+	ai_zombie_jump_down_190
+	ai_zombie_jump_down_184
+	ai_zombie_jump_down_176
+	ai_leaper_jump_down_120
+//	ai_zombie_jump_down_286
+	ai_zombie_jump_up_grabbed_48
+	ai_zombie_crawl_jump_up_grabbed_48
+	ai_zombie_jump_down_96
+	ai_zombie_jump_down_127
+	ai_zombie_jump_up_127
+	ai_leaper_jump_up_175
+	ai_zombie_jump_up_grabbed_190
+	ai_zombie_crawl_jump_up_grabbed_190
+	ai_zombie_traverse_48
+	ai_leaper_jump_up_sewing
+
+	ai_leaper_dierise_ventfall_176
+	//ai_leaper_dierise_ventfall_184
+	//ai_leaper_dierise_ventfall_190
+
+	ai_leaper_crawl_traverse_round_counter_from_stools
+	ai_leaper_crawl_traverse_round_counter_to_stools
+	
+	ai_leaper_traverse_dierise_chrest_interior_high_to_low
+	ai_leaper_traverse_dierise_chrest_interior_low_to_high	
+
+	ai_leaper_traverse_dierise_1_high_to_low
+	ai_leaper_traverse_dierise_1_low_to_high
+	ai_leaper_traverse_dierise_2_high_to_low
+	ai_leaper_traverse_dierise_2_low_to_high
+	ai_leaper_traverse_dierise_3_high_to_low
+	ai_leaper_traverse_dierise_3_low_to_high
+	ai_leaper_traverse_dierise_4_high_to_low
+	ai_leaper_traverse_dierise_4_low_to_high
+	//ai_leaper_traverse_dierise_5_high_to_low
+	ai_leaper_traverse_dierise_chrest_elevator_high_to_low
+	ai_leaper_traverse_dierise_5_low_to_high
+	ai_leaper_traverse_dierise_6_high_to_low
+	ai_leaper_traverse_dierise_6_low_to_high 
+	ai_leaper_traverse_dierise_7_high_to_low
+	ai_leaper_traverse_dierise_7_low_to_high	
+
+	ai_leaper_traverse_dierise_gap1_to_antenna
+	ai_leaper_traverse_dierise_gap1_from_antenna
+	
+	ai_leaper_traverse_dierise_gap2_from_roof
+	ai_leaper_traverse_dierise_gap2_to_roof
+	
+	ai_leaper_traverse_dierise_gap4b_to_roof
+	ai_leaper_traverse_dierise_gap4b_from_roof
+	
+	ai_leaper_traverse_dierise_gap5a_from_conference
+	ai_leaper_traverse_dierise_gap5a_to_conference
+	ai_leaper_traverse_dierise_gap5b_from_conference
+	ai_leaper_traverse_dierise_gap5b_to_conference 		
+	
+	ai_leaper_traverse_dierise_gap6_high_to_low
+	ai_leaper_traverse_dierise_gap6_low_to_high
+	
+	ai_leaper_traverse_dierise_gap7_from_top_ledge
+	ai_leaper_traverse_dierise_gap7_to_top_ledge	
+	
+	ai_leaper_traverse_dierise_gap8_high_to_low
+	ai_leaper_traverse_dierise_gap8_low_to_high
+	
+	ai_leaper_traverse_dierise_gap9_high_to_low
+	ai_leaper_traverse_dierise_gap9_low_to_high
+	
+	ai_leaper_traverse_dierise_gap10_high_to_low
+	ai_leaper_traverse_dierise_gap10_low_to_high
+	
+//	ai_leaper_traverse_dierise_gap11_high_to_low
+//	ai_leaper_traverse_dierise_gap11_low_to_high
+
+//	ai_leaper_traverse_dierise_gap13_high_to_low
+//	ai_leaper_traverse_dierise_gap13_low_to_high
+	
+	ai_leaper_traverse_dierise_gap14a_high_to_low
+//	ai_leaper_traverse_dierise_gap14a_low_to_high
+	ai_leaper_traverse_dierise_gap14b_high_to_low
+//	ai_leaper_traverse_dierise_gap14b_low_to_high
+	ai_leaper_traverse_dierise_gap14c_high_to_low
+	ai_leaper_traverse_dierise_gap14c_low_to_high
+	ai_leaper_traverse_dierise_gap14d_high_to_low
+	ai_leaper_traverse_dierise_gap14d_low_to_high
+	ai_leaper_traverse_dierise_gap14e_high_to_low
+	ai_leaper_traverse_dierise_gap14e_low_to_high
+	ai_leaper_traverse_dierise_gap14f_high_to_low
+	ai_leaper_traverse_dierise_gap14f_low_to_high
+	ai_leaper_traverse_dierise_gap14g_high_to_low
+	ai_leaper_traverse_dierise_gap14g_low_to_high
+	ai_leaper_traverse_dierise_gap14h_high_to_low
+	ai_leaper_traverse_dierise_gap14h_low_to_high	
+	
+	ai_leaper_traverse_dierise_gap15a_from_girder
+	ai_leaper_traverse_dierise_gap15b_from_girder
+	ai_leaper_traverse_dierise_gap15f_low_to_high
+	ai_leaper_traverse_dierise_gap15f_high_to_low
+	ai_leaper_traverse_dierise_gap15g_high_to_low
+	ai_leaper_traverse_dierise_gap15g_low_to_high 
+	
+	ai_leaper_traverse_dierise_gap16a_high_to_low
+	ai_leaper_traverse_dierise_gap16a_low_to_high
+	ai_leaper_traverse_dierise_gap16b_high_to_low
+	ai_leaper_traverse_dierise_gap16b_low_to_high
+
+	ai_leaper_traverse_dierise_gap17a_high_to_low
+	ai_leaper_traverse_dierise_gap17a_low_to_high
+	ai_leaper_traverse_dierise_gap17c_high_to_low
+	ai_leaper_traverse_dierise_gap17c_low_to_high	
+	
+	ai_leaper_traverse_dierise_gap18_high_to_low 
+	
+	ai_leaper_traverse_dierise_gap19_from_railing
+	ai_leaper_traverse_dierise_gap19_to_railing
+
+	ai_zombie_leaper_wall_traverse_l_large
+	ai_zombie_leaper_wall_traverse_r_large
+
+	// building spawn leaps
+	ai_leaper_traverse_dierise_gap15c_low_to_high
+	
+	ai_zombie_jump_up_grabbed_190_dlc1
+	ai_zombie_jump_up_grabbed_antenna
+	ai_leaper_traverse_dierise_chrest_gap
+	ai_zombie_leaper_traverse_dierise_green_ext_a
+	ai_zombie_leaper_traverse_dierise_green_ext_b
+	ai_zombie_leaper_traverse_dierise_green_ext_c
+	ai_zombie_leaper_traverse_dierise_green_ext_d
+	ai_zombie_leaper_traverse_dierise_green_ext_e
+	ai_zombie_leaper_traverse_dierise_green_ext_f 
+	ai_zombie_leaper_traverse_dierise_bluegreen_antenna_to_escalator
+	ai_leaper_traverse_shoestore
+	ai_zombie_leaper_traverse_dierise_orange_ext_a_right
+	ai_zombie_leaper_traverse_dierise_orange_ext_a_left
+	ai_zombie_leaper_traverse_dierise_orange_ext_b_left
+	ai_zombie_leaper_traverse_dierise_orange_ext_b_right
+	ai_zombie_leaper_traverse_dierise_orange_ext_c
+	ai_zombie_leaper_traverse_dierise_blue_ext_a
+	ai_leaper_traverse_dierise_shaft1_to_bottom
+	ai_leaper_traverse_dierise_shaft1_from_bottom
+	ai_leaper_traverse_dierise_shaft2_to_bottom
+	ai_leaper_traverse_dierise_shaft2_from_bottom
+	ai_leaper_traverse_dierise_restaurant_in
+	ai_leaper_traverse_dierise_ac_unit
+	ai_leaper_traverse_dierise_chrest_interior_alt_high_to_low
+	ai_leaper_traverse_dierise_chrest_interior_alt_low_to_high	
+	ai_zombie_leaper_traverse_dierise_green_ext_g
+	
+//	ai_leaper_jump_down_from_elevator_bottom
+//	ai_leaper_jump_up_to_elevator_bottom
+	
+	ai_leaper_jump_down_to_elevator_roof
+	ai_leaper_jump_up_from_elevator_roof
+	
+	ai_zombie_leaper_climb_elevator	
+	
+	ai_zombie_crawl_slipslide_slow
+	ai_zombie_crawl_slipslide_fast
+	ai_zombie_crawl_slipslide_recover
+	
+	ai_zombie_leaper_elevator_from_ceiling
+	ai_zombie_leaper_elevator_from_floor
+
+
+} // end body

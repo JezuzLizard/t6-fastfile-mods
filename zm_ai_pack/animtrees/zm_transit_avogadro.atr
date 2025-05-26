@@ -1,0 +1,88 @@
+body
+{
+	ai_zombie_avogadro_arrival
+	ai_zombie_avogadro_exit
+
+	ai_zombie_avogadro_bus_attack_back 
+	ai_zombie_avogadro_bus_attack_front
+	ai_zombie_avogadro_bus_attack_left
+	ai_zombie_avogadro_bus_attack_right
+
+	ai_zombie_avogadro_bus_attack_knocked_off
+
+	ai_zombie_avogadro_bus_pain_long
+	ai_zombie_avogadro_bus_pain_med
+	ai_zombie_avogadro_bus_pain_short
+
+	ai_zombie_avogadro_bus_back_pain_long
+	ai_zombie_avogadro_bus_back_pain_med
+	ai_zombie_avogadro_bus_back_pain_short
+
+	ai_zombie_avogadro_chamber_idle
+	ai_zombie_avogadro_chamber_trans_out
+
+	ai_zombie_avogadro_idle_v1
+
+	ai_zombie_avogadro_melee_attack_v1 
+
+	ai_zombie_avogadro_pain_long
+	ai_zombie_avogadro_pain_med
+	ai_zombie_avogadro_pain_short
+
+	ai_zombie_avogadro_ranged_attack_v1
+	ai_zombie_avogadro_ranged_attack_v1_loop
+	ai_zombie_avogadro_ranged_attack_v1_end
+
+	ai_zombie_avogadro_run_v1
+	ai_zombie_avogadro_run_v1_twitch
+	ai_zombie_avogadro_sprint_v1
+	ai_zombie_avogadro_sprint_v1_twitch
+	ai_zombie_avogadro_walk_v1
+	ai_zombie_avogadro_walk_v1_twitch
+
+	ai_zombie_avogadro_teleport_forward_long
+	ai_zombie_avogadro_teleport_forward_med
+	ai_zombie_avogadro_teleport_forward_short
+	ai_zombie_avogadro_teleport_left_long
+	ai_zombie_avogadro_teleport_left_med
+	ai_zombie_avogadro_teleport_left_short
+	ai_zombie_avogadro_teleport_right_long
+	ai_zombie_avogadro_teleport_right_med
+	ai_zombie_avogadro_teleport_right_short
+	ai_zombie_avogadro_teleport_back_long
+	ai_zombie_avogadro_teleport_back_med
+	ai_zombie_avogadro_teleport_back_short 
+
+	ai_zombie_traverse_v1
+	ai_zombie_traverse_v2
+	ai_zombie_traverse_v5
+	ai_zombie_traverse_v6
+	ai_zombie_traverse_v7
+	ai_zombie_traverse_crawl_v1
+	ai_zombie_traverse_v4
+
+	ai_zombie_climb_down_pothole
+	ai_zombie_climb_up_pothole
+	ai_zombie_jump_down_48
+//	ai_zombie_jump_down_72	
+	ai_zombie_jump_down_96
+	ai_zombie_jump_down_127
+	ai_zombie_jump_down_190
+	ai_zombie_jump_down_222
+	ai_zombie_jump_up_127
+	ai_zombie_jump_up_222
+	
+	ai_zombie_avogadro_jump_across_120
+	ai_zombie_diner_roof_hatch_jump_up
+	ai_zombie_traverse_diner_roof
+	ai_zombie_jump_up_diner_roof
+	ai_zombie_traverse_garage_roll
+
+	ai_zombie_traverse_diner_counter_from_stools
+	ai_zombie_traverse_diner_counter_to_stools
+
+	ai_zombie_traverse_car
+	ai_zombie_traverse_car_sprint
+	ai_zombie_traverse_car_run
+	ai_zombie_traverse_car_pass_to_driver_side
+} // end body

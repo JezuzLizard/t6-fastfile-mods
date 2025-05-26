@@ -3,7 +3,7 @@
 
 main()
 {
-	replaceFunc( maps\mp\teams\_teams::set_player_model, ::set_player_model_override );
+	pluto_sys::replacefunc( maps\mp\teams\_teams::set_player_model, ::set_player_model_override );
 }
 
 set_player_model_override( team, weapon )
