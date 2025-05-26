@@ -38,22 +38,42 @@ spawning_random()
 		aitypes = array_randomize( aitypes );
 		ai = undefined;
 		has_normal = false;
-		for ( i = 0; i < aitypes.size; i++ )
+		max_iterations = 10;
+		iteration_count = 0;
+		for (;;)
 		{
-			if ( aitypes[ i ] == "normal" )
+			for ( i = 0; i < aitypes.size; i++ )
 			{
-				has_normal = true;
-				continue;
+				if ( aitypes[ i ] == "normal" )
+				{
+					has_normal = true;
+					continue;
+				}
+				ai = attempt_random_spawn( aitypes[ i ] );
+				if ( isdefined( ai ) )
+				{
+					break;
+				} 
 			}
-			ai = attempt_random_spawn( aitypes[ i ] );
-			if ( isdefined( ai ) )
+			if ( !isdefined( ai ) && has_normal )
 			{
 				break;
-			} 
+			}
+
+			iteration_count++;
+			if ( iteration_count >= max_iterations )
+			{
+				break;
+			}
 		}
-		if ( !isdefined( ai ) )
+
+		if ( !isdefined( ai ) && has_normal )
 		{
 			ai = [[ level.round_manager_aitype_spawning_funcs[ "normal" ] ]]();
+		}
+		else
+		{
+
 		}
 
 		if ( isdefined( ai ) )

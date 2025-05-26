@@ -391,7 +391,8 @@ determine_current_round_type()
 			normal_present = true;
 			break;
 		}
-
+	}
+	
 	for (;;)
 	{
 		possible_round_types = array_randomize( possible_round_types_keys );
